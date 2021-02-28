@@ -116,7 +116,7 @@ with DefinednessComponent with ExhaleComponent with InhaleComponent {
         val params = Seq(LocalVarDecl(Identifier("p"), permType), LocalVarDecl(Identifier("f"), frameType))
         val condFrameApp = FuncApp(condFrameName, params map (_.l), frameType)
         Axiom(Forall(params, Trigger(condFrameApp),
-          condFrameApp === CondExp(LocalVar(Identifier("p"), permType) > RealLit(0),LocalVar(Identifier("f"), frameType), emptyFrame)
+          condFrameApp === CondExp(permissionPositive(LocalVar(Identifier("p"), permType)),LocalVar(Identifier("f"), frameType), emptyFrame)
         ))
       }
       ) ++

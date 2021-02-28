@@ -30,7 +30,7 @@ import viper.carbon.boogie.Assert
 import viper.carbon.boogie.ConstDecl
 import viper.carbon.boogie.Const
 import viper.carbon.boogie.LocalVar
-import viper.silver.ast.{LocationAccess, PermMul, PredicateAccess, PredicateAccessPredicate, ResourceAccess, WildcardPerm}
+import viper.silver.ast.{LocationAccess, PermMul, PredicateAccess, PredicateAccessPredicate, ResourceAccess, WildcardPerm, SWildcardPerm}
 import viper.carbon.boogie.Forall
 import viper.carbon.boogie.Assign
 import viper.carbon.boogie.Func
@@ -71,8 +71,14 @@ class QuantifiedPermModule(val verifier: Verifier)
     wandModule.register(this)
   }
 
-  implicit val namespace = verifier.freshNamespace("perm")
+ implicit val namespace = verifier.freshNamespace("perm")
   private val axiomNamespace = verifier.freshNamespace("perm.axiom")
+  private val tupleTypeName = "Tuple"
+  private val tupleConstructName = Identifier("tuple")
+  private val fstConstructName = Identifier("fst")
+  private val sndConstructName = Identifier("snd")
+  def tupleType = NamedType(tupleTypeName, Seq(TypeVar("A"), TypeVar("B")))
+  def tupleTypeOfPerm = NamedType(tupleTypeName, Seq(Real, Bool))
   private val permTypeName = "Perm"
   private val maskTypeName = "MaskType"
   private val maskType = NamedType(maskTypeName)
@@ -100,11 +106,14 @@ class QuantifiedPermModule(val verifier: Verifier)
   private val predicateMaskFieldName = Identifier("PredicateMaskField")
   private val wandMaskFieldName = Identifier("WandMaskField")
 
+  
+  private val resultMask = LocalVarDecl(Identifier("ResultMask"), maskType)
+  private val summandMask1 = LocalVarDecl(Identifier("SummandMask1"), maskType)
+  private val summandMask2 = LocalVarDecl(Identifier("SummandMask2"), maskType)
 
-  private val resultMask = LocalVarDecl(Identifier("ResultMask"),maskType)
-  private val summandMask1 = LocalVarDecl(Identifier("SummandMask1"),maskType)
-  private val summandMask2 = LocalVarDecl(Identifier("SummandMask2"),maskType)
+  // TODO: where are these identifiers needed
   private val sumMasks = Identifier("sumMask")
+  private val sumTuples = Identifier("sumTuple")
   private val tempMask = LocalVar(Identifier("TempMask"),maskType)
 
   private val qpMaskName = Identifier("QPMask")
@@ -118,94 +127,217 @@ class QuantifiedPermModule(val verifier: Verifier)
   private var inverseFuncs: ListBuffer[Func] = new ListBuffer[Func](); //list of inverse functions used for inhale/exhale qp
   private var rangeFuncs: ListBuffer[Func] = new ListBuffer[Func](); //list of inverse functions used for inhale/exhale qp
   private var triggerFuncs: ListBuffer[Func] = new ListBuffer[Func](); //list of inverse functions used for inhale/exhale qp
+def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp = FuncApp(tupleConstructName, args, ret_type)
+  def fst(args: Seq[viper.carbon.boogie.Exp], ret_type:Type = TypeVar("A")): FuncApp = FuncApp(fstConstructName, args, ret_type)
+  def snd(args: Seq[viper.carbon.boogie.Exp], ret_type:Type = TypeVar("B")): FuncApp = FuncApp(sndConstructName, args, ret_type)
 
-  override def preamble = {
+  /*
+  * Tuple Preamble
+  * Defines all necessary functions and axioms to work with permissions as tuples 
+  * A Tuple Type: Tuple A B that for now only supports pairs but can easily be extended
+  */ 
+  def tuplePreamble = {
+    val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
+    val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
+    val ident_a = LocalVar(Identifier("a")(axiomNamespace), TypeVar("A")) 
+    val ident_b = LocalVar(Identifier("b")(axiomNamespace), TypeVar("B"))
+    val ident_p = LocalVar(Identifier("p")(axiomNamespace), tupleType)
+    var decl_a_ax = LocalVarDecl(Identifier("a")(axiomNamespace), TypeVar("A")) 
+    var decl_b_ax = LocalVarDecl(Identifier("b")(axiomNamespace), TypeVar("B")) 
+    var decl_p_ax = LocalVarDecl(Identifier("p")(axiomNamespace), tupleType) 
+    
+    def staticTuple = tuple(Seq(ident_a, ident_b)) 
+    def staticFst = fst(staticTuple)
+    //def staticGoodMask = FuncApp(goodMaskName, LocalVar(maskName, maskType), Bool)
+    def staticSnd = snd(staticTuple)
+    def staticTupleSndFst = tuple(Seq( fst(ident_p), snd(ident_p)))
+      
+      // type Tuple A B;
+      TypeDecl(tupleType) :: 
+      // function tuple<A, B>(a: A, b: B): Tuple A B;
+      Func(tupleConstructName, Seq(decl_a_ax, decl_b_ax), tupleType) ::
+      // function fst<A, B>(p: (Tuple A B)): A;
+      Func(fstConstructName, Seq(decl_p_ax), TypeVar("A")) ::
+      // function snd<A, B>(p: (Tuple A B)): B;
+      Func(sndConstructName, Seq(decl_p_ax), TypeVar("B")) ::
+      // axiom (forall <A, B> a_1: A, b_1: B ::
+      //   { (tuple(a_1, b_1): Tuple A B) }
+      //     (fst((tuple(a_1, b_1): Tuple A B)): A) == a_1
+      //   );
+      Axiom(Forall(Seq(decl_a_ax, decl_b_ax),
+        Trigger(staticTuple),
+        staticFst === ident_a
+      )) ::
+      // axiom (forall <A, B> a_1: A, b_1: B ::
+      //   { (tuple(a_1, b_1): Tuple A B) }
+      //   (snd((tuple(a_1, b_1): Tuple A B)): B) == b_1
+      // );
+      Axiom(Forall(Seq(decl_a_ax, decl_b_ax),
+        Trigger(staticTuple),
+        staticSnd === ident_b
+      )) ::
+      // axiom (forall <A, B> p_1: (tuple A B) ::
+      //   { (fst(p_1): A) } { (snd(p_1): B) }
+      //   (Tuple((fst(p_1): A), (snd(p_1): B)): Tuple A B) == p_1
+      // );
+      Axiom(Forall(Seq(decl_p_ax),
+        // TODO: maybe add aditional trigger for tuple
+        Seq(Trigger(fst(ident_p)), Trigger(snd(ident_p))),
+        staticTupleSndFst === ident_p
+      )) :: Nil ++
+      {
+        val tupleSumResult = LocalVarDecl(Identifier("TupleSumResult")(axiomNamespace), permType) 
+        val tupleSummand1 = LocalVarDecl(Identifier("TupleSummand1")(axiomNamespace), permType)
+        val tupleSummand2 = LocalVarDecl(Identifier("TupleSummand2")(axiomNamespace), permType)
+        val args = Seq(tupleSumResult, tupleSummand1, tupleSummand2)
+        val tupleSumResult_var = LocalVar(Identifier("TupleSumResult")(axiomNamespace), permType) 
+        val tupleSummand1_var = LocalVar(Identifier("TupleSummand1")(axiomNamespace), permType)
+        val tupleSummand2_var = LocalVar(Identifier("TupleSummand2")(axiomNamespace), permType)
+        val funcApp = FuncApp(sumTuples, args map (_.l), Bool)
+        
+        // function sumTuple(ResultMask: MaskType, SummandMask1: MaskType, SummandMask2: MaskType): bool;
+        Func(sumTuples, args, Bool) :: 
+        // TODO: add ouput code
+        Axiom(Forall(
+          args,
+          Trigger(Seq(funcApp)),
+          funcApp <==> (tupleSumResult_var === permAdd(tupleSummand1_var, tupleSummand2_var))
+        )) :: Nil 
+      } 
+  }
+
+  def permPreamble = {
     val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
     val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
     val permInZeroMask = MapSelect(zeroMask, Seq(obj.l, field.l))
-    val permInZeroPMask = MapSelect(zeroPMask, Seq(obj.l, field.l))
-    // permission type
-    TypeAlias(permType, Real) ::
-      // mask and mask type
-      TypeAlias(maskType, MapType(Seq(refType, fieldType), permType, fieldType.freeTypeVars)) ::
-      GlobalVarDecl(maskName, maskType) ::
-      // zero mask
-      ConstDecl(zeroMaskName, maskType) ::
+      // type Perm = Tuple real bool;
+      TypeAlias(permType, tupleTypeOfPerm) ++
+      // type MaskType = <A, B> [Ref, Field A B]Perm;
+      TypeAlias(maskType, MapType(Seq(refType, fieldType), permType, fieldType.freeTypeVars)) ++
+      // var Mask: MaskType;
+      GlobalVarDecl(maskName, maskType) ++
+      // const ZeroMask: MaskType;
+      ConstDecl(zeroMaskName, maskType) ++
+      // axiom (forall <A, B> o_1: Ref, f_3: (Field A B) ::
+      //   { ZeroMask[o_1, f_3] }
+      //   ZeroMask[o_1, f_3] == NoPerm
+      // );
       Axiom(Forall(
         Seq(obj, field),
         Trigger(permInZeroMask),
-        (permInZeroMask === noPerm))) ::
-      // pmask type
-      TypeAlias(pmaskType, MapType(Seq(refType, fieldType), Bool, fieldType.freeTypeVars)) ::
-      // zero pmask
-      ConstDecl(zeroPMaskName, pmaskType) ::
-      Axiom(Forall(
-        Seq(obj, field),
-        Trigger(permInZeroPMask),
-        permInZeroPMask === FalseLit())) ::
-      // predicate mask function
-      Func(predicateMaskFieldName,
-        Seq(LocalVarDecl(Identifier("f"), predicateVersionFieldType())),
-        predicateMaskFieldType) ::
-      Func(wandMaskFieldName,
-        Seq(LocalVarDecl(Identifier("f"), predicateVersionFieldType())),
-        predicateMaskFieldType) ::
-      // permission amount constants
-      ConstDecl(noPermName, permType) ::
-      Axiom(noPerm === RealLit(0)) ::
-      ConstDecl(fullPermName, permType) ::
-      Axiom(fullPerm === RealLit(1)) ::
-      // permission constructor
-      Func(permConstructName, Seq(LocalVarDecl(Identifier("a"), Real), LocalVarDecl(Identifier("b"), Real)), permType) :: Nil ++
-      // good mask
+        (permInZeroMask === noPerm)
+      )) ++
+      // const NoPerm: Perm;
+      ConstDecl(noPermName, permType) ++
+      // axiom fst(NoPerm) == 0.000000000 && !snd(NoPerm);
+      Axiom(permissionNo) ++
+      // const FullPerm: Perm;
+      ConstDecl(fullPermName, permType) ++
+      // axiom fst(FullPerm) == 1.000000000 && !snd(FullPerm)
+      Axiom(permissionFull) ++
+      // function Perm<A, B>(a: A, b: B): Perm;
+      // TODO: find out where this function is used
+      Func(permConstructName, Seq(LocalVarDecl(Identifier("a"), TypeVar("A")), LocalVarDecl(Identifier("b"), TypeVar("B"))), permType) ++ 
+      // function GoodMask(Mask: MaskType): bool;
       Func(goodMaskName, LocalVarDecl(maskName, maskType), Bool) ++
+      // axiom (forall Heap: HeapType, Mask: MaskType ::
+      //   { state(Heap, Mask) }
+      //   state(Heap, Mask) ==> GoodMask(Mask)
+      // ); 
       Axiom(Forall(stateModule.staticStateContributions(),
         Trigger(Seq(staticGoodState)),
-        staticGoodState ==> staticGoodMask)) ++ {
-      val perm = currentPermission(obj.l, field.l)
-      Axiom(Forall(staticStateContributions(true, true) ++ obj ++ field,
-        Trigger(Seq(staticGoodMask, perm)),
-        // permissions are non-negative
-        (staticGoodMask ==> ( perm >= noPerm &&
-          // permissions for fields which aren't predicates are smaller than 1
-          // permissions for fields which aren't predicates or wands are smaller than 1
-          ((staticGoodMask && heapModule.isPredicateField(field.l).not && heapModule.isWandField(field.l).not) ==> perm <= fullPerm )))
-      ))    } ++ {
-      val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
-      val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
-      val args = staticMask ++ Seq(obj, field)
-      val funcApp = FuncApp(hasDirectPermName, args map (_.l), Bool)
-      val permission = currentPermission(staticMask(0).l, obj.l, field.l)
-      Func(hasDirectPermName, args, Bool) ++
+        staticGoodState ==> staticGoodMask
+      )) ++
+      // axiom (forall <A, B> Mask: MaskType, o_1: Ref, f_3: (Field A B) ::
+      //   { GoodMask(Mask), Mask[o_1, f_3] }
+      //   (GoodMask(Mask) ==> fst(Mask[o_1, f_3]) >= fst(NoPerm)) && ((GoodMask(Mask) && !IsPredicateField(f_3)) && !IsWandField(f_3) ==> fst(Mask[o_1, f_3]) <= fst(FullPerm))
+      // ); 
+      { 
+        val perm = currentPermission(obj.l, field.l)
+        Axiom(Forall(staticStateContributions(true, true) ++ obj ++ field,
+          Trigger(Seq(staticGoodMask, perm)),
+          // permissions are non-negative
+          (staticGoodMask ==> ( fst(perm, Real) >= fst(noPerm, Real)) &&
+            // permissions for fields which aren't predicates or wands are smaller than 1
+            ((staticGoodMask && heapModule.isPredicateField(field.l).not && heapModule.isWandField(field.l).not) ==> fst(perm, Real) <= fst(fullPerm, Real)))
+        ))    
+      } ++
+      {
+        val args = staticMask ++ Seq(obj, field)
+        val funcApp = FuncApp(hasDirectPermName, args map (_.l), Bool)
+        val permission = currentPermission(staticMask(0).l, obj.l, field.l)
+        // function HasDirectPerm<A, B>(Mask: MaskType, o_1: Ref, f_3: (Field A B)): bool;
+        Func(hasDirectPermName, args, Bool) ++
+        // axiom (forall <A, B> Mask: MaskType, o_1: Ref, f_3: (Field A B) ::
+        //    { HasDirectPerm(Mask, o_1, f_3) }
+        //    HasDirectPerm(Mask, o_1, f_3) <==> fst(Mask[o_1, f_3]) > fst(NoPerm) && fst(Mask[o_1, f_3]) > fst(NoPerm)
+        // );
         Axiom(Forall(
           staticMask ++ Seq(obj, field),
           Trigger(funcApp),
           funcApp <==> permissionPositive(permission)
         ))
-    } ++ {
+      } ++ 
+      {
+        val args1 = Seq(resultMask, summandMask1, summandMask2)
+        // val args = Seq(tupleSumResult, tupleSummand1, tupleSummand2)
+        val permResult = currentPermission(resultMask.l, obj.l, field.l)
+        val permSummand1 = currentPermission(summandMask1.l,obj.l,field.l)
+        val permSummand2 = currentPermission(summandMask2.l,obj.l,field.l)
+        val args2 = Seq(permResult, permSummand1, permSummand2)
+        val funcAppMask = FuncApp(sumMasks, args1 map (_.l), Bool)
+        val funcAppTuple = FuncApp(sumTuples, args2, Bool)
+        // function sumMask(ResultMask: MaskType, SummandMask1: MaskType, SummandMask2: MaskType): bool;
+        Func(sumMasks, args1, Bool) ++
+        // axiom (forall <A, B> ResultMask: MaskType, SummandMask1: MaskType, SummandMask2: MaskType, o_1: Ref, f_3: (Field A B) ::
+        //    { sumMask(ResultMask, SummandMask1, SummandMask2), ResultMask[o_1, f_3] } 
+        //    { sumMask(ResultMask, SummandMask1, SummandMask2), SummandMask1[o_1, f_3] }
+        //    { sumMask(ResultMask, SummandMask1, SummandMask2), SummandMask2[o_1, f_3] }
+        //   sumMask(ResultMask, SummandMask1, SummandMask2) <==> sumTuple(ResultMask[o_1, f_3], SummandMask1[o_1, f_3], SummandMask2[o_1, f_3])
+        // );
+        // TODO: check triggers
+        Axiom(Forall(
+          args1 ++ Seq(obj,field),
+          Trigger(Seq(funcAppMask, permResult)) ++ 
+          Trigger(Seq(funcAppMask, permSummand1)) ++
+          Trigger(Seq(funcAppMask, permSummand2)),
+          funcAppMask <==> funcAppTuple
+        ))
+      } 
+  } 
+
+  override def preamble = {
+    tuplePreamble ++
+    permPreamble ++
+    {
       val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
       val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
-      val args = Seq(resultMask,summandMask1,summandMask2)
-      val funcApp = FuncApp(sumMasks, args map (_.l), Bool)
-      val permResult = currentPermission(resultMask.l, obj.l, field.l)
-      val permSummand1 = currentPermission(summandMask1.l,obj.l,field.l)
-      val permSummand2 = currentPermission(summandMask2.l,obj.l,field.l)
-      Func(sumMasks,args,Bool) ++
-        Axiom(Forall(
-          args++Seq(obj,field),
-          Trigger(Seq(funcApp,permResult)) ++ Trigger(Seq(funcApp,permSummand1)) ++
-            Trigger(Seq(funcApp,permSummand2)),
-          funcApp ==> (permResult === (permSummand1 + permSummand2))
-        ))
-    } ++ {
-      MaybeCommentedDecl("Function for trigger used in checks which are never triggered",
-        triggerFuncs)
-    } ++ {
-      MaybeCommentedDecl("Functions used as inverse of receiver expressions in quantified permissions during inhale and exhale",
-        inverseFuncs)
-    } ++ {
-      MaybeCommentedDecl("Functions used to represent the range of the projection of each QP instance onto its receiver expressions for quantified permissions during inhale and exhale",
-        rangeFuncs)
+      val permInZeroPMask = MapSelect(zeroPMask, Seq(obj.l, field.l))
+      // pmask type
+      TypeAlias(pmaskType, MapType(Seq(refType, fieldType), Bool, fieldType.freeTypeVars)) ++
+      // zero pmask
+      ConstDecl(zeroPMaskName, pmaskType) ++
+      Axiom(Forall(
+        Seq(obj, field),
+        Trigger(permInZeroPMask),
+        permInZeroPMask === FalseLit())) ++
+      // predicate mask function
+      Func(predicateMaskFieldName,
+        Seq(LocalVarDecl(Identifier("f"), predicateVersionFieldType())),
+        predicateMaskFieldType) ++
+      Func(wandMaskFieldName,
+        Seq(LocalVarDecl(Identifier("f"), predicateVersionFieldType())),
+        predicateMaskFieldType) ++
+      {
+        MaybeCommentedDecl("Function for trigger used in checks which are never triggered",
+          triggerFuncs)
+      } ++ {
+        MaybeCommentedDecl("Functions used as inverse of receiver expressions in quantified permissions during inhale and exhale",
+          inverseFuncs)
+      } ++ {
+        MaybeCommentedDecl("Functions used to represent the range of the projection of each QP instance onto its receiver expressions for quantified permissions during inhale and exhale",
+          rangeFuncs)
+      }
     }
   }
 
@@ -249,9 +381,11 @@ class QuantifiedPermModule(val verifier: Verifier)
 
   def staticGoodMask = FuncApp(goodMaskName, LocalVar(maskName, maskType), Bool)
 
-  private def permAdd(a: Exp, b: Exp): Exp = a + b
-  private def permSub(a: Exp, b: Exp): Exp = a - b
-  private def permDiv(a: Exp, b: Exp): Exp = a / b
+  private def permAdd(a: Exp, b: Exp): Exp = tuple(Seq(fst(a, Real) + fst(b, Real), snd(a, Bool) || snd(b, Bool)), permType)
+  private def permSub(a: Exp, b: Exp): Exp = tuple(Seq(fst(a, Real) - fst(b, Real), snd(a, Bool) || snd(b, Bool)), permType)
+  private def permDiv(a: Exp, b: Exp): Exp = tuple(Seq(fst(a, Real) / fst(b, Real), snd(a, Bool) || snd(b, Bool)), permType)
+  private def permMul(a: Exp, b: Exp): Exp = tuple(Seq(fst(a, Real) * fst(b, Real), snd(a, Bool) || snd(b, Bool)), permType)
+
 
   override def freshTempState(name: String): Seq[Var] = {
     Seq(LocalVar(Identifier(s"${name}Mask"), maskType))
@@ -276,19 +410,22 @@ class QuantifiedPermModule(val verifier: Verifier)
     }
   }
 
-  /**
+    /**
    * Expression that expresses that 'permission' is positive. 'silPerm' is used to
    * optimize the check if possible.
    */
   override def permissionPositive(permission: Exp, zeroOK : Boolean = false): Exp = permissionPositiveInternal(permission, None, zeroOK)
+  def permissionFull: Exp = fst(fullPerm, Real) === RealLit(1) && (snd(fullPerm, Bool) === FalseLit())
+  def permissionNo: Exp = (fst(noPerm, Real) === RealLit(0)) && (snd(noPerm, Bool) === FalseLit())
 
-  private def permissionPositiveInternal(permission: Exp, silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
+
+   private def permissionPositiveInternal(permission: Exp, silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
     (permission, silPerm) match {
       case (x, _) if permission == fullPerm => TrueLit()
       case (_, Some(sil.FullPerm())) => TrueLit()
       case (_, Some(sil.WildcardPerm())) => TrueLit()
       case (_, Some(sil.NoPerm())) => if (zeroOK) TrueLit() else FalseLit()
-      case _ => if(zeroOK) permission >= noPerm else permission > noPerm
+      case _ => if(zeroOK) permGe(permission, noPerm) else (fst(permission, Real) > RealLit(0) || snd(permission, Bool) === TrueLit() ) //permGt(permission, noPerm)
     }
   }
 
@@ -309,9 +446,12 @@ class QuantifiedPermModule(val verifier: Verifier)
       case sil.AccessPredicate(loc: LocationAccess, prm) =>
         val p = PermissionSplitter.normalizePerm(prm)
         val perms = PermissionSplitter.splitPerm(p) filter (x => x._1 - 1 == exhaleModule.currentPhaseId)
+        var exhalingSWildcard = false
         (if (exhaleModule.currentPhaseId == 0)
-          (if (!p.isInstanceOf[sil.WildcardPerm])
-            Assert(permissionPositiveInternal(translatePerm(p), Some(p), true), error.dueTo(reasons.NegativePermission(p))) else Nil: Stmt) ++ Nil // check amount is non-negative
+          // TODO: find out why this is used
+          (if (!p.isInstanceOf[sil.WildcardPerm] && !p.isInstanceOf[sil.SWildcardPerm])
+          Assert(permissionPositiveInternal(translatePerm(p), Some(p), true), error.dueTo(reasons.NegativePermission(p))) else Nil: Stmt) ++ 
+          Nil // check amount is non-negative
         else Nil) ++
           (if (perms.size == 0) {
             Nil
@@ -323,18 +463,32 @@ class QuantifiedPermModule(val verifier: Verifier)
               (for ((_, cond, perm) <- perms) yield {
                 val (permVal, wildcard, stmts): (Exp, Exp, Stmt) =
                   if (perm.isInstanceOf[sil.WildcardPerm]) {
-                    val w = LocalVar(Identifier("wildcard"), Real)
-                    (w, w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+                    val w = LocalVar(Identifier("wildcard"), permType)
+                    (w, w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil)
+                  } else 
+                  // Defining 
+                  if (perm.isInstanceOf[sil.SWildcardPerm]) {
+                    val w = LocalVar(Identifier("sWildcard"), permType)
+                    exhalingSWildcard = true
+                    (w, w, (w := tuple(Seq(RealLit(0), TrueLit()), permType)) :: Nil)
                   } else {
                     onlyWildcard = false
                     (translatePerm(perm), null, Nil)
                   }
                 If(cond,
                   stmts ++
-                    (permVar := permAdd(permVar, permVal)) ++
+                    ( if (!perm.isInstanceOf[sil.SWildcardPerm]) {
+                        permVar := permAdd(permVar, permVal) 
+                      } else { Nil }
+                    )++
                     (if (perm.isInstanceOf[sil.WildcardPerm]) {
-                      (Assert(curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) ++
-                        Assume(wildcard < curPerm)): Stmt
+                      (Assert(permissionPositive(curPerm), error.dueTo(reasons.InsufficientPermission(loc))) ++
+                        Assume(permLt(wildcard, curPerm))): Stmt
+                    } else 
+                    // If symbolic wildcard is exhaled check whether permission held is sufficient
+                    if (perm.isInstanceOf[sil.SWildcardPerm]) {
+                      (Assert(permissionPositive(curPerm), error.dueTo(reasons.InsufficientPermission(loc))) ++ 
+                      (curPerm := wildcard)): Stmt
                     } else {
                       Nil
                     }),
@@ -342,13 +496,13 @@ class QuantifiedPermModule(val verifier: Verifier)
               }).flatten ++
               (if (onlyWildcard) Nil else if (exhaleModule.currentPhaseId + 1 == 2) {
                 If(permVar !== noPerm,
-                  (Assert(curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) ++
+                  (Assert(permissionPositive(curPerm), error.dueTo(reasons.InsufficientPermission(loc))) ++
                     Assume(permVar < curPerm)): Stmt, Nil)
               } else {
                 If(permVar !== noPerm,
                   Assert(permLe(permVar, curPerm), error.dueTo(reasons.InsufficientPermission(loc))), Nil)
               }) ++
-              (if (!usingOldState) curPerm := permSub(curPerm, permVar) else Nil)
+              (if (!usingOldState && !exhalingSWildcard) curPerm := permSub(curPerm, permVar) else Nil)
           })
       case w@sil.MagicWand(_,_) =>
         val wandRep = wandModule.getWandRepresentation(w)
@@ -414,8 +568,8 @@ class QuantifiedPermModule(val verifier: Verifier)
         val (translatedPerms, stmts, wildcard) = {
           if (conservativeIsWildcardPermission(perms)) {
             isWildcard = true
-            val w = LocalVar(Identifier("wildcard"), Real)
-            (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+            val w = LocalVar(Identifier("wildcard"), permType)
+            (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil, w)
           } else {
             (translateExp(renaming(perms)), Nil, null)
           }
@@ -453,8 +607,8 @@ class QuantifiedPermModule(val verifier: Verifier)
             val (translatedPerms, stmts, wildcard) = {
               if (conservativeIsWildcardPermission(perms)) {
                 isWildcard = true
-                val w = LocalVar(Identifier("wildcard"), Real)
-                (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+                val w = LocalVar(Identifier("wildcard"), permType)
+                (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil, w)
               } else {
                 (translateExp(renamingPerms), Nil, null)
               }
@@ -607,8 +761,8 @@ class QuantifiedPermModule(val verifier: Verifier)
             val (translatedPerms, stmts, wildcard) = {
               if (conservativeIsWildcardPermission(perms)) {
                 isWildcard = true
-                val w = LocalVar(Identifier("wildcard"), Real)
-                (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+                val w = LocalVar(Identifier("wildcard"), permType)
+                (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil, w)
               } else {
                 (translateExp(renamedPerms), Nil, null)
               }
@@ -664,7 +818,7 @@ class QuantifiedPermModule(val verifier: Verifier)
             //check that sufficient permission is held
             val permNeeded =
               if(isWildcard) {
-                (currentPermission(translateNull, translatedLocation) > RealLit(0))
+                (permissionPositive(currentPermission(translateNull, translatedLocation)))
               } else {
                 (currentPermission(translateNull, translatedLocation) >= translatedPerms)
               }
@@ -798,8 +952,12 @@ class QuantifiedPermModule(val verifier: Verifier)
         val permVar = LocalVar(Identifier("perm"), permType)
         val (permVal, stmts): (Exp, Stmt) =
           if (perm.isInstanceOf[WildcardPerm]) {
-            val w = LocalVar(Identifier("wildcard"), Real)
-            (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+            val w = LocalVar(Identifier("wildcard"), permType)
+            (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil)
+          } else if (perm.isInstanceOf[SWildcardPerm]) {
+            // Inhaling a sybolic wildcard amounts to creating a variable with Perm (0, true)
+            val w = LocalVar(Identifier("sWildcard"), permType)
+            (w, (LocalVar(w.name, permType) := tuple(Seq(RealLit(0), TrueLit()), permType)) :: Nil)
           } else {
             (translatePerm(perm), Nil)
           }
@@ -934,9 +1092,10 @@ class QuantifiedPermModule(val verifier: Verifier)
            val translatedLocals = vsFresh.map(vFresh => translateLocalVarDecl(vFresh))
            val (translatedPerms, stmts) = {
              //define wildcard if necessary
+             // TODO: find out when this is used
              if (conservativeIsWildcardPermission(perms)) {
-               val w = LocalVar(Identifier("wildcard"), Real)
-               (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+               val w = LocalVar(Identifier("wildcard"), permType)
+               (w, LocalVarWhereDecl(w.name, permGt(w, noPerm)) :: Havoc(w) :: Nil)
              } else {
                (translateExp(renamingPerms), Nil)
              }
@@ -1049,6 +1208,7 @@ class QuantifiedPermModule(val verifier: Verifier)
            val translatedCond = translateExp(renamedCond)
            val translatedArgs = renamedArgs.map(translateExp)
            val (translatedPerms, stmts, _) = {
+             // TODO: find out when this is used
              if (conservativeIsWildcardPermission(perms)) {
                isWildcard = true
                val w = LocalVar(Identifier("wildcard"), Real)
@@ -1248,6 +1408,8 @@ class QuantifiedPermModule(val verifier: Verifier)
         fullPerm
       case sil.WildcardPerm() =>
         sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
+      case sil.SWildcardPerm() =>
+        sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
       case sil.EpsilonPerm() =>
         sys.error("epsilon permissions are not supported by this permission module")
       case sil.CurrentPerm(loc: LocationAccess) =>
@@ -1334,16 +1496,19 @@ class QuantifiedPermModule(val verifier: Verifier)
     a !== b
   }
   private def permLt(a: Exp, b: Exp): Exp = {
-    a < b
+    if (a == noPerm) fst(b, Real) > RealLit(0) || (TrueLit() === snd(b, Bool))
+    else (fst(a, Real) === fst(b, Real) && snd(a, Bool) === FalseLit() && snd(b, Bool) === TrueLit()) || fst(a, Real) < fst(b, Real)
   }
   private def permLe(a: Exp, b: Exp, forField : Boolean = false): Exp = {
     // simple optimization that helps in many cases
     if (forField && a == fullPerm) permEq(a, b)
-    else a <= b
+    else fst(a, Real) <= fst(b, Real) && (FalseLit() === (snd(a, Bool) && (FalseLit() === snd(b, Bool))))// permLt(a, b) || permEq(a,b)
   }
   private def permGt(a: Exp, b: Exp, forField : Boolean = false): Exp = {
     // simple optimization that helps in many cases
     if (forField && b == fullPerm) permEq(a, b)
+    // TODO check whether this is valid
+    else if (b == noPerm) (fst(b, Real) < fst(a, Real)) || (fst(a, Real) === RealLit(0) && (snd(a, Bool) === TrueLit()))
     else permLt(b, a)
   }
   private def permGe(a: Exp, b: Exp, forField : Boolean = false): Exp = {
