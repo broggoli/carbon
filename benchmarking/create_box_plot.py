@@ -74,7 +74,7 @@ def benchmark(conf):
             verify_old = "boogie old.bpl"
             verify_new = "boogie new.bpl"
             verify_sWildcard = "boogie sWildcard.bpl"
-            benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 -m 20 --export-csv measurements.csv "{verify_sWildcard}" "{verify_new}" "{verify_old}"'
+            benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 --export-csv measurements.csv "{verify_sWildcard}" "{verify_new}" "{verify_old}"'
             os.system(benchmarkCommand)
             
 

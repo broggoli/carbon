@@ -1,9 +1,9 @@
 // 
 // Translation of Viper program.
 // 
-// Date:         2021-02-28 17:38:48
+// Date:         2021-03-01 13:16:18
 // Tool:         carbon 1.0
-// Arguments: :  --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie --print /home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/tests/benchmarking/intermediate/inhale_exhale/sWildcard.bpl /home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/tests/benchmarking/intermediate/inhale_exhale/sWildcard.vpr
+// Arguments: :  --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie --print /home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/carbon/benchmarking/intermediate/inhale_exhale/sWildcard.bpl /home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/carbon/benchmarking/intermediate/inhale_exhale/sWildcard.vpr
 // Dependencies:
 //   Boogie , located at /bin/boogie/Binaries/boogie.
 //   Z3 4.8.4 - 64 bit, located at /usr/bin/z3.
@@ -206,9 +206,10 @@ axiom !IsWandField(f_6);
 procedure test(x: Ref) returns ()
   modifies Heap, Mask;
 {
-  var sWildcard: Perm;
   var perm: Perm;
+  var sWildcard: Perm;
   var ExhaleHeap: HeapType;
+  var c: int;
   
   // -- Initializing the state
     Mask := ZeroMask;
@@ -218,10 +219,8 @@ procedure test(x: Ref) returns ()
     assume Heap[x, $allocated];
   
   // -- Checked inhaling of precondition
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
@@ -232,24 +231,27 @@ procedure test(x: Ref) returns ()
       assume Heap == old(Heap);
       assume Mask == old(Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@8.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@8.5) [176]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@6.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@7.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@9.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@9.5) [177]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@9.5) [123]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -259,10 +261,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@10.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@10.5) [178]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@10.5) [124]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -271,156 +273,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@11.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@11.5) [179]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@12.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@12.5) [180]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@13.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@13.5) [181]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@14.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@14.5) [182]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@15.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@15.5) [183]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@17.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@12.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@18.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@13.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@15.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@15.5) [125]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@16.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@16.5) [126]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@18.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@19.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@20.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@21.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@22.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@23.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@24.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@26.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@21.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@26.5) [184]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@21.5) [127]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -429,11 +344,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@27.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@22.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@27.5) [185]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@22.5) [128]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@24.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@25.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@27.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@27.5) [129]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -443,10 +387,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@28.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@28.5) [186]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@28.5) [130]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -455,156 +399,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@29.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@29.5) [187]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@30.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@30.5) [188]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@31.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@31.5) [189]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@32.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@32.5) [190]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@33.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@33.5) [191]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@35.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@30.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@36.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@31.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@33.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@33.5) [131]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@34.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@34.5) [132]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@36.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@37.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@38.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@39.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@40.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@41.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@42.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@44.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@39.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@44.5) [192]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@39.5) [133]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -613,11 +470,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@45.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@40.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@45.5) [193]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@40.5) [134]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@42.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@43.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@45.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@45.5) [135]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -627,10 +513,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@46.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@46.5) [194]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@46.5) [136]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -639,156 +525,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@47.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@47.5) [195]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@48.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@48.5) [196]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@49.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@49.5) [197]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@50.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@50.5) [198]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@51.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@51.5) [199]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@53.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@48.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@54.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@49.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@51.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@51.5) [137]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@52.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@52.5) [138]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@54.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@55.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@56.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@57.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@58.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@59.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@60.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@62.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@57.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@62.5) [200]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@57.5) [139]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -797,11 +596,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@63.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@58.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@63.5) [201]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@58.5) [140]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@60.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@61.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@63.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@63.5) [141]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -811,10 +639,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@64.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@64.5) [202]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@64.5) [142]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -823,156 +651,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@65.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@65.5) [203]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@66.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@66.5) [204]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@67.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@67.5) [205]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@68.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@68.5) [206]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@69.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@69.5) [207]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@71.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@66.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@72.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@67.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@69.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@69.5) [143]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@70.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@70.5) [144]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@72.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@73.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@74.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@75.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@76.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@77.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@78.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@80.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@75.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@80.5) [208]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@75.5) [145]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -981,11 +722,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@81.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@76.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@81.5) [209]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@76.5) [146]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@78.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@79.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@81.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@81.5) [147]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -995,10 +765,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@82.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@82.5) [210]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@82.5) [148]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1007,156 +777,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@83.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@83.5) [211]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@84.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@84.5) [212]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@85.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@85.5) [213]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@86.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@86.5) [214]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@87.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@87.5) [215]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@89.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@84.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@90.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@85.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@87.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@87.5) [149]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@88.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@88.5) [150]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@90.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@91.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@92.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@93.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@94.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@95.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@96.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@98.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@93.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@98.5) [216]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@93.5) [151]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1165,11 +848,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@99.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@94.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@99.5) [217]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@94.5) [152]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@96.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@97.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@99.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@99.5) [153]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1179,10 +891,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@100.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@100.5) [218]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@100.5) [154]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1191,156 +903,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@101.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@101.5) [219]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@102.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@102.5) [220]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@103.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@103.5) [221]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@104.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@104.5) [222]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@105.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@105.5) [223]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@107.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@102.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@108.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@103.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@105.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@105.5) [155]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@106.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@106.5) [156]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@108.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@109.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@110.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@111.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@112.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@113.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@114.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@116.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@111.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@116.5) [224]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@111.5) [157]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1349,11 +974,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@117.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@112.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@117.5) [225]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@112.5) [158]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@114.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@115.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@117.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@117.5) [159]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1363,10 +1017,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@118.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@118.5) [226]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@118.5) [160]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1375,156 +1029,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@119.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@119.5) [227]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@120.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@120.5) [228]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@121.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@121.5) [229]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@122.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@122.5) [230]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@123.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@123.5) [231]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@125.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@120.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@126.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@121.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@123.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@123.5) [161]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@124.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@124.5) [162]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@126.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@127.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@128.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@129.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@130.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@131.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@132.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@134.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@129.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@134.5) [232]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@129.5) [163]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1533,11 +1100,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@135.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@130.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@135.5) [233]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@130.5) [164]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@132.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@133.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@135.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@135.5) [165]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1547,10 +1143,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@136.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@136.5) [234]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@136.5) [166]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1559,156 +1155,69 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@137.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@137.5) [235]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@138.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@138.5) [236]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@139.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@139.5) [237]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@140.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@140.5) [238]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@141.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@141.5) [239]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@143.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@138.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@144.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@139.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@141.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@141.5) [167]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@142.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@142.5) [168]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@144.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@145.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@146.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@147.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@148.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@149.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@150.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@152.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@147.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@152.5) [240]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@147.5) [169]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1717,11 +1226,40 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@153.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@148.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@153.5) [241]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@148.5) [170]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@150.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@151.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@153.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@153.5) [171]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1731,10 +1269,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@154.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@154.5) [242]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@154.5) [172]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -1743,288 +1281,195 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@155.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@155.5) [243]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@156.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@156.5) [244]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@157.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@157.5) [245]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@158.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@158.5) [246]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@159.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@159.5) [247]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@161.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@156.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@162.5
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@157.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@159.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@159.5) [173]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@160.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@160.5) [174]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@162.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@163.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@164.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@165.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@165.5) [175]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@165.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@166.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@166.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@167.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@166.5) [176]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@168.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@170.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@169.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@171.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@171.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@171.5) [177]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@172.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@172.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@173.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@172.5) [178]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@174.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@175.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@176.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@177.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@177.5) [179]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@178.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@178.5) [180]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@180.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@177.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@181.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@179.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@179.5) [248]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@180.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@180.5) [249]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@181.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@181.5) [250]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@182.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@182.5) [251]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@183.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@183.5) [252]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@183.5) [181]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2034,10 +1479,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@184.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@184.5) [253]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@184.5) [182]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2046,11 +1491,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@185.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@186.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@187.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@189.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@185.5) [254]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@189.5) [183]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2059,156 +1520,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@186.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@190.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@186.5) [255]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@190.5) [184]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@188.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@189.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@190.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@191.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@192.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@193.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@194.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@195.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@195.5) [185]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@196.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@196.5) [186]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@198.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@195.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@199.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@197.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@197.5) [256]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@198.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@198.5) [257]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@199.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@199.5) [258]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@200.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@200.5) [259]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@201.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@201.5) [260]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@201.5) [187]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2218,10 +1605,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@202.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@202.5) [261]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@202.5) [188]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2230,11 +1617,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@203.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@204.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@205.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@207.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@203.5) [262]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@207.5) [189]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2243,156 +1646,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@204.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@208.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@204.5) [263]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@208.5) [190]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@206.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@207.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@208.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@209.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@210.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@211.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@212.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@213.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@213.5) [191]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@214.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@214.5) [192]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@216.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@213.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@217.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@215.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@215.5) [264]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@216.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@216.5) [265]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@217.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@217.5) [266]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@218.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@218.5) [267]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@219.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@219.5) [268]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@219.5) [193]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2402,10 +1731,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@220.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@220.5) [269]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@220.5) [194]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2414,11 +1743,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@221.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@222.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@223.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@225.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@221.5) [270]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@225.5) [195]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2427,156 +1772,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@222.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@226.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@222.5) [271]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@226.5) [196]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@224.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@225.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@226.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@227.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@228.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@229.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@230.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@231.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@231.5) [197]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@232.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@232.5) [198]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@234.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@231.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@235.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@233.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@233.5) [272]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@234.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@234.5) [273]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@235.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@235.5) [274]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@236.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@236.5) [275]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@237.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@237.5) [276]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@237.5) [199]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2586,10 +1857,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@238.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@238.5) [277]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@238.5) [200]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2598,11 +1869,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@239.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@240.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@241.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@243.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@239.5) [278]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@243.5) [201]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2611,156 +1898,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@240.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@244.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@240.5) [279]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@244.5) [202]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@242.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@243.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@244.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@245.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@246.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@247.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@248.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@249.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@249.5) [203]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@250.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@250.5) [204]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@252.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@249.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@253.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@251.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@251.5) [280]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@252.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@252.5) [281]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@253.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@253.5) [282]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@254.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@254.5) [283]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@255.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@255.5) [284]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@255.5) [205]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2770,10 +1983,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@256.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@256.5) [285]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@256.5) [206]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2782,11 +1995,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@257.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@258.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@259.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@261.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@257.5) [286]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@261.5) [207]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2795,156 +2024,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@258.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@262.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@258.5) [287]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@262.5) [208]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@260.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@261.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@262.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@263.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@264.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@265.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@266.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@267.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@267.5) [209]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@268.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@268.5) [210]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@270.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@267.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@271.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@269.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@269.5) [288]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@270.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@270.5) [289]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@271.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@271.5) [290]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@272.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@272.5) [291]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@273.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@273.5) [292]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@273.5) [211]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2954,10 +2109,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@274.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@274.5) [293]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@274.5) [212]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2966,11 +2121,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@275.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@276.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@277.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@279.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@275.5) [294]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@279.5) [213]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -2979,156 +2150,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@276.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@280.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@276.5) [295]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@280.5) [214]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@278.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@279.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@280.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@281.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@282.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@283.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@284.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@285.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@285.5) [215]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@286.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@286.5) [216]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@288.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@285.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@289.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@287.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@287.5) [296]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@288.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@288.5) [297]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@289.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@289.5) [298]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@290.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@290.5) [299]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@291.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@291.5) [300]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@291.5) [217]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3138,10 +2235,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@292.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@292.5) [301]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@292.5) [218]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3150,11 +2247,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@293.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@294.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@295.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@297.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@293.5) [302]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@297.5) [219]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3163,156 +2276,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@294.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@298.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@294.5) [303]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@298.5) [220]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@296.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@297.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@298.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@299.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@300.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@301.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@302.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@303.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@303.5) [221]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@304.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@304.5) [222]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@306.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@303.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@307.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@305.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@305.5) [304]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@306.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@306.5) [305]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@307.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@307.5) [306]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@308.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@308.5) [307]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@309.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@309.5) [308]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@309.5) [223]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3322,10 +2361,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@310.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@310.5) [309]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@310.5) [224]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3334,11 +2373,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@311.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@312.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@313.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@315.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@311.5) [310]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@315.5) [225]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3347,156 +2402,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@312.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@316.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@312.5) [311]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@316.5) [226]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@314.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@315.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@316.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@317.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@318.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@319.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@320.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@321.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@321.5) [227]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@322.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@322.5) [228]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@324.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@321.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@325.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@323.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@323.5) [312]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@324.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@324.5) [313]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@325.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@325.5) [314]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@326.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@326.5) [315]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@327.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@327.5) [316]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@327.5) [229]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3506,10 +2487,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@328.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@328.5) [317]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@328.5) [230]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3518,11 +2499,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@329.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@330.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@331.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@333.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@329.5) [318]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@333.5) [231]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3531,156 +2528,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@330.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@334.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@330.5) [319]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@334.5) [232]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@332.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@333.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@334.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@335.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@336.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@337.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@338.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@339.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@339.5) [233]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@340.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@340.5) [234]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@342.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@339.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@343.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@341.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@341.5) [320]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@342.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@342.5) [321]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@343.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@343.5) [322]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@344.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@344.5) [323]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@345.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@345.5) [324]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@345.5) [235]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3690,10 +2613,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@346.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@346.5) [325]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@346.5) [236]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3702,11 +2625,27 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@347.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@348.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@349.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
+    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@351.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@347.5) [326]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@351.5) [237]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3715,156 +2654,82 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@348.5
-    // Phase 1: pure assertions and fixed permissions
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@352.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@348.5) [327]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@352.5) [238]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
     havoc ExhaleHeap;
     assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
     Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@350.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@351.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@352.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@353.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@354.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
   // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@355.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@356.5
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@357.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@357.5) [239]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@358.5
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
+    perm := NoPerm;
+    sWildcard := tuple(0.000000000, true);
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@358.5) [240]"}
+      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
+    Mask[x, f_6] := sWildcard;
+    // Finish exhale
+    havoc ExhaleHeap;
+    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
+    Heap := ExhaleHeap;
+    assume state(Heap, Mask);
+  
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@360.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
     assume state(Heap, Mask);
   
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@357.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
+  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@361.5
+    perm := tuple(0.000000000, true);
+    assume x != null;
     Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
     assume state(Heap, Mask);
     assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@359.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@359.5) [328]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@360.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@360.5) [329]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@361.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@361.5) [330]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@362.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@362.5) [331]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@363.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@363.5) [332]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@363.5) [241]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3874,10 +2739,10 @@ procedure test(x: Ref) returns ()
     assume state(Heap, Mask);
   
   // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@364.5
-    // Phase 1: pure assertions and fixed permissions
+    // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@364.5) [333]"}
+    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@364.5) [242]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     // Finish exhale
@@ -3886,397 +2751,12 @@ procedure test(x: Ref) returns ()
     Heap := ExhaleHeap;
     assume state(Heap, Mask);
   
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@365.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@365.5) [334]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@366.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@366.5) [335]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@368.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@369.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@370.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@371.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@372.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@373.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@374.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@375.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@377.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@377.5) [336]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@378.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@378.5) [337]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@379.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@379.5) [338]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@380.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@380.5) [339]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@381.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@381.5) [340]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@382.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@382.5) [341]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@383.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@383.5) [342]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@384.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@384.5) [343]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@386.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@387.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@388.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@389.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@390.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@391.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@392.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: inhale acc(x.f, sWildcard) -- sWildcard.vpr@393.5
-    sWildcard := tuple(0.000000000, true);
-    perm := sWildcard;
-    assume fst(NoPerm) <= fst(perm) && !(snd(NoPerm) && !snd(perm));
-    assume fst(perm) > 0.000000000 || snd(perm) ==> x != null;
-    Mask[x, f_6] := tuple(fst(Mask[x, f_6]) + fst(perm), snd(Mask[x, f_6]) || snd(perm));
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@395.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@395.5) [344]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@396.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@396.5) [345]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@397.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@397.5) [346]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@398.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@398.5) [347]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@399.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@399.5) [348]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@400.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@400.5) [349]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@401.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@401.5) [350]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: exhale acc(x.f, sWildcard) -- sWildcard.vpr@402.5
-    // Phase 1: pure assertions and fixed permissions
-    perm := NoPerm;
-    sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Exhale might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@402.5) [351]"}
-      fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
-    Mask[x, f_6] := sWildcard;
-    // Finish exhale
-    havoc ExhaleHeap;
-    assume IdenticalOnKnownLocations(Heap, ExhaleHeap, Mask);
-    Heap := ExhaleHeap;
+  // -- Translating statement: c := x.f -- sWildcard.vpr@367.5
+    
+    // -- Check definedness of x.f
+      assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f. (sWildcard.vpr@367.5) [243]"}
+        HasDirectPerm(Mask, x, f_6);
+      assume state(Heap, Mask);
+    c := Heap[x, f_6];
     assume state(Heap, Mask);
 }

@@ -424,6 +424,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
       case (x, _) if permission == fullPerm => TrueLit()
       case (_, Some(sil.FullPerm())) => TrueLit()
       case (_, Some(sil.WildcardPerm())) => TrueLit()
+      case (_, Some(sil.SWildcardPerm())) => TrueLit()
       case (_, Some(sil.NoPerm())) => if (zeroOK) TrueLit() else FalseLit()
       case _ => if(zeroOK) permGe(permission, noPerm) else (fst(permission, Real) > RealLit(0) || snd(permission, Bool) === TrueLit() ) //permGt(permission, noPerm)
     }
@@ -543,6 +544,9 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
       case WildcardPerm() | PermMul(WildcardPerm(), WildcardPerm()) => true
       case PermMul(e, WildcardPerm()) => conservativeIsPositivePerm(e)
       case PermMul(WildcardPerm(), e)  => conservativeIsPositivePerm(e)
+      case SWildcardPerm() | PermMul(SWildcardPerm(), SWildcardPerm()) => true
+      case PermMul(e, SWildcardPerm()) => conservativeIsPositivePerm(e)
+      case PermMul(SWildcardPerm(), e)  => conservativeIsPositivePerm(e)
       case _ => false
     }
   }
@@ -953,19 +957,27 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         val (permVal, stmts): (Exp, Stmt) =
           if (perm.isInstanceOf[WildcardPerm]) {
             val w = LocalVar(Identifier("wildcard"), permType)
-            (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil)
+            (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: 
+              Havoc(w) :: 
+              (permVar := LocalVar(w.name, permType)) ::
+              assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ::
+              Nil
+            )
           } else if (perm.isInstanceOf[SWildcardPerm]) {
             // Inhaling a sybolic wildcard amounts to creating a variable with Perm (0, true)
             val w = LocalVar(Identifier("sWildcard"), permType)
-            (w, (LocalVar(w.name, permType) := tuple(Seq(RealLit(0), TrueLit()), permType)) :: Nil)
+            (w, ( permVar := tuple(Seq(RealLit(0), TrueLit()), permType)) ::
+                  Nil)
           } else {
-            (translatePerm(perm), Nil)
+            val permV = translatePerm(perm)
+            (permV, (permVar := permV) ::
+              assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ::
+              Nil)
           }
         stmts ++
-          (permVar := permVal) ++
-          assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
           assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
-          (if (!usingOldState) curPerm := permAdd(curPerm, permVar) else Nil)
+          (if (!usingOldState) curPerm := permAdd(curPerm, permVar) else Nil) ++
+          Nil //(Assert(permLe(curPerm, fullPerm), VerificationError(errors.Internal)))
       case w@sil.MagicWand(left,right) =>
         val wandRep = wandModule.getWandRepresentation(w)
         val curPerm = currentPermission(translateNull, wandRep)
@@ -1212,7 +1224,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
              if (conservativeIsWildcardPermission(perms)) {
                isWildcard = true
                val w = LocalVar(Identifier("wildcard"), Real)
-               (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+               (w, LocalVarWhereDecl(w.name, permissionPositive(w)) :: Havoc(w) :: Nil, w)
              } else {
                (translateExp(renamedPerms), Nil, null)
              }
@@ -1426,6 +1438,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
       case sil.PermSub(a, b) =>
         permSub(translatePerm(a), translatePerm(b))
       case sil.PermMul(a, b) =>
+        // TODO: complete multiplication
         BinExp(translatePerm(a), Mul, translatePerm(b))
       case sil.PermDiv(a,b) =>
         permDiv(translatePerm(a), translateExp(b))
@@ -1608,6 +1621,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         case sil.NoPerm() => FalseLit()
         case sil.FullPerm() => TrueLit()
         case sil.WildcardPerm() => TrueLit()
+        case sil.SWildcardPerm() => TrueLit()
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => TrueLit()
         case sil.CurrentPerm(loc) => backup
@@ -1638,6 +1652,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         case sil.NoPerm() => false
         case sil.FullPerm() => true
         case sil.WildcardPerm() => true
+        case sil.SWildcardPerm() => true
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => true
         case sil.CurrentPerm(loc) => false // conservative
@@ -1668,6 +1683,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         case sil.NoPerm() => false // strictly negative
         case sil.FullPerm() => false
         case sil.WildcardPerm() => false
+        case sil.SWildcardPerm() => false
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar => false // conservative
         case sil.CurrentPerm(loc) => false // conservative
@@ -1700,6 +1716,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         case sil.NoPerm() => FalseLit() // strictly negative
         case sil.FullPerm() => FalseLit()
         case sil.WildcardPerm() => FalseLit()
+        case sil.SWildcardPerm() => FalseLit()
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => FalseLit()
         case sil.CurrentPerm(loc) => backup
@@ -1732,6 +1749,7 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
         case sil.NoPerm() => true
         case sil.FullPerm() => true
         case sil.WildcardPerm() => false
+        case sil.SWildcardPerm() => false
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         //case sil.CurrentPerm(loc) => true
         case sil.FractionalPerm(left, right) => { // AS: this seems a reasonable way to catch the possibilities - if no free variables and no heap dependence, I think the expression must be made up of statically-known parts? Trying to avoid writing a whole extra method for the purpose of correctly supporting this case..
@@ -1842,8 +1860,16 @@ def tuple(args: Seq[viper.carbon.boogie.Exp], ret_type:Type=tupleType) : FuncApp
             sil.WildcardPerm()(wp.pos,wp.info)
         }, Traverse.BottomUp)
 
+        // collapse a * symbolic wildcard  or symbolic wildcard * a to just symbolic wildcard, if a is known to be positive
+        val e5b = e5a.transform({
+          case sil.PermMul(a, swp@sil.SWildcardPerm()) if conservativeStaticIsStrictlyPositivePerm(a) => done = false
+            sil.SWildcardPerm()(swp.pos,swp.info)
+          case sil.PermMul(swp@sil.SWildcardPerm(),a) if conservativeStaticIsStrictlyPositivePerm(a) => done = false
+            sil.SWildcardPerm()(swp.pos,swp.info)
+        }, Traverse.BottomUp)
+
         // propagate multiplication and division into conditional expressions
-        val e6 = e5a.transform({
+        val e6 = e5b.transform({
           case sil.IntPermMul(a, sil.CondExp(cond, thn, els)) => done = false
             sil.CondExp(cond, sil.IntPermMul(a,thn)(), sil.IntPermMul(a,els)())()
           case sil.IntPermMul(sil.CondExp(cond, thn, els),a) => done = false
