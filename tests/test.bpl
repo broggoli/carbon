@@ -1,7 +1,7 @@
 // 
 // Translation of Viper program.
 // 
-// Date:         2021-03-01 13:14:28
+// Date:         2021-03-01 13:37:53
 // Tool:         carbon 1.0
 // Arguments: :  --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie --print tests/test.bpl tests/predicate_test.vpr
 // Dependencies:
@@ -279,7 +279,7 @@ procedure test(x: Ref) returns ()
     // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Unfolding foo(x) might fail. There might be insufficient permission to access foo(x). (predicate_test.vpr@11.5) [6]"}
+    assert {:msg "  Unfolding foo(x) might fail. There might be insufficient permission to access foo(x). (predicate_test.vpr@11.5) [5]"}
       fst(Mask[null, foo(x)]) > 0.000000000 || snd(Mask[null, foo(x)]);
     Mask[null, foo(x)] := sWildcard;
     perm := tuple(0.000000000, true);
@@ -292,23 +292,17 @@ procedure test(x: Ref) returns ()
   // -- Translating statement: v := x.f -- predicate_test.vpr@12.5
     
     // -- Check definedness of x.f
-      assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f. (predicate_test.vpr@12.5) [7]"}
+      assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f. (predicate_test.vpr@12.5) [6]"}
         HasDirectPerm(Mask, x, f_6);
       assume state(Heap, Mask);
     v_2 := Heap[x, f_6];
     assume state(Heap, Mask);
   
-  // -- Translating statement: x.f := 2 -- predicate_test.vpr@13.5
-    assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f. (predicate_test.vpr@13.5) [8]"}
-      FullPerm == Mask[x, f_6];
-    Heap[x, f_6] := 2;
-    assume state(Heap, Mask);
-  
-  // -- Translating statement: fold acc(foo(x), sWildcard) -- predicate_test.vpr@14.5
+  // -- Translating statement: fold acc(foo(x), sWildcard) -- predicate_test.vpr@13.5
     // Phase 3: all remaining permissions (containing read permissions, but in a negative context)
     perm := NoPerm;
     sWildcard := tuple(0.000000000, true);
-    assert {:msg "  Folding foo(x) might fail. There might be insufficient permission to access x.f. (predicate_test.vpr@14.5) [9]"}
+    assert {:msg "  Folding foo(x) might fail. There might be insufficient permission to access x.f. (predicate_test.vpr@13.5) [7]"}
       fst(Mask[x, f_6]) > 0.000000000 || snd(Mask[x, f_6]);
     Mask[x, f_6] := sWildcard;
     perm := tuple(0.000000000, true);
