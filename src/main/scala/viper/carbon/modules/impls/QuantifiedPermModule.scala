@@ -336,7 +336,7 @@ class QuantifiedPermModule(val verifier: Verifier)
     e match {
       case sil.AccessPredicate(loc, prm) =>
         val p = PermissionSplitter.normalizePerm(prm)
-        p.isInstanceOf[sil.WildcardPerm] | p.isInstanceOf[sil.SWildcardPerm]
+        p.isInstanceOf[sil.WildcardPerm] || p.isInstanceOf[sil.SWildcardPerm]
       case _ => false
     }
   }
@@ -347,7 +347,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         val p = PermissionSplitter.normalizePerm(prm)
         val perms = PermissionSplitter.splitPerm(p) filter (x => x._1 - 1 == exhaleModule.currentPhaseId)
         (if (exhaleModule.currentPhaseId == 0)
-          (if (!p.isInstanceOf[sil.WildcardPerm] | !p.isInstanceOf[sil.SWildcardPerm])
+          (if (!p.isInstanceOf[sil.WildcardPerm] && !p.isInstanceOf[sil.SWildcardPerm])
             Assert(permissionPositiveInternal(translatePerm(p), Some(p), true), error.dueTo(reasons.NegativePermission(p))) else Nil: Stmt) ++ Nil // check amount is non-negative
         else Nil) ++
           (if (perms.size == 0) {
@@ -355,29 +355,38 @@ class QuantifiedPermModule(val verifier: Verifier)
           } else {
             val permVar = LocalVar(Identifier("perm"), permType)
             val curPerm = currentPermission(loc)
-            var onlyWildcard = true
+            val curWPerm = currentWPermission(loc)
+            var onlyWildcard = true;
+            var exhaledSymbolicWildcard = false;
             (permVar := noPerm) ++
               (for ((_, cond, perm) <- perms) yield {
                 val (permVal, wildcard, stmts): (Exp, Exp, Stmt) =
                   if (perm.isInstanceOf[sil.WildcardPerm]) {
                     val w = LocalVar(Identifier("wildcard"), Real)
                     (w, w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
-                  } else {
+                  } else if (perm.isInstanceOf[sil.SWildcardPerm]) {
+                    exhaledSymbolicWildcard = true
+                    val w = LocalVar(Identifier("sWildcard"), Bool)
+                    (w, w, Nil)
+                  } else { 
                     onlyWildcard = false
                     (translatePerm(perm), null, Nil)
                   }
                 If(cond,
-                  stmts ++
-                    (permVar := permAdd(permVar, permVal)) ++
-                    (if (perm.isInstanceOf[sil.WildcardPerm]) {
-                      (Assert(curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) ++
+                  if (perm.isInstanceOf[sil.SWildcardPerm]) {
+                    Assert(curPerm > noPerm || curWPerm === TrueLit(), error.dueTo(reasons.InsufficientPermission(loc))) : Stmt
+                  } else {
+                    stmts ++
+                      (permVar := permAdd(permVar, permVal)) ++
+                      (if (perm.isInstanceOf[sil.WildcardPerm]) {
+                        (Assert(curPerm > noPerm || curWPerm === TrueLit(), error.dueTo(reasons.InsufficientPermission(loc))) ++
                         Assume(wildcard < curPerm)): Stmt
-                    } else {
-                      Nil
-                    }),
+                      } else Nil)
+                  },
                   Nil)
               }).flatten ++
-              (if (onlyWildcard) Nil else if (exhaleModule.currentPhaseId + 1 == 2) {
+              (if (onlyWildcard) Nil 
+              else if (exhaleModule.currentPhaseId + 1 == 2) {
                 If(permVar !== noPerm,
                   (Assert(curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) ++
                     Assume(permVar < curPerm)): Stmt, Nil)
@@ -385,7 +394,14 @@ class QuantifiedPermModule(val verifier: Verifier)
                 If(permVar !== noPerm,
                   Assert(permLe(permVar, curPerm), error.dueTo(reasons.InsufficientPermission(loc))), Nil)
               }) ++
-              (if (!usingOldState) curPerm := permSub(curPerm, permVar) else Nil)
+              (if (!usingOldState) {
+                if (exhaledSymbolicWildcard) {
+                  (curPerm := RealLit(0)) ++
+                  (curWPerm := TrueLit())
+                } else {
+                  curPerm := permSub(curPerm, permVar)
+                }
+              } else Nil)
           })
       case w@sil.MagicWand(_,_) =>
         val wandRep = wandModule.getWandRepresentation(w)
