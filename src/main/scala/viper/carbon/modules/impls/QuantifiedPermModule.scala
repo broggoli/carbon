@@ -30,7 +30,7 @@ import viper.carbon.boogie.Assert
 import viper.carbon.boogie.ConstDecl
 import viper.carbon.boogie.Const
 import viper.carbon.boogie.LocalVar
-import viper.silver.ast.{LocationAccess, PermMul, PredicateAccess, PredicateAccessPredicate, ResourceAccess, WildcardPerm}
+import viper.silver.ast.{LocationAccess, PermMul, PredicateAccess, PredicateAccessPredicate, ResourceAccess, WildcardPerm, SWildcardPerm}
 import viper.carbon.boogie.Forall
 import viper.carbon.boogie.Assign
 import viper.carbon.boogie.Func
@@ -77,6 +77,8 @@ class QuantifiedPermModule(val verifier: Verifier)
   private val permTypeName = "Perm"
   private val maskTypeName = "MaskType"
   private val maskType = NamedType(maskTypeName)
+  private val bmaskTypeName = "BMaskType"
+  private val bmaskType = NamedType(bmaskTypeName)
   private val pmaskTypeName = "PMaskType"
   override val pmaskType = NamedType(pmaskTypeName)
   private val maskName = Identifier("Mask")
@@ -86,6 +88,13 @@ class QuantifiedPermModule(val verifier: Verifier)
   private def maskExp : Exp = (if (usingOldState) Old(mask) else mask)
   private val zeroMaskName = Identifier("ZeroMask")
   private val zeroMask = Const(zeroMaskName)
+  private val bmaskName = Identifier("BMask")
+  private val originalBMask = GlobalVar(bmaskName, bmaskType)
+  private var bmask: Var = originalBMask // When reading, don't use this directly: use either maskVar or maskExp as needed
+  private def bmaskVar : Var = {assert (!usingOldState); bmask}
+  private def bmaskExp : Exp = (if (usingOldState) Old(bmask) else bmask)
+  private val zeroBMaskName = Identifier("ZeroBMask")
+  private val zeroBMask = Const(zeroBMaskName)
   private val zeroPMaskName = Identifier("ZeroPMask")
   override val zeroPMask = Const(zeroPMaskName)
   private val noPermName = Identifier("NoPerm")
@@ -124,18 +133,28 @@ class QuantifiedPermModule(val verifier: Verifier)
     val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
     val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
     val permInZeroMask = MapSelect(zeroMask, Seq(obj.l, field.l))
+    val permInZeroBMask = MapSelect(zeroBMask, Seq(obj.l, field.l))
     val permInZeroPMask = MapSelect(zeroPMask, Seq(obj.l, field.l))
     // permission type
     TypeAlias(permType, Real) ::
       // mask and mask type
       TypeAlias(maskType, MapType(Seq(refType, fieldType), permType, fieldType.freeTypeVars)) ::
       GlobalVarDecl(maskName, maskType) ::
+      // bmask and bmask type
+      TypeAlias(bmaskType, MapType(Seq(refType, fieldType), Bool, fieldType.freeTypeVars)) ::
+      GlobalVarDecl(bmaskName, bmaskType) ::
       // zero mask
       ConstDecl(zeroMaskName, maskType) ::
       Axiom(Forall(
         Seq(obj, field),
         Trigger(permInZeroMask),
         (permInZeroMask === noPerm))) ::
+      // zero bmask
+      ConstDecl(zeroBMaskName, bmaskType) ::
+      Axiom(Forall(
+        Seq(obj, field),
+        Trigger(permInZeroBMask),
+        (permInZeroBMask === FalseLit()))) ::
       // pmask type
       TypeAlias(pmaskType, MapType(Seq(refType, fieldType), Bool, fieldType.freeTypeVars)) ::
       // zero pmask
@@ -159,31 +178,36 @@ class QuantifiedPermModule(val verifier: Verifier)
       // permission constructor
       Func(permConstructName, Seq(LocalVarDecl(Identifier("a"), Real), LocalVarDecl(Identifier("b"), Real)), permType) :: Nil ++
       // good mask
-      Func(goodMaskName, LocalVarDecl(maskName, maskType), Bool) ++
-      Axiom(Forall(stateModule.staticStateContributions(),
+      Func(goodMaskName, Seq(LocalVarDecl(maskName, maskType), LocalVarDecl(bmaskName, bmaskType)), Bool) ++
+      Axiom(Forall( stateModule.staticStateContributions(),
         Trigger(Seq(staticGoodState)),
-        staticGoodState ==> staticGoodMask)) ++ {
-      val perm = currentPermission(obj.l, field.l)
-      Axiom(Forall(staticStateContributions(true, true) ++ obj ++ field,
-        Trigger(Seq(staticGoodMask, perm)),
-        // permissions are non-negative
-        (staticGoodMask ==> ( perm >= noPerm &&
-          // permissions for fields which aren't predicates are smaller than 1
-          // permissions for fields which aren't predicates or wands are smaller than 1
-          ((staticGoodMask && heapModule.isPredicateField(field.l).not && heapModule.isWandField(field.l).not) ==> perm <= fullPerm )))
-      ))    } ++ {
-      val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
-      val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
-      val args = staticMask ++ Seq(obj, field)
-      val funcApp = FuncApp(hasDirectPermName, args map (_.l), Bool)
-      val permission = currentPermission(staticMask(0).l, obj.l, field.l)
-      Func(hasDirectPermName, args, Bool) ++
-        Axiom(Forall(
-          staticMask ++ Seq(obj, field),
-          Trigger(funcApp),
-          funcApp <==> permissionPositive(permission)
-        ))
-    } ++ {
+        staticGoodState ==> staticGoodMask)) ++ 
+      {
+        val perm = currentPermission(obj.l, field.l)
+        // TODO check whether I can actually do this with the staticBMask
+        val wPerm = currentWPermission(obj.l, field.l)
+          Axiom(Forall(staticStateContributions(true, true) ++ obj ++ field,
+            Trigger(Seq(staticGoodMask, perm)),
+            // permissions are non-negative
+            (staticGoodMask ==> ( perm >= noPerm &&
+              // permissions for fields which aren't predicates are smaller than 1
+              // permissions for fields which aren't predicates or wands are smaller than 1
+              ((staticGoodMask && heapModule.isPredicateField(field.l).not && heapModule.isWandField(field.l).not) ==> (perm <= fullPerm && (perm === fullPerm ==> (wPerm === FalseLit())) ))))
+          ))    
+      } ++ {
+        val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
+        val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
+        val args = staticMask ++ staticBMask ++ Seq(obj, field)
+        val funcApp = FuncApp(hasDirectPermName, args map (_.l), Bool)
+        val permission = currentPermission(staticMask(0).l, obj.l, field.l)
+        val wildcard_permission = currentWPermission(staticBMask(0).l, obj.l, field.l)
+          Func(hasDirectPermName, args, Bool) ++
+          Axiom(Forall(
+            staticMask ++ staticBMask ++ Seq(obj, field),
+            Trigger(funcApp),
+            funcApp <==> (permissionPositive(permission) || wildcard_permission === TrueLit())
+          ))
+      } ++ {
       val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
       val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
       val args = Seq(resultMask,summandMask1,summandMask2)
@@ -212,25 +236,33 @@ class QuantifiedPermModule(val verifier: Verifier)
 
   def permType = NamedType(permTypeName)
 
-  def staticStateContributions(withHeap: Boolean, withPermissions: Boolean): Seq[LocalVarDecl] = if (withPermissions) Seq(LocalVarDecl(maskName, maskType)) else Seq()
-  def currentStateContributions: Seq[LocalVarDecl] = Seq(LocalVarDecl(mask.name, maskType))
-  def currentStateVars : Seq[Var] = Seq(mask)
-  def currentStateExps: Seq[Exp] = Seq(maskExp)
+  def staticStateContributions(withHeap: Boolean, withPermissions: Boolean): Seq[LocalVarDecl] = 
+    if (withPermissions) 
+      Seq(LocalVarDecl(maskName, maskType), LocalVarDecl(bmaskName, bmaskType)) 
+    else Seq()
+  def currentStateContributions: Seq[LocalVarDecl] = Seq(LocalVarDecl(mask.name, maskType), LocalVarDecl(bmask.name, bmaskType))
+  def currentStateVars : Seq[Var] = Seq(mask, bmask)
+  def currentStateExps: Seq[Exp] = Seq(maskExp, bmaskExp)
 
   def initBoogieState: Stmt = {
     mask = originalMask
+    bmask = originalBMask
     resetBoogieState
   }
   def resetBoogieState = {
-    (maskVar := zeroMask)
+    (maskVar := zeroMask) ++ 
+    (bmaskVar := zeroBMask)
   }
   def initOldState: Stmt = {
     val mVar = maskVar
-    Assume(Old(mVar) === mVar)
+    val bmVar = bmaskVar
+    Assume(Old(mVar) === mVar) ++ 
+    Assume(Old(bmVar) === bmVar)
   }
 
   override def reset = {
     mask = originalMask
+    bmask = originalBMask
     allowLocationAccessWithoutPerm = false
     qpId = 0
     inverseFuncs = new ListBuffer[Func]();
@@ -248,26 +280,28 @@ class QuantifiedPermModule(val verifier: Verifier)
     FuncApp(wandMaskFieldName, Seq(wand), pmaskType)
   }
 
-  def staticGoodMask = FuncApp(goodMaskName, LocalVar(maskName, maskType), Bool)
+  // Goodmask depends on symbolic boolean mask
+  def staticGoodMask = FuncApp(goodMaskName, Seq(LocalVar(maskName, maskType), LocalVar(bmaskName, bmaskType)), Bool)
 
   private def permAdd(a: Exp, b: Exp): Exp = a + b
   private def permSub(a: Exp, b: Exp): Exp = a - b
   private def permDiv(a: Exp, b: Exp): Exp = a / b
 
   override def freshTempState(name: String): Seq[Var] = {
-    Seq(LocalVar(Identifier(s"${name}Mask"), maskType))
+    Seq(LocalVar(Identifier(s"${name}Mask"), maskType), LocalVar(Identifier(s"${name}BMask"), bmaskType))
   }
 
   override def restoreState(s: Seq[Var]): Unit = {
     mask = s(0)
+    bmask = s(1)
   }
 
   /**
    * Can a location on a given receiver be read?
    */
-  private def hasDirectPerm(mask: Exp, obj: Exp, loc: Exp): Exp =
-    FuncApp(hasDirectPermName, Seq(maskExp, obj, loc), Bool)
-  private def hasDirectPerm(obj: Exp, loc: Exp): Exp = hasDirectPerm(maskExp, obj, loc)
+  private def hasDirectPerm(mask: Exp, bmask: Exp, obj: Exp, loc: Exp): Exp =
+    FuncApp(hasDirectPermName, Seq(mask, bmask, obj, loc), Bool)
+  private def hasDirectPerm(obj: Exp, loc: Exp): Exp = hasDirectPerm(maskExp, bmaskExp, obj, loc)
   override def hasDirectPerm(la: sil.LocationAccess): Exp = {
     la match {
       case sil.FieldAccess(rcv, field) =>
@@ -281,15 +315,17 @@ class QuantifiedPermModule(val verifier: Verifier)
    * Expression that expresses that 'permission' is positive. 'silPerm' is used to
    * optimize the check if possible.
    */
-  override def permissionPositive(permission: Exp, zeroOK : Boolean = false): Exp = permissionPositiveInternal(permission, None, zeroOK)
+  override def permissionPositive(permission: Exp, /*wildcard_permission: Exp,*/ zeroOK : Boolean = false): Exp = permissionPositiveInternal(permission, /*wildcard_permission,*/ None, zeroOK)
 
-  private def permissionPositiveInternal(permission: Exp, silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
+  // TODO calculate for wildcard permissions 
+  private def permissionPositiveInternal(permission: Exp, /*wildcard_permission: Exp,*/ silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
     (permission, silPerm) match {
       case (x, _) if permission == fullPerm => TrueLit()
       case (_, Some(sil.FullPerm())) => TrueLit()
       case (_, Some(sil.WildcardPerm())) => TrueLit()
+      case (_, Some(sil.SWildcardPerm())) => TrueLit()
       case (_, Some(sil.NoPerm())) => if (zeroOK) TrueLit() else FalseLit()
-      case _ => if(zeroOK) permission >= noPerm else permission > noPerm
+      case _ => if(zeroOK) permission >= noPerm /*|| wildcard_permission*/ else permission > noPerm /*|| wildcard_permission*/
     }
   }
 
@@ -300,7 +336,7 @@ class QuantifiedPermModule(val verifier: Verifier)
     e match {
       case sil.AccessPredicate(loc, prm) =>
         val p = PermissionSplitter.normalizePerm(prm)
-        p.isInstanceOf[sil.WildcardPerm]
+        p.isInstanceOf[sil.WildcardPerm] | p.isInstanceOf[sil.SWildcardPerm]
       case _ => false
     }
   }
@@ -311,7 +347,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         val p = PermissionSplitter.normalizePerm(prm)
         val perms = PermissionSplitter.splitPerm(p) filter (x => x._1 - 1 == exhaleModule.currentPhaseId)
         (if (exhaleModule.currentPhaseId == 0)
-          (if (!p.isInstanceOf[sil.WildcardPerm])
+          (if (!p.isInstanceOf[sil.WildcardPerm] | !p.isInstanceOf[sil.SWildcardPerm])
             Assert(permissionPositiveInternal(translatePerm(p), Some(p), true), error.dueTo(reasons.NegativePermission(p))) else Nil: Stmt) ++ Nil // check amount is non-negative
         else Nil) ++
           (if (perms.size == 0) {
@@ -394,6 +430,14 @@ class QuantifiedPermModule(val verifier: Verifier)
     }
   }
 
+  private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
+    perm match {
+      case SWildcardPerm() | PermMul(SWildcardPerm(), SWildcardPerm()) => true
+      case PermMul(e, SWildcardPerm()) => conservativeIsPositivePerm(e)
+      case PermMul(SWildcardPerm(), e)  => conservativeIsPositivePerm(e)
+      case _ => false
+    }
+  }
   /**
     * translates given quantified field access predicate to Boogie components needed for translation of the statement
     */
@@ -412,11 +456,18 @@ class QuantifiedPermModule(val verifier: Verifier)
 
         //translate Permission and create Stmts and Local Variable if wildcard permission
         var isWildcard = false
+        var isSWildcard = false
         val (translatedPerms, stmts, wildcard) = {
           if (conservativeIsWildcardPermission(perms)) {
             isWildcard = true
             val w = LocalVar(Identifier("wildcard"), Real)
             (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+          } else if (conservativeIsSWildcardPermission(perms)) {
+            isSWildcard = true
+            // TODO: update this to work like sWildcards
+            val w = LocalVar(Identifier("sWildcard"), Real)
+            (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+
           } else {
             (translateExp(renaming(perms)), Nil, null)
           }
@@ -444,6 +495,7 @@ class QuantifiedPermModule(val verifier: Verifier)
             })
 
             var isWildcard = false
+            var isSWildcard = false
             def renaming[E <: sil.Exp] = (e:E) => Expressions.renameVariables(e, vs.map(v => v.localVar), vsFresh.map(v => v.localVar))
             val (renamingCond, renamingRecv, renamingPerms, renamingFieldAccess) = (renaming(cond), renaming(recv), renaming(perms), renaming(fieldAccess))
             val renamedTriggers:Seq[sil.Trigger] = e.triggers.map(trigger => sil.Trigger(trigger.exps.map(x => renaming(x)))(trigger.pos, trigger.info))
@@ -455,6 +507,10 @@ class QuantifiedPermModule(val verifier: Verifier)
               if (conservativeIsWildcardPermission(perms)) {
                 isWildcard = true
                 val w = LocalVar(Identifier("wildcard"), Real)
+                (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
+              } else if (conservativeIsWildcardPermission(perms)) {
+                isSWildcard = true
+                val w = LocalVar(Identifier("sWildcard"), Real)
                 (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
               } else {
                 (translateExp(renamingPerms), Nil, null)
@@ -796,19 +852,55 @@ class QuantifiedPermModule(val verifier: Verifier)
       case sil.AccessPredicate(loc: LocationAccess, prm) =>
         val perm = PermissionSplitter.normalizePerm(prm)
         val curPerm = currentPermission(loc)
+        val curWPerm = currentWPermission(loc)
         val permVar = LocalVar(Identifier("perm"), permType)
         val (permVal, stmts): (Exp, Stmt) =
           if (perm.isInstanceOf[WildcardPerm]) {
             val w = LocalVar(Identifier("wildcard"), Real)
             (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+          } else if (perm.isInstanceOf[SWildcardPerm]) {
+            val w = LocalVar(Identifier("sWildcard"), Bool)
+            (w, Nil)
           } else {
             (translatePerm(perm), Nil)
           }
         stmts ++
-          (permVar := permVal) ++
+          (if (!perm.isInstanceOf[SWildcardPerm]) (permVar := permVal) else Nil) ++
           assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
           assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
-          (if (!usingOldState) curPerm := permAdd(curPerm, permVar) else Nil)
+          (if (!usingOldState) {
+            if (perm.isInstanceOf[SWildcardPerm])
+              curWPerm := TrueLit()
+            else curPerm := permAdd(curPerm, permVar)
+          } else Nil)
+
+
+
+        // val (permVal, stmts): (Exp, Stmt) =
+        //   if (perm.isInstanceOf[WildcardPerm]) {
+        //     val w = LocalVar(Identifier("wildcard"), Real)
+        //     (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+        //   } else if (perm.isInstanceOf[SWildcardPerm]) {
+        //     val w = LocalVar(Identifier("sWildcard"), Bool)
+        //     (w, Nil)
+        //   } else {
+        //     (translatePerm(perm), Nil)
+        //   }
+        
+        // if (perm.isInstanceOf[SWildcardPerm]) {
+        //   stmts ++
+        //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
+        //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++ 
+        //   (if (!usingOldState) curWPerm := TrueLit() else Nil) 
+        // }
+        // else {
+        //   println(stmts)
+        //   stmts ++
+        //   (permVar := permVal)
+        //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
+        //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
+        //   (if (!usingOldState) curPerm := permAdd(curPerm, permVar) else Nil)
+        // }
       case w@sil.MagicWand(left,right) =>
         val wandRep = wandModule.getWandRepresentation(w)
         val curPerm = currentPermission(translateNull, wandRep)
@@ -1230,16 +1322,77 @@ class QuantifiedPermModule(val verifier: Verifier)
     MapSelect(mask, Seq(rcv, location))
   }
 
+ // loogink up wildcard permissions 
+  def currentWPermission(loc: sil.LocationAccess): MapSelect = {
+    loc match {
+      case sil.FieldAccess(rcv, field) =>
+        currentWPermission(translateExp(rcv), translateLocation(loc))
+      case sil.PredicateAccess(_, _) =>
+        currentWPermission(translateNull, translateLocation(loc))
+    }
+  }
+
+  def currentWPermission(rcv: Exp, location: Exp): MapSelect = {
+    currentWPermission(bmaskExp, rcv, location)
+  }
+  def currentWPermission(bmask: Exp, rcv: Exp, location: Exp): MapSelect = {
+    MapSelect(bmask, Seq(rcv, location))
+  }
+
   override def permissionLookup(la: sil.LocationAccess) : Exp = {
     currentPermission(la)
   }
 
   override def currentMask = Seq(maskExp)
   override def staticMask = Seq(LocalVarDecl(maskName, maskType))
+  override def currentBMask = Seq(bmaskExp)
+  override def staticBMask = Seq(LocalVarDecl(bmaskName, bmaskType))
   override def staticPermissionPositive(rcv: Exp, loc: Exp) = {
-    hasDirectPerm(staticMask(0).l, rcv, loc)
+    hasDirectPerm(staticMask(0).l, staticBMask(0).l, rcv, loc)
   }
 
+  def translateWPerm(e: sil.Exp): (Exp, Exp) = {
+    require(e isSubtype sil.Perm)
+    e match {
+      case sil.NoPerm() =>
+        (noPerm, FalseLit())
+      case sil.FullPerm() =>
+        (fullPerm, FalseLit())
+      case sil.WildcardPerm() =>
+        sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
+      case sil.SWildcardPerm() =>
+        sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
+      case sil.EpsilonPerm() =>
+        sys.error("epsilon permissions are not supported by this permission module")
+      case sil.CurrentPerm(loc: LocationAccess) =>
+        (currentPermission(loc), currentWPermission(loc))
+      case sil.CurrentPerm(res: ResourceAccess) =>
+        //Magic wands
+        sys.error("Carbon does not support magic wands in perm expressions, see Carbon issue #243")
+      case sil.FractionalPerm(left, right) =>
+        (BinExp(translateExp(left), Div, translateExp(right)), FalseLit())
+      case sil.PermMinus(a) =>
+        (UnExp(Minus,translatePerm(a)), FalseLit())
+      case sil.PermAdd(a, b) =>
+        (permAdd(translatePerm(a), translatePerm(b)), FalseLit())
+      case sil.PermSub(a, b) =>
+        (permSub(translatePerm(a), translatePerm(b)), FalseLit())
+      case sil.PermMul(a, b) =>
+        (BinExp(translatePerm(a), Mul, translatePerm(b)), FalseLit())
+      case sil.PermDiv(a,b) =>
+        (permDiv(translatePerm(a), translateExp(b)), FalseLit())
+      case sil.IntPermMul(a, b) =>
+        val i = translateExp(a)
+        val p = translatePerm(b)
+        (BinExp(RealConv(i), Mul, p), FalseLit())
+      case sil.CondExp(cond, thn, els) =>
+        (CondExp(translateExp(cond), translatePerm(thn), translatePerm(els)), FalseLit())
+      case _ //sil.LocalVar | _: sil.FuncLikeApp | _:sil.FieldAccess
+      =>
+        (translateExp(e), FalseLit()) // any permission-typed expression should be translatable
+      //case _ => sys.error(s"not a permission expression: $e")
+    }
+  }
   def translatePerm(e: sil.Exp): Exp = {
     require(e isSubtype sil.Perm)
     e match {
@@ -1248,6 +1401,8 @@ class QuantifiedPermModule(val verifier: Verifier)
       case sil.FullPerm() =>
         fullPerm
       case sil.WildcardPerm() =>
+        sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
+      case sil.SWildcardPerm() =>
         sys.error("cannot translate wildcard at an arbitrary position (should only occur directly in an accessibility predicate)")
       case sil.EpsilonPerm() =>
         sys.error("epsilon permissions are not supported by this permission module")
@@ -1439,11 +1594,13 @@ class QuantifiedPermModule(val verifier: Verifier)
 
     def isStrictlyPositivePerm(e: sil.Exp): Exp = {
       require(e isSubtype sil.Perm, s"found ${e.typ} ($e), but required Perm")
-      val backup = permissionPositiveInternal(translatePerm(e), Some(e))
+      val realPerm, wPerm = translatePerm(e)
+      val backup = permissionPositiveInternal(realPerm, Some(e))
       e match {
         case sil.NoPerm() => FalseLit()
         case sil.FullPerm() => TrueLit()
         case sil.WildcardPerm() => TrueLit()
+        case sil.SWildcardPerm() => TrueLit()
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => TrueLit()
         case sil.CurrentPerm(loc) => backup
@@ -1474,6 +1631,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         case sil.NoPerm() => false
         case sil.FullPerm() => true
         case sil.WildcardPerm() => true
+        case sil.SWildcardPerm() => true
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => true
         case sil.CurrentPerm(loc) => false // conservative
@@ -1504,6 +1662,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         case sil.NoPerm() => false // strictly negative
         case sil.FullPerm() => false
         case sil.WildcardPerm() => false
+        case sil.SWildcardPerm() => false
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar => false // conservative
         case sil.CurrentPerm(loc) => false // conservative
@@ -1531,11 +1690,13 @@ class QuantifiedPermModule(val verifier: Verifier)
 
     def isStrictlyNegativePerm(e: sil.Exp): Exp = {
       require(e isSubtype sil.Perm)
-      val backup = UnExp(Not,permissionPositiveInternal(translatePerm(e), Some(e), true))
+      val realPerm, wperm = translatePerm(e)
+      val backup = UnExp(Not,permissionPositiveInternal(realPerm, Some(e), true))
       e match {
         case sil.NoPerm() => FalseLit() // strictly negative
         case sil.FullPerm() => FalseLit()
         case sil.WildcardPerm() => FalseLit()
+        case sil.SWildcardPerm() => FalseLit()
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         case x: sil.LocalVar if isAbstractRead(x) => FalseLit()
         case sil.CurrentPerm(loc) => backup
@@ -1568,6 +1729,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         case sil.NoPerm() => true
         case sil.FullPerm() => true
         case sil.WildcardPerm() => false
+        case sil.SWildcardPerm() => false
         case sil.EpsilonPerm() =>  sys.error("epsilon permissions are not supported by this permission module")
         //case sil.CurrentPerm(loc) => true
         case sil.FractionalPerm(left, right) => { // AS: this seems a reasonable way to catch the possibilities - if no free variables and no heap dependence, I think the expression must be made up of statically-known parts? Trying to avoid writing a whole extra method for the purpose of correctly supporting this case..

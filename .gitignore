@@ -8,5 +8,8 @@ carbon_classpath.txt
 lib/
 silver
 viper_tutorial_examples
+*.png
+*.bpl
+*.csv
 tmp/
 .bsp/

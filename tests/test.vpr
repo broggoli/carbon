@@ -4,8 +4,12 @@ field f: Int
 // requires acc(x.f, sWildcard)
 // {}
 
+// function dummy(): Perm 
+// ensures result > none
+
 method test(x: Ref)
-requires acc(x.f, sWildcard)
+requires acc(x.f, wildcard)
+ensures acc(x.f, wildcard)
 {
     //x.f := 2
     var c: Int := x.f

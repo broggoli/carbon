@@ -1,0 +1,14 @@
+field f: Int 
+
+predicate foo(xs:Ref)
+{
+    acc(xs.f)
+}
+
+method test(x: Ref)
+requires acc(foo(x), wildcard)
+{
+    unfold acc(foo(x), wildcard)
+    var v: Int := x.f
+    fold acc(foo(x), wildcard)
+}

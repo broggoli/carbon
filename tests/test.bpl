@@ -1,7 +1,7 @@
 // 
 // Translation of Viper program.
 // 
-// Date:         2021-03-15 08:43:55
+// Date:         2021-03-15 15:23:05
 // Tool:         carbon 1.0
 // Arguments: :  --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie --print tests/test.bpl tests/test.vpr
 // Dependencies:
@@ -132,12 +132,12 @@ axiom (forall Heap: HeapType, Mask: MaskType, BMask: BMaskType ::
 );
 axiom (forall <A, B> Mask: MaskType, BMask: BMaskType, o_1: Ref, f_3: (Field A B) ::
   { GoodMask(Mask, BMask), Mask[o_1, f_3] }
-  GoodMask(Mask, BMask) ==> Mask[o_1, f_3] >= NoPerm && ((GoodMask(Mask, BMask) && !IsPredicateField(f_3)) && !IsWandField(f_3) ==> Mask[o_1, f_3] <= FullPerm)
+  GoodMask(Mask, BMask) ==> Mask[o_1, f_3] >= NoPerm && ((GoodMask(Mask, BMask) && !IsPredicateField(f_3)) && !IsWandField(f_3) ==> Mask[o_1, f_3] <= FullPerm && (Mask[o_1, f_3] == FullPerm ==> !BMask[o_1, f_3]))
 );
 function  HasDirectPerm<A, B>(Mask: MaskType, BMask: BMaskType, o_1: Ref, f_3: (Field A B)): bool;
 axiom (forall <A, B> Mask: MaskType, BMask: BMaskType, o_1: Ref, f_3: (Field A B) ::
   { HasDirectPerm(Mask, BMask, o_1, f_3) }
-  HasDirectPerm(Mask, BMask, o_1, f_3) <==> Mask[o_1, f_3] > NoPerm
+  HasDirectPerm(Mask, BMask, o_1, f_3) <==> Mask[o_1, f_3] > NoPerm || BMask[o_1, f_3]
 );
 function  sumMask(ResultMask: MaskType, SummandMask1: MaskType, SummandMask2: MaskType): bool;
 axiom (forall <A, B> ResultMask: MaskType, SummandMask1: MaskType, SummandMask2: MaskType, o_1: Ref, f_3: (Field A B) ::
@@ -149,6 +149,9 @@ axiom (forall <A, B> ResultMask: MaskType, SummandMask1: MaskType, SummandMask2:
 // Preamble of Function and predicate module.
 // ==================================================
 
+// Function heights (higher height means its body is available earlier):
+// - height 0: dummy
+const AssumeFunctionsAbove: int;
 // Declarations for function framing
 type FrameType;
 const EmptyFrame: FrameType;
@@ -186,13 +189,68 @@ axiom !IsPredicateField(f_6);
 axiom !IsWandField(f_6);
 
 // ==================================================
+// Translation of function dummy
+// ==================================================
+
+// Uninterpreted function definitions
+function  dummy(Heap: HeapType): Perm;
+function  dummy'(Heap: HeapType): Perm;
+axiom (forall Heap: HeapType ::
+  { dummy(Heap) }
+  dummy(Heap) == dummy'(Heap) && dummyFunction(dummy#triggerStateless())
+);
+axiom (forall Heap: HeapType ::
+  { dummy'(Heap) }
+  dummyFunction(dummy#triggerStateless())
+);
+
+// Framing axioms
+function  dummy#frame(frame: FrameType): Perm;
+axiom (forall Heap: HeapType, Mask: MaskType, BMask: BMaskType ::
+  { state(Heap, Mask, BMask), dummy'(Heap) }
+  state(Heap, Mask, BMask) ==> dummy'(Heap) == dummy#frame(EmptyFrame)
+);
+
+// Postcondition axioms
+axiom (forall Heap: HeapType, Mask: MaskType, BMask: BMaskType ::
+  { state(Heap, Mask, BMask), dummy'(Heap) }
+  state(Heap, Mask, BMask) && (AssumeFunctionsAbove < 0 || dummy#trigger(EmptyFrame)) ==> NoPerm < dummy'(Heap)
+);
+
+// Trigger function (controlling recursive postconditions)
+function  dummy#trigger(frame: FrameType): bool;
+
+// State-independent trigger function
+function  dummy#triggerStateless(): Perm;
+
+// Check contract well-formedness and postcondition
+procedure dummy#definedness() returns (Result: Perm)
+  modifies Heap, Mask, BMask;
+{
+  
+  // -- Initializing the state
+    Mask := ZeroMask;
+    BMask := ZeroBMask;
+    assume state(Heap, Mask, BMask);
+    assume AssumeFunctionsAbove == 0;
+  
+  // -- Initializing the old state
+    assume Heap == old(Heap);
+    assume Mask == old(Mask);
+    assume BMask == old(BMask);
+  
+  // -- Checking definedness of postcondition (no body)
+    assume NoPerm < Result;
+    assume state(Heap, Mask, BMask);
+}
+
+// ==================================================
 // Translation of method test
 // ==================================================
 
 procedure test(x: Ref) returns ()
   modifies Heap, Mask, BMask;
 {
-  var sWildcard: real where sWildcard > NoPerm;
   var perm: Perm;
   var c: int;
   
@@ -200,14 +258,23 @@ procedure test(x: Ref) returns ()
     Mask := ZeroMask;
     BMask := ZeroBMask;
     assume state(Heap, Mask, BMask);
+    assume AssumeFunctionsAbove == -1;
   
   // -- Assumptions about method arguments
     assume Heap[x, $allocated];
   
   // -- Checked inhaling of precondition
-    havoc sWildcard;
-    perm := sWildcard;
-    assume x != null;
+    
+    // -- Check definedness of acc(x.f, dummy())
+      if (*) {
+        // Stop execution
+        assume false;
+      }
+      assume state(Heap, Mask, BMask);
+    assume state(Heap, Mask, BMask);
+    perm := dummy(Heap);
+    assume perm >= NoPerm;
+    assume perm > NoPerm ==> x != null;
     Mask[x, f_6] := Mask[x, f_6] + perm;
     assume state(Heap, Mask, BMask);
     assume state(Heap, Mask, BMask);
@@ -219,10 +286,10 @@ procedure test(x: Ref) returns ()
       assume Mask == old(Mask);
       assume BMask == old(BMask);
   
-  // -- Translating statement: c := x.f -- test.vpr@11.8--16.1
+  // -- Translating statement: c := x.f -- test.vpr@14.8--19.1
     
     // -- Check definedness of x.f
-      assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f (test.vpr@11.8--16.1) [3]"}
+      assert {:msg "  Assignment might fail. There might be insufficient permission to access x.f (test.vpr@14.8--19.1) [3]"}
         HasDirectPerm(Mask, BMask, x, f_6);
       assume state(Heap, Mask, BMask);
     c := Heap[x, f_6];

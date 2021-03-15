@@ -431,7 +431,7 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
         case TransferablePredAccessPred(rcv,loc,_,_) =>
           val (tempMask, initTMaskStmt) = permModule.tempInitMask(rcv,loc)
           initTMaskStmt ++
-            (used.boolVar := used.boolVar&&heapModule.identicalOnKnownLocations(topHeap,tempMask))
+            (used.boolVar := used.boolVar&&heapModule.identicalOnKnownLocations(topHeap,tempMask, Seq()))
         case _ => Nil
       }
 
@@ -530,6 +530,8 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
   * Note: the boolean for the Result state is initialized to the conjunction of the booleans of the current state
    *  and the other state and used (since all facts of each state is transferred)
   */
+
+  // Does not work with symbolic wildcard permissions
     val curHeap = heapModule.currentHeap
     val curMask = permModule.currentMask
 
@@ -538,8 +540,8 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
 
     val boolRes = resultState.boolVar
     val sumStates = (boolRes := boolRes && permModule.sumMask(maskOther, curMask))
-    val equateKnownValues = (boolRes := boolRes && heapModule.identicalOnKnownLocations(heapOther, maskOther) &&
-      heapModule.identicalOnKnownLocations(curHeap, curMask))
+    val equateKnownValues = (boolRes := boolRes && heapModule.identicalOnKnownLocations(heapOther, maskOther, Seq()) &&
+      heapModule.identicalOnKnownLocations(curHeap, curMask, Seq()))
     val goodState = exchangeAssumesWithBoolean(stateModule.assumeGoodState, boolRes)
     val initStmt =CommentBlock("Creating state which is the sum of the two previously built up states",
       initStmtResult ++ sumStates ++ equateKnownValues ++ goodState)
