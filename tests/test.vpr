@@ -1,0 +1,16 @@
+field f: Int 
+
+// method takePerm(x: Ref)
+// requires acc(x.f, sWildcard)
+// {}
+
+method test(x: Ref)
+requires acc(x.f, sWildcard)
+{
+    //x.f := 2
+    var c: Int := x.f
+    //inhale acc(x.f, sWildcard)
+    // takePerm(x)
+    // var c: Int := x.f
+    // x.f := 0
+}

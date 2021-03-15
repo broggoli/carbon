@@ -1,0 +1,228 @@
+field f: Int 
+
+method test(x: Ref)
+{
+    inhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    ...
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+    inhale acc(x.f, wildcard)
+
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+    exhale acc(x.f, wildcard)
+}
