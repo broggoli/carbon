@@ -1,0 +1,224 @@
+field f: Int
+
+method main(x: Ref, y: Ref, z: Ref)
+{    
+    inhale acc(x.f, sWildcard)
+
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+
+
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+
+
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+
+
+
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+    inhale acc(x.f, sWildcard)
+    inhale acc(y.f, sWildcard)
+    inhale acc(z.f, sWildcard)
+
+    exhale acc(x.f, sWildcard)
+    exhale acc(y.f, sWildcard)
+    exhale acc(z.f, sWildcard)
+
+
+    var v: Int := x.f
+
+}

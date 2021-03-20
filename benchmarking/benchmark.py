@@ -3,22 +3,43 @@ import pandas as pd
 import numpy as np
 import os, fileinput
 from shutil import copyfile
+import json
 
 def get_config():
     # default values
     cwd = os.getcwd()
-    conf = {
-        "cwd": cwd,
-        "compile": True,
-        "benchmark": True,
-        "input_dir": f"{cwd}/input",
-        "output_dir": f"{cwd}/figures",
-        "carbon_home_old": "/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/unmodified/carbon",
-        "carbon_home_new": "/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/carbon"
-    }
+    with open(f'./config.json', 'r') as f:
+        conf = json.load(f)
 
-    # with open(f'./config.json', 'r') as f:
-    #     conf = json.load(f)
+    conf["cwd"] = cwd
+
+    # Ask user if tool should compile inputs
+    while True:
+        cmpl = input(f"[{'y' if conf['compile'] else 'n'}] Compile? (y/n)")
+        cmpl_low = cmpl.lower()
+        if cmpl_low == "y":
+            print("Compiling")
+            conf["compile"] = True
+            break
+        elif cmpl_low == "n":
+            print("Not compiling")
+            conf["compile"] = False
+            break
+    
+    # Ask user if tool should benchmark
+    while True:
+        benchmark = input(f"[{'y' if conf['benchmark'] else 'n'}] Benchmark? (y/n)")
+        benchmark_low = benchmark.lower()
+        if benchmark_low == "y":
+            print("Benchmarking")
+            conf["benchmark"] = True
+            break
+        elif benchmark_low == "n":
+            print("Not Benchmarking")
+            conf["benchmark"] = False
+            break    
+
+    print(json.dumps(conf))
 
     return conf
 
@@ -27,16 +48,18 @@ def setup(conf):
     # with all wildcard statements replaced by sWildcard ones
     intermediateDirPath = f"{conf['cwd']}/intermediate"
     try:
-        os.mkdir(intermediateDirPath)
+        if not os.path.exists(intermediateDirPath):
+            os.mkdir(intermediateDirPath)
     except OSError:
         print("Creation of intermediate directory failed")
 
-    for entry in os.scandir(conf["input_dir"]):
+    for entry in os.scandir(f'{conf["cwd"]}/{conf["input_dir"]}'):
         input_file_name = os.path.basename(entry.path).split('.')[0]
         if (entry.path.endswith(".vpr") and not entry.path.endswith("sWildcard.vpr")) and entry.is_file():
             tmp_path = f"{intermediateDirPath}/{input_file_name}"
             try:
-                os.mkdir(tmp_path)
+                if not os.path.exists(tmp_path):
+                    os.mkdir(tmp_path)
             except OSError:
                 print (f"Creation of intermediate {input_file_name} failed")
 
@@ -49,22 +72,30 @@ def setup(conf):
             with fileinput.FileInput(sWildcard_file_path, inplace=True) as file:
                 for line in file:
                     print(line.replace("wildcard", "sWildcard"), end='')
-            
-            if conf["compile"]: 
-                boogie_out_old = f"{tmp_path}/old"
-                boogie_out_new = f"{tmp_path}/new"
-                boogie_out_sWildcard = f"{tmp_path}/sWildcard"
-                sbt_run_command = f"run --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie"
-                print_command_old = f"--print {boogie_out_old}.bpl {wildcard_file_path}"
-                print_command_new = f"--print {boogie_out_new}.bpl {wildcard_file_path}"
-                print_command_sWildcard = f"--print {boogie_out_sWildcard}.bpl {sWildcard_file_path}"
 
-                compile_old = f"cd {conf['carbon_home_old']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_old}'"
-                compile_new = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_new}'"
-                compile_sWildcard = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_sWildcard}'"
-                os.system(compile_old)
-                os.system(compile_new)
-                os.system(compile_sWildcard)
+def compile_boogie(conf):
+    
+    for entry in os.scandir(f"{conf['cwd']}/intermediate"):
+        if entry.is_dir():
+            print(f"Compiling the program: {os.path.basename(entry.path)}")
+            sWildcard_file_path = f"{entry.path}/sWildcard.vpr"
+            wildcard_file_path = f"{entry.path}/wildcard.vpr"
+
+            boogie_out_old = f"{entry.path}/old"
+            boogie_out_new = f"{entry.path}/new"
+            boogie_out_sWildcard = f"{entry.path}/sWildcard"
+
+            sbt_run_command = f"run --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie"
+            print_command_old = f"--print {boogie_out_old}.bpl {wildcard_file_path}"
+            print_command_new = f"--print {boogie_out_new}.bpl {wildcard_file_path}"
+            print_command_sWildcard = f"--print {boogie_out_sWildcard}.bpl {sWildcard_file_path}"
+
+            compile_old = f"cd {conf['carbon_home_old']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_old}'"
+            compile_new = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_new}'"
+            compile_sWildcard = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_sWildcard}'"
+            os.system(compile_old)
+            os.system(compile_new)
+            os.system(compile_sWildcard)
 
 def benchmark(conf):
     
@@ -108,7 +139,12 @@ def get_figures(conf):
 
 if __name__ == '__main__':
     conf = get_config()
+    
     setup(conf)
+
+    if conf["compile"]:
+        compile_boogie(conf)
+
     if conf["benchmark"]:
         benchmark(conf)
-    get_figures(conf)
+        get_figures(conf)
