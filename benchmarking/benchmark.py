@@ -65,13 +65,27 @@ def setup(conf):
 
             sWildcard_file_path = f"{tmp_path}/sWildcard.vpr"
             wildcard_file_path = f"{tmp_path}/wildcard.vpr"
+            baseline_file_path = f"{tmp_path}/baseline.vpr"
 
             copyfile(entry.path, sWildcard_file_path)
             copyfile(entry.path, wildcard_file_path)
+            copyfile(entry.path, baseline_file_path)
 
+            # Replace wildcards with sWildcard
             with fileinput.FileInput(sWildcard_file_path, inplace=True) as file:
                 for line in file:
                     print(line.replace("wildcard", "sWildcard"), end='')
+
+            # Replace wildcards with baseline
+            with fileinput.FileInput(baseline_file_path, inplace=True) as file:
+                for line in file:
+                    print(line.replace("wildcard", "dummy()"), end='')
+           
+            with open(baseline_file_path, 'a') as file:
+                file.write("\nfunction dummy(): Perm \nensures result > none")
+
+def gen_non_disjunctive(conf):
+   pass 
 
 def compile_boogie(conf):
     
@@ -80,32 +94,40 @@ def compile_boogie(conf):
             print(f"Compiling the program: {os.path.basename(entry.path)}")
             sWildcard_file_path = f"{entry.path}/sWildcard.vpr"
             wildcard_file_path = f"{entry.path}/wildcard.vpr"
+            baseline_file_path = f"{entry.path}/baseline.vpr"
+            
+            def match_input_output(s):
+                if "baseline" in s: 
+                    return baseline_file_path
+                elif "sWildcard" in s:
+                    return sWildcard_file_path
+                elif "wildcard" in s:
+                    return wildcard_file_path
 
-            boogie_out_old = f"{entry.path}/old"
-            boogie_out_new = f"{entry.path}/new"
-            boogie_out_sWildcard = f"{entry.path}/sWildcard"
+            print_commands = map(lambda s: f"--print {entry.path}/{s}.bpl {match_input_output(s)}", conf["benchmark_inputs"])
 
             sbt_run_command = f"run --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie"
-            print_command_old = f"--print {boogie_out_old}.bpl {wildcard_file_path}"
-            print_command_new = f"--print {boogie_out_new}.bpl {wildcard_file_path}"
-            print_command_sWildcard = f"--print {boogie_out_sWildcard}.bpl {sWildcard_file_path}"
 
-            compile_old = f"cd {conf['carbon_home_old']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_old}'"
-            compile_new = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_new}'"
-            compile_sWildcard = f"cd {conf['carbon_home_new']} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command_sWildcard}'"
-            os.system(compile_old)
-            os.system(compile_new)
-            os.system(compile_sWildcard)
-
+            def match_version(s):
+                if "old" in s:
+                    return conf['carbon_home_old']
+                elif "tuple" in s:
+                    return conf['carbon_home_tuple']
+                elif "map" in s:
+                    return conf['carbon_home_map']
+            
+            commands = map(lambda print_command: f"cd {match_version(print_command)} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command}'", print_commands)
+            #print(list(commands))
+            list(map(lambda command: os.system(command), commands))            
+            
 def benchmark(conf):
     
     for entry in os.scandir(f"{conf['cwd']}/intermediate"):
         if entry.is_dir():
             print(f"Benchmarking the program: {os.path.basename(entry.path)}")
-            verify_old = "boogie old.bpl"
-            verify_new = "boogie new.bpl"
-            verify_sWildcard = "boogie sWildcard.bpl"
-            benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 -M 5 --export-csv measurements.csv "{verify_sWildcard}" "{verify_new}" "{verify_old}"'
+            verify_commands = ' '.join(map(lambda s: f'"boogie {s}.bpl"', conf["benchmark_inputs"]))
+            benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 -M 5 --export-csv measurements.csv {verify_commands}'
+            print(verify_commands)
             os.system(benchmarkCommand)
             
 
@@ -123,7 +145,7 @@ def get_figures(conf):
             maxes = df["max"] #np.array([1.2903984678399998, 2.49539591321, 1.2176201166999998])
             means = df["mean"] #np.array([1.23751410299, 1.73401861861, 1.0936375535499998])
             std = df["stddev"] #np.array([0.028983541676817333, 0.3306349830887703, 0.04590658218343287])
-            labels = np.array(["Symbolic Wildcards", "wildcards (new)", "wildcards (old)"])
+            labels = np.array(conf["benchmark_inputs"])
             # create stacked errorbars:
             plt.errorbar(labels, means, std, fmt='ok', lw=5)
             plt.errorbar(labels, means, [means - mins, maxes - means],

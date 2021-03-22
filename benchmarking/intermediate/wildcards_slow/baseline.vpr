@@ -1,0 +1,226 @@
+field f: Int
+
+method main(x: Ref, y: Ref, z: Ref)
+{    
+    inhale acc(x.f, dummy())
+
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+
+
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+
+
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+
+
+
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+    inhale acc(x.f, dummy())
+    inhale acc(y.f, dummy())
+    inhale acc(z.f, dummy())
+
+    exhale acc(x.f, dummy())
+    exhale acc(y.f, dummy())
+    exhale acc(z.f, dummy())
+
+
+    var v: Int := x.f
+
+}
+function dummy(): Perm 
+ensures result > none
