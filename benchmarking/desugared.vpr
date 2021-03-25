@@ -1,0 +1,30 @@
+field f: Int 
+
+method havocInt() returns (i: Int)
+
+method main(x: Ref)
+requires acc(x.f, wildcard)
+{
+    var n: Int
+    var i: Int := 0
+
+    var b: Bool
+    if (b) {
+        // Verify the loop body
+        i := havocInt()
+        assume i < n
+        // Missing: Mask := ZeroMask
+        inhale acc(x.f, wildcard)
+        exhale acc(x.f, wildcard)
+        inhale acc(x.f, wildcard)
+        i := i + 1
+        exhale acc(x.f, wildcard)
+        assume false
+    }
+    // Approximate the loop
+    exhale acc(x.f, wildcard)
+    i := havocInt()
+    inhale acc(x.f, wildcard)
+    assume !(i < n) 
+
+}

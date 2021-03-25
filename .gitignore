@@ -11,5 +11,8 @@ viper_tutorial_examples
 *.png
 *.bpl
 *.csv
+*.zip
+benchmarking/intermediate/
+benchmarking/input
 tmp/
 .bsp/

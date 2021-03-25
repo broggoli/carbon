@@ -8,6 +8,7 @@ import json
 def get_config():
     # default values
     cwd = os.getcwd()
+    benchmark_inputs = ["old_baseline", "old_wildcard", "map_baseline", "map_wildcard", "map_sWildcard", "tuple_baseline", "tuple_wildcard", "tuple_sWildcard"],
     with open(f'./config.json', 'r') as f:
         conf = json.load(f)
 
@@ -17,7 +18,9 @@ def get_config():
     while True:
         cmpl = input(f"[{'y' if conf['compile'] else 'n'}] Compile? (y/n)")
         cmpl_low = cmpl.lower()
-        if cmpl_low == "y":
+        if cmpl_low == "":
+            break
+        elif cmpl_low == "y":
             print("Compiling")
             conf["compile"] = True
             break
@@ -30,7 +33,9 @@ def get_config():
     while True:
         benchmark = input(f"[{'y' if conf['benchmark'] else 'n'}] Benchmark? (y/n)")
         benchmark_low = benchmark.lower()
-        if benchmark_low == "y":
+        if cmpl_low == "":
+            break
+        elif benchmark_low == "y":
             print("Benchmarking")
             conf["benchmark"] = True
             break
@@ -104,7 +109,10 @@ def compile_boogie(conf):
                 elif "wildcard" in s:
                     return wildcard_file_path
 
-            print_commands = map(lambda s: f"--print {entry.path}/{s}.bpl {match_input_output(s)}", conf["benchmark_inputs"])
+            # only compile files that are not yet compiled
+            to_compile = filter(lambda s: not os.path.exists(f"{entry.path}/{s}.bpl"), conf["benchmark_inputs"])
+            # generate print commands for compiler
+            print_commands = map(lambda s: f"--print {entry.path}/{s}.bpl {match_input_output(s)}", to_compile)
 
             sbt_run_command = f"run --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie"
 
@@ -125,10 +133,12 @@ def benchmark(conf):
     for entry in os.scandir(f"{conf['cwd']}/intermediate"):
         if entry.is_dir():
             print(f"Benchmarking the program: {os.path.basename(entry.path)}")
-            verify_commands = ' '.join(map(lambda s: f'"boogie {s}.bpl"', conf["benchmark_inputs"]))
-            benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 -M 5 --export-csv measurements.csv {verify_commands}'
-            print(verify_commands)
-            os.system(benchmarkCommand)
+            # Don't override benchmark files
+            if not os.path.exists(f"{entry.path}/measurements.csv"):
+                verify_commands = ' '.join(map(lambda s: f'"boogie {s}.bpl"', conf["benchmark_inputs"]))
+                benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 1 -M 5 --export-csv measurements.csv {verify_commands}'
+                #print(verify_commands)
+                os.system(benchmarkCommand)
             
 
 def get_figures(conf): 
@@ -138,25 +148,32 @@ def get_figures(conf):
             program_name = os.path.basename(entry.path)
             print(f"Plotting Performace for the program: {program_name}")
 
-            df = pd.read_csv(f'{entry.path}/measurements.csv')
+            if os.path.exists(f'{entry.path}/measurements.csv'):
 
-            # construct some data like what you have:
-            mins = df["min"] #np.array([1.19105995984, 1.4093896482100001, 1.0423447737])
-            maxes = df["max"] #np.array([1.2903984678399998, 2.49539591321, 1.2176201166999998])
-            means = df["mean"] #np.array([1.23751410299, 1.73401861861, 1.0936375535499998])
-            std = df["stddev"] #np.array([0.028983541676817333, 0.3306349830887703, 0.04590658218343287])
-            labels = np.array(conf["benchmark_inputs"])
-            # create stacked errorbars:
-            plt.errorbar(labels, means, std, fmt='ok', lw=5)
-            plt.errorbar(labels, means, [means - mins, maxes - means],
-                        fmt='.k', ecolor='gray', lw=1)
-            #plt.xlim(1, 2)
-            plt.margins(x=0.3, y=0.1) 
-            plt.ylabel("seconds")
-            plt.title(f"{program_name} performance")
+                df = pd.read_csv(f'{entry.path}/measurements.csv')
 
-            #plt.show()
-            plt.savefig(f"{conf['output_dir']}/{program_name}.png")
+                mins = df["min"] #np.array([1.19105995984, 1.4093896482100001, 1.0423447737])
+                maxes = df["max"] #np.array([1.2903984678399998, 2.49539591321, 1.2176201166999998])
+                means = df["mean"] #np.array([1.23751410299, 1.73401861861, 1.0936375535499998])
+                std = df["stddev"] #np.array([0.028983541676817333, 0.3306349830887703, 0.04590658218343287])
+                # only plot what's there
+                labels = np.array(list(map(lambda cmd: cmd.split("boogie ")[1].split(".")[0], df["command"])))
+                # create stacked errorbars:
+                plt.errorbar(labels, means, std, fmt='ok', lw=5)
+                plt.errorbar(labels, means, [means - mins, maxes - means],
+                            fmt='.k', ecolor='gray', lw=1)
+                #plt.xlim(1, 2)
+                plt.margins(x=0.3, y=0.1) 
+                plt.ylabel("seconds")
+                plt.tick_params(axis='x', which='major', labelsize=6)
+                plt.title(f"{program_name} performance")
+
+                #plt.show()
+                plt.savefig(f"{conf['output_dir']}/{program_name}.png")
+                plt.close()
+            
+            else:
+                print("Nothing to plot")
     
 
 if __name__ == '__main__':
@@ -169,4 +186,4 @@ if __name__ == '__main__':
 
     if conf["benchmark"]:
         benchmark(conf)
-        get_figures(conf)
+    get_figures(conf)

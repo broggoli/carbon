@@ -1,0 +1,21 @@
+field f: Int 
+
+
+method startThread(x: Ref)
+requires acc(x.f, wildcard)
+ensures acc(x.f, wildcard)
+{}
+
+method main(x: Ref)
+requires acc(x.f, wildcard)
+{
+    var n: Int
+    var i: Int := 0
+    while (i < n) 
+    invariant acc(x.f, wildcard) 
+    {
+        startThread(x)
+        i := i + 1
+    }
+}
+

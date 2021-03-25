@@ -4,7 +4,7 @@
     "benchmark":            true,
     "input_dir":            "input",
     "output_dir":           "figures",
-    "benchmark_inputs":      ["old_baseline", "old_wildcard", "map_baseline", "map_wildcard", "map_sWildcard", "tuple_baseline", "tuple_sWildcard"],
+    "benchmark_inputs":      ["old_wildcard", "map_wildcard", "map_sWildcard"],
     "carbon_home_old":      "/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/unmodified/carbon",
     "carbon_home_map":      "/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/fork/carbon",
     "carbon_home_tuple":    "/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/tuple_implementation/carbon"
