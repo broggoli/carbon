@@ -6,8 +6,6 @@ import numpy as np
 import pandas as pd
 
 
-
-
 def generate_slow_predicate(n_blocks, n_refs):
     
     ref_def = ", ".join(map(lambda i: f"ref{i}: Ref", range(n_refs)))

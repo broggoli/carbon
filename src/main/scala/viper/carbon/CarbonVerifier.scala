@@ -192,20 +192,25 @@ case class CarbonVerifier(private var _debugInfo: Seq[(String, Any)] = Nil) exte
       }
     }
 
-    invokeBoogie(_translated, options) match {
-      case (version,result) =>
-        if (version!=null) { dependencies.foreach(_ match {
-          case b:BoogieDependency => b.version = version
-          case _ => }) }
-
-        result match {
-          case Failure(errors) if transformNames => {
-            errors.foreach(e =>  BoogieModelTransformer.transformCounterexample(e, translatedNames))
+    // println("asd", config.translateOnly.toOption)
+    // if(config.translateOnly.toOption != Some(true)) {
+      
+      invokeBoogie(_translated, options) match {
+        case (version,result) =>
+          if (version!=null) { dependencies.foreach(_ match {
+            case b:BoogieDependency => b.version = version
+            case _ => }) 
           }
-          case _ => result
-        }
-        result
-    }
+
+          result match {
+            case Failure(errors) if transformNames => {
+              errors.foreach(e =>  BoogieModelTransformer.transformCounterexample(e, translatedNames))
+            }
+            case _ => result
+          }
+          result
+      }
+    // }
   }
 
 

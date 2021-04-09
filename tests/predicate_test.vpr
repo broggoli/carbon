@@ -6,9 +6,9 @@ predicate foo(xs:Ref)
 }
 
 method test(x: Ref)
-requires acc(foo(x), wildcard)
+requires acc(foo(x), sWildcard)
 {
-    unfold acc(foo(x), wildcard)
+    unfold acc(foo(x), sWildcard)
     var v: Int := x.f
-    fold acc(foo(x), wildcard)
+    fold acc(foo(x), sWildcard)
 }

@@ -94,6 +94,11 @@ class CarbonConfig(args: Seq[String]) extends SilFrontendConfig(args, "Carbon") 
     default = None,
     noshort = true
   )
+  val translateOnly = opt[Boolean]("translateOnly",
+    descr = "Only Translate input and do not verify (default: disabled)",
+    default = None,
+    noshort = true
+  )
 
   verify()
 }

@@ -136,7 +136,7 @@ def benchmark(conf):
             # Don't override benchmark files
             if not os.path.exists(f"{entry.path}/measurements.csv"):
                 verify_commands = ' '.join(map(lambda s: f'"boogie {s}.bpl"', conf["benchmark_inputs"]))
-                benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 1 -M 5 --export-csv measurements.csv {verify_commands}'
+                benchmarkCommand = f'cd {entry.path} && hyperfine --warmup 3 -M 10 --export-csv measurements.csv {verify_commands}'
                 #print(verify_commands)
                 os.system(benchmarkCommand)
             
