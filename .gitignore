@@ -14,5 +14,6 @@ viper_tutorial_examples
 *.zip
 benchmarking/intermediate/
 benchmarking/input
+benchmarking/backup/
 tmp/
 .bsp/
