@@ -247,7 +247,7 @@ class DefaultExpModule(val verifier: Verifier) extends ExpModule with Definednes
           case sil.ImpliesOp => Implies
           case _ =>
             sys.error("Expression translation did not match any cases (should be handled before reaching translateExp code)" + e.getClass())
-        }
+        };
         BinExp(translateExp(left), bop, translateExp(right))
       case sil.Minus(exp) =>
         UnExp(Minus, translateExp(exp))

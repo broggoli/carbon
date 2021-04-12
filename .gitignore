@@ -15,5 +15,6 @@ viper_tutorial_examples
 benchmarking/intermediate/
 benchmarking/input
 benchmarking/backup/
+benchmarking/slow_wildcards0
 tmp/
 .bsp/

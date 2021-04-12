@@ -564,9 +564,11 @@ with DefinednessComponent with ExhaleComponent with InhaleComponent {
 
 
 
-          val renamedCond = renaming(if (perm.isInstanceOf[sil.WildcardPerm]) condition else sil.And(condition,PermGtCmp(perm, NoPerm()(forall.pos,forall.info))(forall.pos))(forall.pos,forall.info))
-
-
+          val renamedCond = renaming( 
+            if (perm.isInstanceOf[sil.WildcardPerm]) condition 
+            else if (perm.isInstanceOf[sil.SWildcardPerm]) condition 
+            else sil.And(condition,PermGtCmp(perm, NoPerm()(forall.pos,forall.info))(forall.pos))(forall.pos,forall.info)
+          )
 
           val locationAccess1 = translateResourceAccess(locationAccess)
           val translatedCond1 = translateExp(renamedCond) //condition just evaluated in one state

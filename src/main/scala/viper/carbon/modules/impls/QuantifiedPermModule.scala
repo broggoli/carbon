@@ -932,7 +932,6 @@ class QuantifiedPermModule(val verifier: Verifier)
             val w = LocalVar(Identifier("sWildcard"), Bool)
             (w, Nil)
           } else {
-            println(perm)
             (translatePerm(perm), Nil)
           }
         stmts ++
@@ -1282,7 +1281,7 @@ class QuantifiedPermModule(val verifier: Verifier)
                isWildcard = true
                val w = LocalVar(Identifier("wildcard"), Real)
                (w, LocalVarWhereDecl(w.name, w > RealLit(0)) :: Havoc(w) :: Nil, w)
-             } else if (conservativeIsWildcardPermission(perms)) {
+             } else if (conservativeIsSWildcardPermission(perms)) {
                isWildcard = true
                val w = LocalVar(Identifier("sWildcard"), Real)
                (w, Nil, w)

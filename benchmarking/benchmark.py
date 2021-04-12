@@ -70,11 +70,11 @@ def setup(conf):
 
             sWildcard_file_path = f"{tmp_path}/sWildcard.vpr"
             wildcard_file_path = f"{tmp_path}/wildcard.vpr"
-            baseline_file_path = f"{tmp_path}/baseline.vpr"
+            #baseline_file_path = f"{tmp_path}/baseline.vpr"
 
             copyfile(entry.path, sWildcard_file_path)
             copyfile(entry.path, wildcard_file_path)
-            copyfile(entry.path, baseline_file_path)
+            #copyfile(entry.path, baseline_file_path)
 
             # Replace wildcards with sWildcard
             with fileinput.FileInput(sWildcard_file_path, inplace=True) as file:
@@ -82,12 +82,12 @@ def setup(conf):
                     print(line.replace("wildcard", "sWildcard"), end='')
 
             # Replace wildcards with baseline
-            with fileinput.FileInput(baseline_file_path, inplace=True) as file:
-                for line in file:
-                    print(line.replace("wildcard", "dummy()"), end='')
+            # with fileinput.FileInput(baseline_file_path, inplace=True) as file:
+            #     for line in file:
+            #         print(line.replace("wildcard", "dummy()"), end='')
            
-            with open(baseline_file_path, 'a') as file:
-                file.write("\nfunction dummy(): Perm \nensures result > none")
+            # with open(baseline_file_path, 'a') as file:
+            #     file.write("\nfunction dummy(): Perm \nensures result > none")
 
 def gen_non_disjunctive(conf):
    pass 

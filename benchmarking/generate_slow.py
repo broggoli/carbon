@@ -53,8 +53,7 @@ def grid_test_predicate():
     gen_code = map(lambda tup: output(generate_slow_predicate(tup[0], tup[1]), tup), grid)
     list(gen_code)
 
-
-def get_data():
+def get_data(slow_data=False):
     dfs = []
     for entry in os.scandir("intermediate"):
         if entry.is_dir():
@@ -62,13 +61,14 @@ def get_data():
             print(f"Getting data for the program: {program_name}")
 
             if os.path.exists(f'{entry.path}/measurements.csv'):
-                
-                _, n_blocks, n_refs = program_name.split("_")
                 df = pd.read_csv(f'{entry.path}/measurements.csv')
-                df["n_blocks"] = n_blocks
-                df["n_refs"] = n_refs
-
+                if slow_data:
+                    _, n_blocks, n_refs = program_name.split("_")
+                    df["n_blocks"] = n_blocks
+                    df["n_refs"] = n_refs
+                df["program_name"] = program_name
                 dfs.append(df)
+
     df = pd.concat(dfs).groupby("command")
     
     for name, group in df:
@@ -80,18 +80,53 @@ def get_data():
             map_wildcard = group
     
     #print(old_wildcard["mean"] / float(map_sWildcard["mean"].sum()))
-    old_wildcard.sort_values(["n_blocks", "n_refs"])
     print(old_wildcard, map_sWildcard)
-    compare_oldW_vs_mapSW = pd.merge(old_wildcard, map_sWildcard, on=["n_blocks", "n_refs"], suffixes=("_old_wildcard", "_map_sWildcard"))
-    compare_oldW_vs_mapSW["mean_ratio"] = compare_oldW_vs_mapSW["mean_old_wildcard"] / compare_oldW_vs_mapSW["mean_map_sWildcard"]
+    if slow_data:
+        old_wildcard.sort_values(["n_blocks", "n_refs"])
+        print(old_wildcard, map_sWildcard)
+        compare_oldW_vs_mapSW = pd.merge(old_wildcard, map_sWildcard, on=["n_blocks", "n_refs"], suffixes=("_old_wildcard", "_map_sWildcard"))
+        compare_oldW_vs_mapSW["mean_ratio"] = compare_oldW_vs_mapSW["mean_old_wildcard"] / compare_oldW_vs_mapSW["mean_map_sWildcard"]
 
-    compare_mapW_vs_oldW = pd.merge(map_wildcard, old_wildcard, on=["n_blocks", "n_refs"], suffixes=("_map_wildcard", "_old_wildcard"))
-    compare_mapW_vs_oldW["mean_ratio"] = compare_mapW_vs_oldW["mean_map_wildcard"] / compare_mapW_vs_oldW["mean_old_wildcard"]
+        compare_mapW_vs_oldW = pd.merge(map_wildcard, old_wildcard, on=["n_blocks", "n_refs"], suffixes=("_map_wildcard", "_old_wildcard"))
+        compare_mapW_vs_oldW["mean_ratio"] = compare_mapW_vs_oldW["mean_map_wildcard"] / compare_mapW_vs_oldW["mean_old_wildcard"]
 
-    compare_mapW_vs_mapSW = pd.merge(map_wildcard, map_sWildcard, on=["n_blocks", "n_refs"], suffixes=("_map_wildcard", "_map_sWildcard"))
-    compare_mapW_vs_mapSW["mean_ratio"] = compare_mapW_vs_mapSW["mean_map_wildcard"] / compare_mapW_vs_mapSW["mean_map_sWildcard"]
+        compare_mapW_vs_mapSW = pd.merge(map_wildcard, map_sWildcard, on=["n_blocks", "n_refs"], suffixes=("_map_wildcard", "_map_sWildcard"))
+        compare_mapW_vs_mapSW["mean_ratio"] = compare_mapW_vs_mapSW["mean_map_wildcard"] / compare_mapW_vs_mapSW["mean_map_sWildcard"]
+    else:
+        compare_oldW_vs_mapSW = pd.merge(old_wildcard, map_sWildcard, on=["program_name"], suffixes=("_old_wildcard", "_map_sWildcard"))
+        compare_oldW_vs_mapSW["mean_ratio"] = compare_oldW_vs_mapSW["mean_old_wildcard"] / compare_oldW_vs_mapSW["mean_map_sWildcard"]
+
+        compare_mapW_vs_oldW = pd.merge(map_wildcard, old_wildcard, on=["program_name"], suffixes=("_map_wildcard", "_old_wildcard"))
+        compare_mapW_vs_oldW["mean_ratio"] = compare_mapW_vs_oldW["mean_map_wildcard"] / compare_mapW_vs_oldW["mean_old_wildcard"]
+
+        compare_mapW_vs_mapSW = pd.merge(map_wildcard, map_sWildcard, on=["program_name"], suffixes=("_map_wildcard", "_map_sWildcard"))
+        compare_mapW_vs_mapSW["mean_ratio"] = compare_mapW_vs_mapSW["mean_map_wildcard"] / compare_mapW_vs_mapSW["mean_map_sWildcard"]
+        print(compare_oldW_vs_mapSW)
     
     return df, compare_oldW_vs_mapSW, compare_mapW_vs_oldW, compare_mapW_vs_mapSW
+
+def plot_ratio_scratter(compare, name):
+    compare.sort_values(["mean_ratio"])
+    df = pd.DataFrame({"program_name": compare["program_name"], "ratio": compare["mean_ratio"], "log_ratio": np.log(compare["mean_ratio"])}).sort_values(["ratio"])
+    labels = df["program_name"]
+    log_ratio = df["log_ratio"]
+
+    programs_where_sWildcard_slower = df[df.ratio < 1]
+    programs_where_sWildcard_faster = df[df.ratio > 1]
+    print(programs_where_sWildcard_slower)
+    
+    with open(f"{name}_ratio.csv", 'w', newline='') as csvfile:
+        csvfile.write(df.to_csv(index=False))
+
+    fig, ax = plt.subplots()
+    # Plot the surface.
+    surf = ax.scatter(labels, log_ratio)
+
+    plt.title(name)
+
+    plt.savefig(f"figures/scatter_{name}.png")
+    plt.show()
+    plt.close()
 
 def plot_ratio(compare, name): 
     
@@ -123,11 +158,13 @@ def plot_ratio(compare, name):
 def plot():    
     df, compare_oldW_vs_mapSW, compare_mapW_vs_oldW, compare_mapW_vs_mapSW = get_data()
     
-    plot_ratio(compare_oldW_vs_mapSW, "oldWildcard_vs_mapSWildcard")
-    plot_ratio(compare_mapW_vs_oldW, "mapWildcard_vs_oldWildcard")
-    plot_ratio(compare_mapW_vs_mapSW, "mapWildcard_vs_mapSWildcard")
-    
-    # return
+    # plot_ratio(compare_oldW_vs_mapSW, "oldWildcard_vs_mapSWildcard")
+    # plot_ratio(compare_mapW_vs_oldW, "mapWildcard_vs_oldWildcard")
+    # plot_ratio(compare_mapW_vs_mapSW, "mapWildcard_vs_mapSWildcard")
+    plot_ratio_scratter(compare_oldW_vs_mapSW, "oldWildcard_vs_mapSWildcard") 
+    plot_ratio_scratter(compare_mapW_vs_oldW, "mapWildcard_vs_oldWildcard")
+    plot_ratio_scratter(compare_mapW_vs_mapSW, "mapWildcard_vs_mapSWildcard")
+    return
     for name, group in df:
         group = group.sort_values(by=["n_blocks", "n_refs"])
         Y = group["n_blocks"]
