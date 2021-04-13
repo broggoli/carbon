@@ -131,7 +131,7 @@ trait PermModule extends Module with CarbonStateComponent {
       * this should only be used temporarily, i.e. if there are two calls to this then the previous tempMask returned
       * will be overwritten in the Boogie code
       */
-  def tempInitMask(rcv: Exp, loc:Exp):(Seq[Exp], Stmt)
+  def tempInitMask(rcv: Exp, loc:Exp):(Seq[Exp], Seq[Exp], Stmt)
 
   def getCurrentAbstractReads(): collection.mutable.ListBuffer[String]
 

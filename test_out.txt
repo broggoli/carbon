@@ -1,0 +1,2194 @@
+[info] welcome to sbt 1.4.4 (AdoptOpenJDK Java 11.0.10)
+[info] loading settings for project carbon-build from plugins.sbt ...
+[info] loading project definition from /home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/clean/carbon/project
+[info] loading settings for project carbon from build.sbt ...
+[info] loading settings for project silver from build.sbt ...
+[info] set current project to Carbon (in build file:/home/nick/Nextcloud/ETH/6th_semester/bachelor_thesis/carbon_fork/clean/carbon/)
+[info] CarbonBackendTypeTest:
+[info] - typeCombinationSuccess (1 second, 790 milliseconds)
+[info] - typeCombinationFail (610 milliseconds)
+[info] - fieldTypeSuccess (576 milliseconds)
+[info] - fieldTypeFail (602 milliseconds)
+[info] - bvOpSuccess (550 milliseconds)
+[info] - bvOpFail (510 milliseconds)
+[info] - floatOpSuccess (518 milliseconds)
+[info] - floatOpFail (526 milliseconds)
+[info] - floatOpFunctionSuccess (635 milliseconds)
+[info] - floatOpFunctionFail (678 milliseconds)
+[info] AllTests:
+[info] - local/placeholder.vpr [carbon-Silver] (632 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 68 msec (Parsing), 33 msec (Semantic Analysis), 17 msec (Translation), 55 msec (Consistency Check), 305 msec (Verification). 
+[info] - all/assume/assume.vpr [carbon-Silver] (1 second, 185 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 90 msec (Parsing), 56 msec (Semantic Analysis), 112 msec (Translation), 39 msec (Consistency Check), 883 msec (Verification). 
+[info] - all/assume/assume10.vpr [carbon-Silver] (949 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 20 msec (Parsing), 18 msec (Semantic Analysis), 28 msec (Translation), 45 msec (Consistency Check), 837 msec (Verification). 
+[info] - all/assume/assume10QP.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/assume/assume10QPpred.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/assume/assume10QPwand.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/basic/abstract_funcs_and_preds.vpr [carbon-Silver] (7 seconds, 85 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 60 msec (Parsing), 32 msec (Semantic Analysis), 26 msec (Translation), 31 msec (Consistency Check), 6.93 sec (Verification). 
+[info] - all/basic/abstract_funcs_and_preds_consistency.vpr [carbon-Silver] (25 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 10 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/basic/arithmetic.vpr [carbon-Silver] (3 seconds, 586 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 17 msec (Semantic Analysis), 9 msec (Translation), 10 msec (Consistency Check), 3.52 sec (Verification). 
+[info] - all/basic/assert.vpr [carbon-Silver] (599 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 589 msec (Verification). 
+[info] - all/basic/consistency1.vpr [carbon-Silver] (46 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 18 msec (Parsing), 12 msec (Semantic Analysis), 4 msec (Translation), 9 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/basic/disjunction_fast_20.vpr [carbon-Silver] (2 seconds, 657 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 157 msec (Parsing), 153 msec (Semantic Analysis), 26 msec (Translation), 59 msec (Consistency Check), 2.26 sec (Verification). 
+[info] - all/basic/disjunction_slow_20.vpr [carbon-Silver] (2 seconds, 251 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 123 msec (Parsing), 95 msec (Semantic Analysis), 18 msec (Translation), 40 msec (Consistency Check), 1.97 sec (Verification). 
+[info] - all/basic/elsif.vpr [carbon-Silver] (612 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 3 msec (Translation), 3 msec (Consistency Check), 595 msec (Verification). 
+[info] - all/basic/fold.vpr [carbon-Silver] (655 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 636 msec (Verification). 
+[info] - all/basic/func.vpr [carbon-Silver] (6 seconds, 226 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 8 msec (Consistency Check), 6.20 sec (Verification). 
+[info] - all/basic/func2.vpr [carbon-Silver] !!! CANCELED !!! (5 seconds, 620 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 3 msec (Semantic Analysis), 5 msec (Translation), 12 msec (Consistency Check), 5.58 sec (Verification). 
+[info] - all/basic/func3.vpr [carbon-Silver] (3 seconds, 702 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 6 msec (Semantic Analysis), 5 msec (Translation), 6 msec (Consistency Check), 3.67 sec (Verification). 
+[info] - all/basic/funcpred.vpr [carbon-Silver] (762 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 8 msec (Semantic Analysis), 4 msec (Translation), 7 msec (Consistency Check), 723 msec (Verification). 
+[info] - all/basic/goto.vpr [carbon-Silver] (609 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 3 msec (Translation), 3 msec (Consistency Check), 598 msec (Verification). 
+[info] - all/basic/heap.vpr [carbon-Silver] (2 seconds, 119 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 8 msec (Translation), 5 msec (Consistency Check), 2.09 sec (Verification). 
+[info] - all/basic/inex.vpr [carbon-Silver] (802 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 2 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 782 msec (Verification). 
+[info] - all/basic/let.vpr [carbon-Silver] (3 seconds, 575 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 5 msec (Semantic Analysis), 4 msec (Translation), 4 msec (Consistency Check), 3.55 sec (Verification). 
+[info] - all/basic/let_consistency_resolver.vpr [carbon-Silver] (12 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/basic/let_consistency_typechecker.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/basic/many_conjuncts.vpr [carbon-Silver] (1 second, 174 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 60 msec (Parsing), 48 msec (Semantic Analysis), 16 msec (Translation), 28 msec (Consistency Check), 1.02 sec (Verification). 
+[info] - all/basic/methods.vpr [carbon-Silver] (6 seconds, 252 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 9 msec (Semantic Analysis), 16 msec (Translation), 20 msec (Consistency Check), 6.18 sec (Verification). 
+[info] - all/basic/names.vpr [carbon-Silver] (464 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 455 msec (Verification). 
+[info] - all/basic/new.vpr [carbon-Silver] (3 seconds, 924 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 6 msec (Semantic Analysis), 6 msec (Translation), 9 msec (Consistency Check), 3.88 sec (Verification). 
+[info] - all/basic/quantifiers.vpr [carbon-Silver] !!! CANCELED !!! (6 seconds, 663 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 173
+[info]   assert.failed:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 117 msec (Parsing), 57 msec (Semantic Analysis), 41 msec (Translation), 39 msec (Consistency Check), 6.40 sec (Verification). 
+[info] - all/basic/regression1.vpr [carbon-Silver] (1 second, 34 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 4 msec (Translation), 5 msec (Consistency Check), 1.01 sec (Verification). 
+[info] - all/basic/syntax.vpr [carbon-Silver] (15 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/basic/syntax2.vpr [carbon-Silver] (990 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 8 msec (Semantic Analysis), 8 msec (Translation), 5 msec (Consistency Check), 960 msec (Verification). 
+[info] - all/basic/unfolding.vpr [carbon-Silver] (9 seconds, 127 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 45 msec (Parsing), 37 msec (Semantic Analysis), 19 msec (Translation), 43 msec (Consistency Check), 8.98 sec (Verification). 
+[info] - all/basic/unique.vpr [carbon-Silver] (1 second, 23 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 1.01 sec (Verification). 
+[info] - all/basic/welldef.vpr [carbon-Silver] (3 seconds, 795 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 12 msec (Translation), 5 msec (Consistency Check), 3.76 sec (Verification). 
+[info] - all/basic/while.vpr [carbon-Silver] (6 seconds, 581 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 24 msec (Parsing), 8 msec (Semantic Analysis), 8 msec (Translation), 25 msec (Consistency Check), 6.51 sec (Verification). 
+[info] - all/chalice/AVLTree.iterative.vpr [carbon-Silver] (38 seconds, 838 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 91 msec (Parsing), 94 msec (Semantic Analysis), 19 msec (Translation), 43 msec (Consistency Check), 38.59 sec (Verification). 
+[info] - all/chalice/FoldUnfoldExperiments.vpr [carbon-Silver] (982 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 10 msec (Semantic Analysis), 2 msec (Translation), 7 msec (Consistency Check), 948 msec (Verification). 
+[info] - all/chalice/RingBufferRd.vpr [carbon-Silver] (7 seconds, 660 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 64 msec (Parsing), 58 msec (Semantic Analysis), 27 msec (Translation), 39 msec (Consistency Check), 7.47 sec (Verification). 
+[info] - all/chalice/cyclic-list.vpr [carbon-Silver] (1 second, 60 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 30 msec (Parsing), 10 msec (Semantic Analysis), 4 msec (Translation), 8 msec (Consistency Check), 1.00 sec (Verification). 
+[info] - all/chalice/framing-fields.vpr [carbon-Silver] (1 second, 344 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 1.32 sec (Verification). 
+[info] - all/chalice/framing-functions.vpr [carbon-Silver] (967 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 940 msec (Verification). 
+[info] - all/chalice/internal-bug-1.vpr [carbon-Silver] (876 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 865 msec (Verification). 
+[info] - all/chalice/internal-bug-2.vpr [carbon-Silver] (946 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 932 msec (Verification). 
+[info] - all/chalice/internal-bug-6.vpr [carbon-Silver] (814 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 4 msec (Translation), 1 msec (Consistency Check), 800 msec (Verification). 
+[info] - all/chalice/internal-bug-7.vpr [carbon-Silver] (870 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 853 msec (Verification). 
+[info] - all/chalice/nestedPredicates.vpr [carbon-Silver] (6 seconds, 863 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 54 msec (Parsing), 31 msec (Semantic Analysis), 9 msec (Translation), 16 msec (Consistency Check), 6.75 sec (Verification). 
+[info] - all/chalice/setset.vpr [carbon-Silver] (1 second, 207 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 19 msec (Parsing), 6 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 1.17 sec (Verification). 
+[info] - all/chalice/swap.vpr [carbon-Silver] (855 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 837 msec (Verification). 
+[info] - all/chalice/test1.vpr [carbon-Silver] (1 second, 602 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 29 msec (Parsing), 12 msec (Semantic Analysis), 5 msec (Translation), 7 msec (Consistency Check), 1.55 sec (Verification). 
+[info] - all/chalice/test10.vpr [carbon-Silver] (1 second, 164 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 1.14 sec (Verification). 
+[info] - all/chalice/test2.vpr [carbon-Silver] (3 seconds, 827 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 10 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 3.79 sec (Verification). 
+[info] - all/chalice/test3.vpr [carbon-Silver] (1 second, 50 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 1.03 sec (Verification). 
+[info] - all/chalice/test7.vpr [carbon-Silver] (7 seconds, 176 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 46 msec (Parsing), 17 msec (Semantic Analysis), 5 msec (Translation), 18 msec (Consistency Check), 7.09 sec (Verification). 
+[info] - all/chalice/test8.vpr [carbon-Silver] (4 seconds, 50 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 30 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 6 msec (Consistency Check), 4.00 sec (Verification). 
+[info] - all/domains/domains.vpr [carbon-Silver] (7 seconds, 358 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 54 msec (Parsing), 47 msec (Semantic Analysis), 29 msec (Translation), 48 msec (Consistency Check), 7.18 sec (Verification). 
+[info] - all/domains/domains2.vpr [carbon-Silver] (1 second, 102 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 2 msec (Semantic Analysis), 6 msec (Translation), 4 msec (Consistency Check), 1.08 sec (Verification). 
+[info] - all/domains/domains_threshold.vpr [carbon-Silver] (895 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 4 msec (Translation), 6 msec (Consistency Check), 869 msec (Verification). 
+[info] - all/domains/domains_underspecified.vpr [carbon-Silver] (832 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 816 msec (Verification). 
+[info] - all/functions/basic.vpr [carbon-Silver] (3 seconds, 869 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 9 msec (Semantic Analysis), 5 msec (Translation), 7 msec (Consistency Check), 3.83 sec (Verification). 
+[info] - all/functions/basic2.vpr [carbon-Silver] (870 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 3 msec (Consistency Check), 859 msec (Verification). 
+[info] - all/functions/framing_abstract_functions.vpr [carbon-Silver] (882 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 867 msec (Verification). 
+[info] - all/functions/functions.vpr [carbon-Silver] (6 seconds, 817 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 2 msec (Translation), 10 msec (Consistency Check), 6.78 sec (Verification). 
+[info] - all/functions/heap_dependent_triggers.vpr [carbon-Silver] *** FAILED *** (6 seconds, 938 milliseconds)
+[info]   2 errors
+[info]   
+[info]   The following outputs were specified to be missing erroneously (MissingOutput) according to the test annotations, but did occur during testing (this might be cause by invalid test annotations):
+[info]     [assert.failed:assertion.false] Assert might fail. Assertion bar01(5) > 0 might not hold. (heap_dependent_triggers.vpr@83.9--83.10)
+[info]     [assert.failed:assertion.false] Assert might fail. Assertion bar01(5) > 0 might not hold. (heap_dependent_triggers.vpr@23.9--23.10) (AnnotationBasedTestSuite.scala:63)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 8 msec (Semantic Analysis), 4 msec (Translation), 7 msec (Consistency Check), 6.89 sec (Verification). 
+[info] - all/functions/linkedlists.vpr [carbon-Silver] (8 seconds, 545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 48 msec (Parsing), 37 msec (Semantic Analysis), 22 msec (Translation), 52 msec (Consistency Check), 8.39 sec (Verification). 
+[info] - all/functions/nested.vpr [carbon-Silver] (6 seconds, 894 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 22 msec (Parsing), 13 msec (Semantic Analysis), 6 msec (Translation), 16 msec (Consistency Check), 6.84 sec (Verification). 
+[info] - all/functions/recursion.vpr [carbon-Silver] (1 second, 56 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 1.04 sec (Verification). 
+[info] - all/functions/recursive_unrolling.vpr [carbon-Silver] (1 second, 209 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 1.18 sec (Verification). 
+[info] - all/functions/unfolding.vpr [carbon-Silver] (6 seconds, 970 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 27 msec (Parsing), 13 msec (Semantic Analysis), 5 msec (Translation), 15 msec (Consistency Check), 6.91 sec (Verification). 
+[info] - all/functions/unfolding_nonnull.vpr [carbon-Silver] !!! CANCELED !!! (917 milliseconds)
+[info]   3 ignored errors
+[info]   assert.failed:assertion.false, issue 26
+[info]   assert.failed:assertion.false, issue 26
+[info]   assert.failed:assertion.false, issue 26 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 899 msec (Verification). 
+[info] - all/heap-dependent_triggers/HeapTriggersForperm.vpr [carbon-Silver] (1 second, 34 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 12 msec (Semantic Analysis), 9 msec (Translation), 10 msec (Consistency Check), 987 msec (Verification). 
+[info] - all/heap-dependent_triggers/heapTriggersInhaleExhale.vpr [carbon-Silver] !!! CANCELED !!! (1 second, 170 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 257 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 11 msec (Semantic Analysis), 7 msec (Translation), 9 msec (Consistency Check), 1.13 sec (Verification). 
+[info] - all/heap-dependent_triggers/heapTriggersNested.vpr [carbon-Silver] (1 second, 31 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 4 msec (Semantic Analysis), 5 msec (Translation), 3 msec (Consistency Check), 1.01 sec (Verification). 
+[info] - all/heap-dependent_triggers/testNonQuant.vpr [carbon-Silver] (923 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 908 msec (Verification). 
+[info] - all/heap-dependent_triggers/triggerFoldPackage.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/heap-dependent_triggers/triggerNotInBody.vpr [carbon-Silver] (920 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 2 msec (Consistency Check), 904 msec (Verification). 
+[info] - all/heap-dependent_triggers/triggerPred.vpr [carbon-Silver] (1 second, 292 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 1.27 sec (Verification). 
+[info] - all/heap-dependent_triggers/triggerWand.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/import/demo/account.vpr [carbon-Silver] (946 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 929 msec (Verification). 
+[info] - all/import/demo/demo.vpr [carbon-Silver] (714 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 692 msec (Verification). 
+[info] - all/import/demo/list.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 539 msec (Verification). 
+[info] - all/import/init_past/liba.vpr [carbon-Silver] (607 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 601 msec (Verification). 
+[info] - all/import/init_past/libb.vpr [carbon-Silver] (562 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 557 msec (Verification). 
+[info] - all/import/init_past/main.vpr [carbon-Silver] (623 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 617 msec (Verification). 
+[info] - all/import/issue203/sub/libA.vpr [carbon-Silver] (502 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 497 msec (Verification). 
+[info] - all/import/issue203/sub/libB.vpr [carbon-Silver] (267 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 265 msec (Verification). 
+[info] - all/import/issue203/main.vpr [carbon-Silver] (508 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 504 msec (Verification). 
+[info] - all/import/loop/liba.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/import/loop/libb.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/import/loop/main.vpr [carbon-Silver] (625 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 620 msec (Verification). 
+[info] - all/import/standard_import/basic.vpr [carbon-Silver] (518 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 512 msec (Verification). 
+[info] - all/import/standard_import/failing.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/import/standard_import/local_and_standard.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 536 msec (Verification). 
+[info] - all/import/standard_import/local_then_standard.vpr [carbon-Silver] (598 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 593 msec (Verification). 
+[info] - all/import/standard_import/loop_both.vpr [carbon-Silver] (530 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 523 msec (Verification). 
+[info] - all/import/standard_import/loop_local.vpr [carbon-Silver] (499 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 494 msec (Verification). 
+[info] - all/import/standard_import/loop_standard.vpr [carbon-Silver] (512 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 506 msec (Verification). 
+[info] - all/inhale_exhale/basic.vpr [carbon-Silver] (6 seconds, 481 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 3 msec (Translation), 3 msec (Consistency Check), 6.46 sec (Verification). 
+[info] - all/inhale_exhale/disjunction.vpr [carbon-Silver] (526 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/inhale_exhale/function_wellformedness.vpr [carbon-Silver] (6 seconds, 204 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 9 msec (Semantic Analysis), 3 msec (Translation), 22 msec (Consistency Check), 6.15 sec (Verification). 
+[info] - all/inhale_exhale/functions.vpr [carbon-Silver] !!! CANCELED !!! (6 seconds, 614 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 7 msec (Semantic Analysis), 2 msec (Translation), 9 msec (Consistency Check), 6.58 sec (Verification). 
+[info] - all/inhale_exhale/loops.vpr [carbon-Silver] (3 seconds, 542 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 8 msec (Consistency Check), 3.51 sec (Verification). 
+[info] - all/inhale_exhale/permissions.vpr [carbon-Silver] (6 seconds, 598 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 11 msec (Semantic Analysis), 4 msec (Translation), 8 msec (Consistency Check), 6.56 sec (Verification). 
+[info] - all/inhale_exhale/pure_expressions.vpr [carbon-Silver] (5 seconds, 981 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 5.96 sec (Verification). 
+[info] - all/inhale_exhale/wellformedness.vpr [carbon-Silver] (6 seconds, 45 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 2 msec (Translation), 7 msec (Consistency Check), 6.01 sec (Verification). 
+[info] - all/invariants/loops1.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/invariants/loops2.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/invariants/while1.vpr [carbon-Silver] !!! CANCELED !!! (2 seconds, 7 milliseconds)
+[info]   2 ignored errors
+[info]   postcondition.violated:insufficient.permission, issue 182
+[info]   postcondition.violated:insufficient.permission, issue 182 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 3 msec (Translation), 8 msec (Consistency Check), 1.98 sec (Verification). 
+[info] - all/invariants/while2.vpr [carbon-Silver] !!! CANCELED !!! (601 milliseconds)
+[info]   1 ignored errors
+[info]   not.wellformed:insufficient.permission, issue 70 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 589 msec (Verification). 
+[info] - all/invariants/while3.vpr [carbon-Silver] !!! CANCELED !!! (599 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 182 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 3 msec (Translation), 2 msec (Consistency Check), 588 msec (Verification). 
+[info] - all/issues/carbon/0002.vpr [carbon-Silver] (262 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 260 msec (Verification). 
+[info] - all/issues/carbon/0004.vpr [carbon-Silver] (496 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 492 msec (Verification). 
+[info] - all/issues/carbon/0005.vpr [carbon-Silver] (485 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 483 msec (Verification). 
+[info] - all/issues/carbon/0006.vpr [carbon-Silver] (490 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 487 msec (Verification). 
+[info] - all/issues/carbon/0008.vpr [carbon-Silver] (587 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 579 msec (Verification). 
+[info] - all/issues/carbon/0012.vpr [carbon-Silver] (571 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 559 msec (Verification). 
+[info] - all/issues/carbon/0030.vpr [carbon-Silver] !!! CANCELED !!! (251 milliseconds)
+[info]   1 ignored errors
+[info]   predicate.not.wellformed:insufficient.permission, issue 30 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 249 msec (Verification). 
+[info] - all/issues/carbon/0042.vpr [carbon-Silver] !!! CANCELED !!! (640 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 42
+[info]   assert.failed:assertion.false, issue 42 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 631 msec (Verification). 
+[info] - all/issues/carbon/0045.vpr [carbon-Silver] (538 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 1 msec (Consistency Check), 530 msec (Verification). 
+[info] - all/issues/carbon/0049.vpr [carbon-Silver] (537 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 528 msec (Verification). 
+[info] - all/issues/carbon/0052.vpr [carbon-Silver] (499 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/carbon/0053.vpr [carbon-Silver] (557 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 551 msec (Verification). 
+[info] - all/issues/carbon/0054.vpr [carbon-Silver] (528 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 522 msec (Verification). 
+[info] - all/issues/carbon/0055.vpr [carbon-Silver] (629 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 616 msec (Verification). 
+[info] - all/issues/carbon/0056.vpr [carbon-Silver] (687 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 660 msec (Verification). 
+[info] - all/issues/carbon/0059-1.vpr [carbon-Silver] (518 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 512 msec (Verification). 
+[info] - all/issues/carbon/0059-2.vpr [carbon-Silver] (530 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 520 msec (Verification). 
+[info] - all/issues/carbon/0059-3.vpr [carbon-Silver] (512 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/carbon/0059.vpr [carbon-Silver] (527 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/issues/carbon/0060.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 533 msec (Verification). 
+[info] - all/issues/carbon/0061.vpr [carbon-Silver] (553 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 547 msec (Verification). 
+[info] - all/issues/carbon/0063-1.vpr [carbon-Silver] (4 seconds, 979 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 4.96 sec (Verification). 
+[info] - all/issues/carbon/0063.vpr [carbon-Silver] (509 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 504 msec (Verification). 
+[info] - all/issues/carbon/0064.vpr [carbon-Silver] (525 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 520 msec (Verification). 
+[info] - all/issues/carbon/0065.vpr [carbon-Silver] (472 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 470 msec (Verification). 
+[info] - all/issues/carbon/0066.vpr [carbon-Silver] (6 seconds, 529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 6.51 sec (Verification). 
+[info] - all/issues/carbon/0067.vpr [carbon-Silver] (536 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 527 msec (Verification). 
+[info] - all/issues/carbon/0069.vpr [carbon-Silver] !!! CANCELED !!! (552 milliseconds)
+[info]   1 ignored errors
+[info]   postcondition.violated:assertion.false, issue 69 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 548 msec (Verification). 
+[info] - all/issues/carbon/0070.vpr [carbon-Silver] !!! CANCELED !!! (512 milliseconds)
+[info]   2 ignored errors
+[info]   not.wellformed:insufficient.permission, issue 70
+[info]   assignment.failed:insufficient.permission, issue 70 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 505 msec (Verification). 
+[info] - all/issues/carbon/0072.vpr [carbon-Silver] (505 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 502 msec (Verification). 
+[info] - all/issues/carbon/0073.vpr [carbon-Silver] !!! CANCELED !!! (548 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 73 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 543 msec (Verification). 
+[info] - all/issues/carbon/0074.vpr [carbon-Silver] (491 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 487 msec (Verification). 
+[info] - all/issues/carbon/0076.vpr [carbon-Silver] (1 second, 33 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 1.02 sec (Verification). 
+[info] - all/issues/carbon/0080.vpr [carbon-Silver] (580 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 563 msec (Verification). 
+[info] - all/issues/carbon/0081.vpr [carbon-Silver] (508 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 504 msec (Verification). 
+[info] - all/issues/carbon/0082.vpr [carbon-Silver] (498 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/carbon/0092.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/carbon/0095.vpr [carbon-Silver] (496 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 494 msec (Verification). 
+[info] - all/issues/carbon/0097.vpr [carbon-Silver] (590 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 581 msec (Verification). 
+[info] - all/issues/carbon/0100.vpr [carbon-Silver] (516 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/carbon/0112.vpr [carbon-Silver] (6 seconds, 499 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 6 msec (Consistency Check), 6.48 sec (Verification). 
+[info] - all/issues/carbon/0118.vpr [carbon-Silver] (602 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 590 msec (Verification). 
+[info] - all/issues/carbon/0122.vpr [carbon-Silver] (537 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 529 msec (Verification). 
+[info] - all/issues/carbon/0125.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 1 msec (Consistency Check), 536 msec (Verification). 
+[info] - all/issues/carbon/0137.vpr [carbon-Silver] (557 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 550 msec (Verification). 
+[info] - all/issues/carbon/0149.vpr [carbon-Silver] (510 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/carbon/0150.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 539 msec (Verification). 
+[info] - all/issues/carbon/0151.vpr [carbon-Silver] (562 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 3 msec (Consistency Check), 552 msec (Verification). 
+[info] - all/issues/carbon/0157.vpr [carbon-Silver] (507 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 497 msec (Verification). 
+[info] - all/issues/carbon/0160.vpr [carbon-Silver] (558 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 547 msec (Verification). 
+[info] - all/issues/carbon/0165.vpr [carbon-Silver] (485 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 482 msec (Verification). 
+[info] - all/issues/carbon/0170.vpr [carbon-Silver] (529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 519 msec (Verification). 
+[info] - all/issues/carbon/0172.vpr [carbon-Silver] !!! CANCELED !!! (559 milliseconds)
+[info]   1 ignored errors
+[info]   postcondition.violated:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 555 msec (Verification). 
+[info] - all/issues/carbon/0173.vpr [carbon-Silver] !!! CANCELED !!! (541 milliseconds)
+[info]   1 ignored errors
+[info]   postcondition.violated:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 537 msec (Verification). 
+[info] - all/issues/carbon/0177.vpr [carbon-Silver] (525 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 522 msec (Verification). 
+[info] - all/issues/carbon/0178.vpr [carbon-Silver] (568 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/carbon/0179.vpr [carbon-Silver] (515 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/carbon/0181.vpr [carbon-Silver] (583 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/issues/carbon/0188.vpr [carbon-Silver] (567 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 563 msec (Verification). 
+[info] - all/issues/carbon/0192.vpr [carbon-Silver] (542 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/carbon/0195.vpr [carbon-Silver] (517 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 513 msec (Verification). 
+[info] - all/issues/carbon/0196.vpr [carbon-Silver] (6 seconds, 153 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 6 msec (Consistency Check), 6.13 sec (Verification). 
+[info] - all/issues/carbon/0200.vpr [carbon-Silver] (574 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 568 msec (Verification). 
+[info] - all/issues/carbon/0202.vpr [carbon-Silver] !!! CANCELED !!! (560 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 202 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 4 msec (Translation), 4 msec (Consistency Check), 543 msec (Verification). 
+[info] - all/issues/carbon/0203.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/carbon/0204.vpr [carbon-Silver] (627 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 617 msec (Verification). 
+[info] - all/issues/carbon/0206.vpr [carbon-Silver] (648 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 4 msec (Semantic Analysis), 4 msec (Translation), 6 msec (Consistency Check), 624 msec (Verification). 
+[info] - all/issues/carbon/0207.vpr [carbon-Silver] (695 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 5 msec (Translation), 7 msec (Consistency Check), 660 msec (Verification). 
+[info] - all/issues/carbon/0209.vpr [carbon-Silver] (596 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 583 msec (Verification). 
+[info] - all/issues/carbon/0210.vpr [carbon-Silver] (910 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 51 msec (Parsing), 10 msec (Semantic Analysis), 6 msec (Translation), 8 msec (Consistency Check), 834 msec (Verification). 
+[info] - all/issues/carbon/0211.vpr [carbon-Silver] (502 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 498 msec (Verification). 
+[info] - all/issues/carbon/0213.vpr [carbon-Silver] (508 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 504 msec (Verification). 
+[info] - all/issues/carbon/0219.vpr [carbon-Silver] (529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/issues/carbon/0221.vpr [carbon-Silver] (546 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 541 msec (Verification). 
+[info] - all/issues/carbon/0222.vpr [carbon-Silver] (544 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 538 msec (Verification). 
+[info] - all/issues/carbon/0223.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/carbon/0236.vpr [carbon-Silver] (581 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/carbon/0237.vpr [carbon-Silver] (568 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 559 msec (Verification). 
+[info] - all/issues/carbon/0238.vpr [carbon-Silver] (605 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 4 msec (Translation), 2 msec (Consistency Check), 593 msec (Verification). 
+[info] - all/issues/carbon/0239.vpr [carbon-Silver] (550 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 546 msec (Verification). 
+[info] - all/issues/carbon/0240.vpr [carbon-Silver] (482 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 480 msec (Verification). 
+[info] - all/issues/carbon/0241.vpr [carbon-Silver] (516 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 508 msec (Verification). 
+[info] - all/issues/carbon/0251.vpr [carbon-Silver] (491 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 488 msec (Verification). 
+[info] - all/issues/carbon/0259.vpr [carbon-Silver] !!! CANCELED !!! (568 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 259
+[info]   assert.failed:assertion.false, issue 259 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 560 msec (Verification). 
+[info] - all/issues/carbon/0262.vpr [carbon-Silver] (529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 520 msec (Verification). 
+[info] - all/issues/carbon/0264.vpr [carbon-Silver] (5 seconds, 57 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 5.04 sec (Verification). 
+[info] - all/issues/carbon/0265.vpr [carbon-Silver] (564 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 559 msec (Verification). 
+[info] - all/issues/carbon/0271.vpr [carbon-Silver] (694 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 672 msec (Verification). 
+[info] - all/issues/carbon/0274.vpr [carbon-Silver] (588 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/issues/carbon/0279.vpr [carbon-Silver] (570 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 567 msec (Verification). 
+[info] - all/issues/carbon/0282.vpr [carbon-Silver] (624 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 613 msec (Verification). 
+[info] - all/issues/carbon/0349.vpr [carbon-Silver] (570 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 565 msec (Verification). 
+[info] - all/issues/carbon/0364.vpr [carbon-Silver] (27 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 3 msec (Semantic Analysis), 4 msec (Translation), 5 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silicon/0005a.vpr [carbon-Silver] !!! CANCELED !!! (690 milliseconds)
+[info]   1 ignored errors
+[info]   postcondition.violated:assertion.false, issue 39 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 676 msec (Verification). 
+[info] - all/issues/silicon/0005b.vpr [carbon-Silver] (6 seconds, 737 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 28 msec (Parsing), 9 msec (Semantic Analysis), 5 msec (Translation), 13 msec (Consistency Check), 6.68 sec (Verification). 
+[info] - all/issues/silicon/0006.vpr [carbon-Silver] (553 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 549 msec (Verification). 
+[info] - all/issues/silicon/0008.vpr [carbon-Silver] (571 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 564 msec (Verification). 
+[info] - all/issues/silicon/0011.vpr [carbon-Silver] (2 seconds, 214 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 8 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 2.18 sec (Verification). 
+[info] - all/issues/silicon/0030.vpr [carbon-Silver] (705 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 693 msec (Verification). 
+[info] - all/issues/silicon/0033.vpr [carbon-Silver] (3 seconds, 583 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 3.56 sec (Verification). 
+[info] - all/issues/silicon/0034.vpr [carbon-Silver] (642 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 639 msec (Verification). 
+[info] - all/issues/silicon/0037.vpr [carbon-Silver] (550 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silicon/0039a.vpr [carbon-Silver] (675 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 666 msec (Verification). 
+[info] - all/issues/silicon/0039b.vpr [carbon-Silver] (661 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 648 msec (Verification). 
+[info] - all/issues/silicon/0041.vpr [carbon-Silver] (657 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 644 msec (Verification). 
+[info] - all/issues/silicon/0042.vpr [carbon-Silver] (2 seconds, 7 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 2.00 sec (Verification). 
+[info] - all/issues/silicon/0043.vpr [carbon-Silver] (497 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 494 msec (Verification). 
+[info] - all/issues/silicon/0045.vpr [carbon-Silver] (686 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 46 msec (Parsing), 26 msec (Semantic Analysis), 11 msec (Translation), 19 msec (Consistency Check), 584 msec (Verification). 
+[info] - all/issues/silicon/0046.vpr [carbon-Silver] (503 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 497 msec (Verification). 
+[info] - all/issues/silicon/0047.vpr [carbon-Silver] (526 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 520 msec (Verification). 
+[info] - all/issues/silicon/0053.vpr [carbon-Silver] (525 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 519 msec (Verification). 
+[info] - all/issues/silicon/0054.vpr [carbon-Silver] (501 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 498 msec (Verification). 
+[info] - all/issues/silicon/0057.vpr [carbon-Silver] (524 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 519 msec (Verification). 
+[info] - all/issues/silicon/0072.vpr [carbon-Silver] (2 seconds, 14 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 8 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 1.99 sec (Verification). 
+[info] - all/issues/silicon/0075_AVLTree.nokeys.vpr [carbon-Silver] (15 seconds, 200 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 56 msec (Parsing), 31 msec (Semantic Analysis), 10 msec (Translation), 24 msec (Consistency Check), 15.08 sec (Verification). 
+[info] - all/issues/silicon/0083.vpr [carbon-Silver] (3 seconds, 511 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 3.50 sec (Verification). 
+[info] - all/issues/silicon/0084.vpr [carbon-Silver] (522 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 517 msec (Verification). 
+[info] - all/issues/silicon/0087.vpr [carbon-Silver] (557 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 545 msec (Verification). 
+[info] - all/issues/silicon/0088.vpr [carbon-Silver] (563 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 555 msec (Verification). 
+[info] - all/issues/silicon/0091.vpr [carbon-Silver] (559 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 553 msec (Verification). 
+[info] - all/issues/silicon/0092.vpr [carbon-Silver] (1 second, 93 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 1.08 sec (Verification). 
+[info] - all/issues/silicon/0094.vpr [carbon-Silver] (493 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 490 msec (Verification). 
+[info] - all/issues/silicon/0097.vpr [carbon-Silver] (593 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 581 msec (Verification). 
+[info] - all/issues/silicon/0110.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silicon/0112.vpr [carbon-Silver] (568 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/silicon/0113.vpr [carbon-Silver] (611 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 599 msec (Verification). 
+[info] - all/issues/silicon/0114.vpr [carbon-Silver] (5 seconds, 45 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 3 msec (Translation), 6 msec (Consistency Check), 5.02 sec (Verification). 
+[info] - all/issues/silicon/0117.vpr [carbon-Silver] (570 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 564 msec (Verification). 
+[info] - all/issues/silicon/0118-reduced.vpr [carbon-Silver] (553 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 547 msec (Verification). 
+[info] - all/issues/silicon/0118.vpr [carbon-Silver] (602 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 582 msec (Verification). 
+[info] - all/issues/silicon/0119.vpr [carbon-Silver] (579 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 565 msec (Verification). 
+[info] - all/issues/silicon/0120a.vpr [carbon-Silver] (3 seconds, 91 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 3.07 sec (Verification). 
+[info] - all/issues/silicon/0120b.vpr [carbon-Silver] (685 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 669 msec (Verification). 
+[info] - all/issues/silicon/0127.vpr [carbon-Silver] (279 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 276 msec (Verification). 
+[info] - all/issues/silicon/0134.vpr [carbon-Silver] (4 seconds, 990 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 4.98 sec (Verification). 
+[info] - all/issues/silicon/0135.vpr [carbon-Silver] !!! CANCELED !!! (597 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 42
+[info]   assert.failed:assertion.false, issue 42 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 587 msec (Verification). 
+[info] - all/issues/silicon/0138.vpr [carbon-Silver] (559 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 550 msec (Verification). 
+[info] - all/issues/silicon/0144.vpr [carbon-Silver] (585 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 3 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 573 msec (Verification). 
+[info] - all/issues/silicon/0146.vpr [carbon-Silver] (547 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 539 msec (Verification). 
+[info] - all/issues/silicon/0152.vpr [carbon-Silver] (549 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 545 msec (Verification). 
+[info] - all/issues/silicon/0153.vpr [carbon-Silver] !!! CANCELED !!! (571 milliseconds)
+[info]   2 ignored errors
+[info]   postcondition.violated:assertion.false, issue 173
+[info]   postcondition.violated:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 564 msec (Verification). 
+[info] - all/issues/silicon/0154-1.vpr [carbon-Silver] (6 seconds, 755 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 31 msec (Parsing), 10 msec (Semantic Analysis), 3 msec (Translation), 8 msec (Consistency Check), 6.70 sec (Verification). 
+[info] - all/issues/silicon/0154.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 537 msec (Verification). 
+[info] - all/issues/silicon/0155.vpr [carbon-Silver] (540 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 532 msec (Verification). 
+[info] - all/issues/silicon/0157-1.vpr [carbon-Silver] (639 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 624 msec (Verification). 
+[info] - all/issues/silicon/0157.vpr [carbon-Silver] (6 seconds, 531 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/issues/silicon/0159.vpr [carbon-Silver] (534 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 530 msec (Verification). 
+[info] - all/issues/silicon/0161.vpr [carbon-Silver] (6 seconds, 518 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 3 msec (Consistency Check), 6.51 sec (Verification). 
+[info] - all/issues/silicon/0162.vpr [carbon-Silver] !!! CANCELED !!! (539 milliseconds)
+[info]   2 ignored errors
+[info]   postcondition.violated:assertion.false, issue 69
+[info]   postcondition.violated:assertion.false, issue 69 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silicon/0163.vpr [carbon-Silver] (6 seconds, 517 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 6.51 sec (Verification). 
+[info] - all/issues/silicon/0164.vpr [carbon-Silver] (532 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 526 msec (Verification). 
+[info] - all/issues/silicon/0165.vpr [carbon-Silver] !!! CANCELED !!! (512 milliseconds)
+[info]   2 ignored errors
+[info]   not.wellformed:insufficient.permission, issue 70
+[info]   assignment.failed:insufficient.permission, issue 70 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/silicon/0166.vpr [carbon-Silver] (541 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silicon/0167.vpr [carbon-Silver] (554 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 549 msec (Verification). 
+[info] - all/issues/silicon/0171.vpr [carbon-Silver] (558 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 553 msec (Verification). 
+[info] - all/issues/silicon/0172.vpr [carbon-Silver] (3 seconds, 317 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 7 msec (Consistency Check), 3.29 sec (Verification). 
+[info] - all/issues/silicon/0183.vpr [carbon-Silver] !!! CANCELED !!! (1 second, 970 milliseconds)
+[info]   4 ignored errors
+[info]   not.wellformed:insufficient.permission, issue 83
+[info]   assert.failed:assertion.false, issue 83
+[info]   assert.failed:insufficient.permission, issue 83
+[info]   assert.failed:assertion.false, issue 83 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 1.96 sec (Verification). 
+[info] - all/issues/silicon/0186.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0195.vpr [carbon-Silver] (639 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 633 msec (Verification). 
+[info] - all/issues/silicon/0197.vpr [carbon-Silver] (650 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 641 msec (Verification). 
+[info] - all/issues/silicon/0199.vpr [carbon-Silver] (641 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 627 msec (Verification). 
+[info] - all/issues/silicon/0200.vpr [carbon-Silver] (546 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 540 msec (Verification). 
+[info] - all/issues/silicon/0203.vpr [carbon-Silver] (522 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 516 msec (Verification). 
+[info] - all/issues/silicon/0207.vpr [carbon-Silver] (613 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 1 msec (Consistency Check), 604 msec (Verification). 
+[info] - all/issues/silicon/0209.vpr [carbon-Silver] (264 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 258 msec (Verification). 
+[info] - all/issues/silicon/0210.vpr [carbon-Silver] (602 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 585 msec (Verification). 
+[info] - all/issues/silicon/0213.vpr [carbon-Silver] (890 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 28 msec (Parsing), 7 msec (Semantic Analysis), 3 msec (Translation), 6 msec (Consistency Check), 845 msec (Verification). 
+[info] - all/issues/silicon/0215.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silicon/0216.vpr [carbon-Silver] (273 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 270 msec (Verification). 
+[info] - all/issues/silicon/0217.vpr [carbon-Silver] (492 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 489 msec (Verification). 
+[info] - all/issues/silicon/0219.vpr [carbon-Silver] (530 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 524 msec (Verification). 
+[info] - all/issues/silicon/0221.vpr [carbon-Silver] !!! CANCELED !!! (746 milliseconds)
+[info]   2 ignored errors
+[info]   wand.not.wellformed, issue 105
+[info]   package.failed:insufficient.permission, issue 105 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 6 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 723 msec (Verification). 
+[info] - all/issues/silicon/0222.vpr [carbon-Silver] (259 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 257 msec (Verification). 
+[info] - all/issues/silicon/0224.vpr [carbon-Silver] (2 seconds, 83 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 34 msec (Parsing), 10 msec (Semantic Analysis), 4 msec (Translation), 10 msec (Consistency Check), 2.02 sec (Verification). 
+[info] - all/issues/silicon/0225.vpr [carbon-Silver] (641 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 633 msec (Verification). 
+[info] - all/issues/silicon/0227.vpr [carbon-Silver] (530 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 519 msec (Verification). 
+[info] - all/issues/silicon/0228a.vpr [carbon-Silver] (588 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 573 msec (Verification). 
+[info] - all/issues/silicon/0228b.vpr [carbon-Silver] (569 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 561 msec (Verification). 
+[info] - all/issues/silicon/0228c.vpr [carbon-Silver] (3 seconds, 520 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 3.50 sec (Verification). 
+[info] - all/issues/silicon/0229.vpr [carbon-Silver] (869 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 849 msec (Verification). 
+[info] - all/issues/silicon/0231.vpr [carbon-Silver] (6 seconds, 544 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/issues/silicon/0232.vpr [carbon-Silver] (5 seconds, 8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 4.98 sec (Verification). 
+[info] - all/issues/silicon/0236.vpr [carbon-Silver] (556 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 554 msec (Verification). 
+[info] - all/issues/silicon/0237.vpr [carbon-Silver] (6 seconds, 539 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/issues/silicon/0240.vpr [carbon-Silver] (6 seconds, 626 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 6.60 sec (Verification). 
+[info] - all/issues/silicon/0241.vpr [carbon-Silver] (576 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 560 msec (Verification). 
+[info] - all/issues/silicon/0242a.vpr [carbon-Silver] (564 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 557 msec (Verification). 
+[info] - all/issues/silicon/0242b.vpr [carbon-Silver] (624 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 596 msec (Verification). 
+[info] - all/issues/silicon/0249.vpr [carbon-Silver] (519 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 513 msec (Verification). 
+[info] - all/issues/silicon/0252.vpr [carbon-Silver] (564 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 552 msec (Verification). 
+[info] - all/issues/silicon/0263.vpr [carbon-Silver] (483 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 481 msec (Verification). 
+[info] - all/issues/silicon/0264.vpr [carbon-Silver] (588 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 581 msec (Verification). 
+[info] - all/issues/silicon/0267a.vpr [carbon-Silver] (5 seconds, 23 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 5.02 sec (Verification). 
+[info] - all/issues/silicon/0267b.vpr [carbon-Silver] (573 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 567 msec (Verification). 
+[info] - all/issues/silicon/0269.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0270.vpr [carbon-Silver] (541 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 535 msec (Verification). 
+[info] - all/issues/silicon/0271.vpr [carbon-Silver] (572 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/silicon/0276.vpr [carbon-Silver] (566 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 560 msec (Verification). 
+[info] - all/issues/silicon/0277.vpr [carbon-Silver] (485 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 482 msec (Verification). 
+[info] - all/issues/silicon/0279.vpr [carbon-Silver] (655 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 645 msec (Verification). 
+[info] - all/issues/silicon/0281.vpr [carbon-Silver] (549 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 542 msec (Verification). 
+[info] - all/issues/silicon/0282.vpr [carbon-Silver] !!! CANCELED !!! (6 seconds, 609 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 242 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 7 msec (Consistency Check), 6.58 sec (Verification). 
+[info] - all/issues/silicon/0283.vpr [carbon-Silver] (559 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 551 msec (Verification). 
+[info] - all/issues/silicon/0285.vpr [carbon-Silver] (730 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 5 msec (Translation), 6 msec (Consistency Check), 703 msec (Verification). 
+[info] - all/issues/silicon/0286.vpr [carbon-Silver] (861 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 837 msec (Verification). 
+[info] - all/issues/silicon/0287.vpr [carbon-Silver] (260 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 258 msec (Verification). 
+[info] - all/issues/silicon/0288.vpr [carbon-Silver] (553 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 542 msec (Verification). 
+[info] - all/issues/silicon/0290.vpr [carbon-Silver] (581 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 569 msec (Verification). 
+[info] - all/issues/silicon/0291.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silicon/0292.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0293.vpr [carbon-Silver] !!! CANCELED !!! (550 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 126 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 545 msec (Verification). 
+[info] - all/issues/silicon/0294.vpr [carbon-Silver] (609 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 599 msec (Verification). 
+[info] - all/issues/silicon/0297.vpr [carbon-Silver] (514 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/silicon/0299.vpr [carbon-Silver] (592 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 571 msec (Verification). 
+[info] - all/issues/silicon/0302.vpr [carbon-Silver] (854 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 50 msec (Parsing), 48 msec (Semantic Analysis), 11 msec (Translation), 27 msec (Consistency Check), 717 msec (Verification). 
+[info] - all/issues/silicon/0310a.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0310b.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0312.vpr [carbon-Silver] (646 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 628 msec (Verification). 
+[info] - all/issues/silicon/0313a.vpr [carbon-Silver] (527 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 523 msec (Verification). 
+[info] - all/issues/silicon/0313b.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0314.vpr [carbon-Silver] !!! CANCELED !!! (580 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 257
+[info]   assert.failed:assertion.false, issue 257 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 568 msec (Verification). 
+[info] - all/issues/silicon/0314a.vpr [carbon-Silver] (594 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 579 msec (Verification). 
+[info] - all/issues/silicon/0314b.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 537 msec (Verification). 
+[info] - all/issues/silicon/0314d.vpr [carbon-Silver] (587 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 565 msec (Verification). 
+[info] - all/issues/silicon/0319.vpr [carbon-Silver] (520 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 514 msec (Verification). 
+[info] - all/issues/silicon/0324.vpr [carbon-Silver] (524 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 520 msec (Verification). 
+[info] - all/issues/silicon/0326.vpr [carbon-Silver] (530 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 526 msec (Verification). 
+[info] - all/issues/silicon/0328a.vpr [carbon-Silver] (506 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 482 msec (Verification). 
+[info] - all/issues/silicon/0328b.vpr [carbon-Silver] (560 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 3 msec (Translation), 6 msec (Consistency Check), 529 msec (Verification). 
+[info] - all/issues/silicon/0331.vpr [carbon-Silver] (614 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 604 msec (Verification). 
+[info] - all/issues/silicon/0333.vpr [carbon-Silver] (575 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 567 msec (Verification). 
+[info] - all/issues/silicon/0334.vpr [carbon-Silver] (664 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 4 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 650 msec (Verification). 
+[info] - all/issues/silicon/0335.vpr [carbon-Silver] (1 second, 821 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 1.81 sec (Verification). 
+[info] - all/issues/silicon/0336a.vpr [carbon-Silver] (686 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 679 msec (Verification). 
+[info] - all/issues/silicon/0336b.vpr [carbon-Silver] (729 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 718 msec (Verification). 
+[info] - all/issues/silicon/0340.vpr [carbon-Silver] (602 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 595 msec (Verification). 
+[info] - all/issues/silicon/0345.vpr [carbon-Silver] (566 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 558 msec (Verification). 
+[info] - all/issues/silicon/0346.vpr [carbon-Silver] (567 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/silicon/0348.vpr [carbon-Silver] (6 seconds, 523 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 6.51 sec (Verification). 
+[info] - all/issues/silicon/0351.vpr [carbon-Silver] (607 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 592 msec (Verification). 
+[info] - all/issues/silicon/0352.vpr [carbon-Silver] (4 seconds, 974 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 4.97 sec (Verification). 
+[info] - all/issues/silicon/0362.vpr [carbon-Silver] (613 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 595 msec (Verification). 
+[info] - all/issues/silicon/0365.vpr [carbon-Silver] (1 second, 986 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 1.97 sec (Verification). 
+[info] - all/issues/silicon/0368.vpr [carbon-Silver] (516 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 512 msec (Verification). 
+[info] - all/issues/silicon/0370.vpr [carbon-Silver] (626 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 606 msec (Verification). 
+[info] - all/issues/silicon/0378a.vpr [carbon-Silver] (529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 516 msec (Verification). 
+[info] - all/issues/silicon/0378b.vpr [carbon-Silver] (521 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 516 msec (Verification). 
+[info] - all/issues/silicon/0379a.vpr [carbon-Silver] (596 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 585 msec (Verification). 
+[info] - all/issues/silicon/0379b.vpr [carbon-Silver] (516 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/silicon/0381.vpr [carbon-Silver] (539 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 535 msec (Verification). 
+[info] - all/issues/silicon/0383a.vpr [carbon-Silver] (567 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 559 msec (Verification). 
+[info] - all/issues/silicon/0383b.vpr [carbon-Silver] (568 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 561 msec (Verification). 
+[info] - all/issues/silicon/0384.sil [carbon-Silver] (518 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 512 msec (Verification). 
+[info] - all/issues/silicon/0384.vpr [carbon-Silver] (516 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 511 msec (Verification). 
+[info] - all/issues/silicon/0385.vpr [carbon-Silver] (5 seconds, 25 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 5.01 sec (Verification). 
+[info] - all/issues/silicon/0388.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0393a.vpr [carbon-Silver] (549 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 529 msec (Verification). 
+[info] - all/issues/silicon/0393b.vpr [carbon-Silver] (506 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 500 msec (Verification). 
+[info] - all/issues/silicon/0394.vpr [carbon-Silver] (524 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 517 msec (Verification). 
+[info] - all/issues/silicon/0395a.vpr [carbon-Silver] (564 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 556 msec (Verification). 
+[info] - all/issues/silicon/0395b.vpr [carbon-Silver] (497 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 493 msec (Verification). 
+[info] - all/issues/silicon/0400.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0409.vpr [carbon-Silver] (598 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 590 msec (Verification). 
+[info] - all/issues/silicon/0483a.vpr [carbon-Silver] (892 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 9 msec (Semantic Analysis), 4 msec (Translation), 9 msec (Consistency Check), 857 msec (Verification). 
+[info] - all/issues/silicon/0483b.vpr [carbon-Silver] (577 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 561 msec (Verification). 
+[info] - all/issues/silicon/0484.vpr [carbon-Silver] (557 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 549 msec (Verification). 
+[info] - all/issues/silicon/0491.vpr [carbon-Silver] !!! CANCELED !!! (585 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 360 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 577 msec (Verification). 
+[info] - all/issues/silicon/0493a.vpr [carbon-Silver] (565 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 559 msec (Verification). 
+[info] - all/issues/silicon/0493b.vpr [carbon-Silver] (6 seconds, 728 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 33 msec (Parsing), 10 msec (Semantic Analysis), 5 msec (Translation), 9 msec (Consistency Check), 6.67 sec (Verification). 
+[info] - all/issues/silicon/0493c.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0496.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silicon/0502.vpr [carbon-Silver] (5 seconds, 11 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 4.99 sec (Verification). 
+[info] - all/issues/silicon/0505.vpr [carbon-Silver] (590 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 580 msec (Verification). 
+[info] - all/issues/silicon/0508a.vpr [carbon-Silver] !!! CANCELED !!! (2 seconds, 68 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:receiver.not.injective, issue 361 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 7 msec (Semantic Analysis), 4 msec (Translation), 10 msec (Consistency Check), 2.04 sec (Verification). 
+[info] - all/issues/silicon/0508b.vpr [carbon-Silver] (527 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 516 msec (Verification). 
+[info] - all/issues/silicon/0509.vpr [carbon-Silver] (641 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 620 msec (Verification). 
+[info] - all/issues/silicon/0512.vpr [carbon-Silver] (3 seconds, 613 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 23 msec (Parsing), 11 msec (Semantic Analysis), 4 msec (Translation), 8 msec (Consistency Check), 3.57 sec (Verification). 
+[info] - all/issues/silicon/unofficial001.vpr [carbon-Silver] (529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/issues/silicon/unofficial002.vpr [carbon-Silver] (639 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 626 msec (Verification). 
+[info] - all/issues/silicon/unofficial003.vpr [carbon-Silver] (3 seconds, 605 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 3.58 sec (Verification). 
+[info] - all/issues/silicon/unofficial004.vpr [carbon-Silver] (532 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 524 msec (Verification). 
+[info] - all/issues/silicon/unofficial005.vpr [carbon-Silver] (568 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 566 msec (Verification). 
+[info] - all/issues/silicon/unofficial006.vpr [carbon-Silver] (511 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/silicon/unofficial007.vpr [carbon-Silver] (653 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 640 msec (Verification). 
+[info] - all/issues/silicon/unofficial008.vpr [carbon-Silver] (556 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 547 msec (Verification). 
+[info] - all/issues/silver/0003.vpr [carbon-Silver] (594 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 586 msec (Verification). 
+[info] - all/issues/silver/0004.vpr [carbon-Silver] (526 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 522 msec (Verification). 
+[info] - all/issues/silver/0007.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0008.vpr [carbon-Silver] (2 seconds, 58 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 2.04 sec (Verification). 
+[info] - all/issues/silver/0009.vpr [carbon-Silver] (534 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 531 msec (Verification). 
+[info] - all/issues/silver/0010.vpr [carbon-Silver] (592 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 587 msec (Verification). 
+[info] - all/issues/silver/0011.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0012.vpr [carbon-Silver] (267 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 264 msec (Verification). 
+[info] - all/issues/silver/0013.vpr [carbon-Silver] (500 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 498 msec (Verification). 
+[info] - all/issues/silver/0014.vpr [carbon-Silver] (298 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 296 msec (Verification). 
+[info] - all/issues/silver/0015.vpr [carbon-Silver] (593 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 590 msec (Verification). 
+[info] - all/issues/silver/0017.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0018.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0019.vpr [carbon-Silver] (540 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 536 msec (Verification). 
+[info] - all/issues/silver/0021.vpr [carbon-Silver] (503 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 498 msec (Verification). 
+[info] - all/issues/silver/0022.vpr [carbon-Silver] (524 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/issues/silver/0024.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0025.vpr [carbon-Silver] (547 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 541 msec (Verification). 
+[info] - all/issues/silver/0026.vpr [carbon-Silver] (4 seconds, 962 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 1 msec (Consistency Check), 4.95 sec (Verification). 
+[info] - all/issues/silver/0027.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0029.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0030.vpr [carbon-Silver] (506 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 501 msec (Verification). 
+[info] - all/issues/silver/0031.vpr [carbon-Silver] (479 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 476 msec (Verification). 
+[info] - all/issues/silver/0033.vpr [carbon-Silver] (494 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 491 msec (Verification). 
+[info] - all/issues/silver/0035.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0036.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0037.vpr [carbon-Silver] (474 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 470 msec (Verification). 
+[info] - all/issues/silver/0038-1.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0038.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0039.vpr [carbon-Silver] (10 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0040.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0046a.vpr [carbon-Silver] (491 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 488 msec (Verification). 
+[info] - all/issues/silver/0046b.vpr [carbon-Silver] (494 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 486 msec (Verification). 
+[info] - all/issues/silver/0047.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0047b.vpr [carbon-Silver] (509 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/silver/0048.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0050.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0051.vpr [carbon-Silver] (501 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 498 msec (Verification). 
+[info] - all/issues/silver/0054.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0056.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0059.vpr [carbon-Silver] (558 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 1 msec (Consistency Check), 545 msec (Verification). 
+[info] - all/issues/silver/0062.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0063.vpr [carbon-Silver] (3 seconds, 471 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 3.46 sec (Verification). 
+[info] - all/issues/silver/0065.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0067.vpr [carbon-Silver] !!! CANCELED !!! (542 milliseconds)
+[info]   2 ignored errors
+[info]   postcondition.violated:insufficient.permission, issue 67
+[info]   postcondition.violated:insufficient.permission, issue 67 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 531 msec (Verification). 
+[info] - all/issues/silver/0068.vpr [carbon-Silver] (6 seconds, 467 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 6.45 sec (Verification). 
+[info] - all/issues/silver/0069.vpr [carbon-Silver] (14 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0072.vpr [carbon-Silver] (562 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 555 msec (Verification). 
+[info] - all/issues/silver/0073-1.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0073.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0077.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0078.vpr [carbon-Silver] (514 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 508 msec (Verification). 
+[info] - all/issues/silver/0081.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0084.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0085.vpr [carbon-Silver] (6 seconds, 577 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 22 msec (Parsing), 4 msec (Semantic Analysis), 4 msec (Translation), 7 msec (Consistency Check), 6.54 sec (Verification). 
+[info] - all/issues/silver/0086.vpr [carbon-Silver] (7 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0088-1.vpr [carbon-Silver] (499 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/silver/0088.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0090.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0091.vpr [carbon-Silver] (663 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 7 msec (Semantic Analysis), 6 msec (Translation), 10 msec (Consistency Check), 629 msec (Verification). 
+[info] - all/issues/silver/0092.vpr [carbon-Silver] !!! CANCELED !!! (484 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:insufficient.permission, issue 0 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 481 msec (Verification). 
+[info] - all/issues/silver/0093.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0102.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0105-1.vpr [carbon-Silver] (30 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 30 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0105.vpr [carbon-Silver] (8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0106-1.vpr [carbon-Silver] (18 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0106.vpr [carbon-Silver] (9 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0108.vpr [carbon-Silver] (481 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 478 msec (Verification). 
+[info] - all/issues/silver/0114-1.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0114.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0116.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0117.vpr [carbon-Silver] (614 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 605 msec (Verification). 
+[info] - all/issues/silver/0118.vpr [carbon-Silver] !!! CANCELED !!! (581 milliseconds)
+[info]   1 ignored errors
+[info]   postcondition.violated:assertion.false, issue 118 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 562 msec (Verification). 
+[info] - all/issues/silver/0120.vpr [carbon-Silver] (8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0126.vpr [carbon-Silver] (525 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 519 msec (Verification). 
+[info] - all/issues/silver/0127-1.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0127-2.vpr [carbon-Silver] (544 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 541 msec (Verification). 
+[info] - all/issues/silver/0127.vpr [carbon-Silver] (5 seconds, 972 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 5.96 sec (Verification). 
+[info] - all/issues/silver/0128.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0129.vpr [carbon-Silver] (262 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 261 msec (Verification). 
+[info] - all/issues/silver/0130.vpr [carbon-Silver] (497 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/silver/0131.vpr [carbon-Silver] (9 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0132.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0137.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0138.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0139.vpr [carbon-Silver] (468 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 463 msec (Verification). 
+[info] - all/issues/silver/0140.vpr [carbon-Silver] (503 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 500 msec (Verification). 
+[info] - all/issues/silver/0142.vpr [carbon-Silver] (501 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 497 msec (Verification). 
+[info] - all/issues/silver/0148.vpr [carbon-Silver] (503 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/silver/0151.vpr [carbon-Silver] (518 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 507 msec (Verification). 
+[info] - all/issues/silver/0152.vpr [carbon-Silver] (472 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 469 msec (Verification). 
+[info] - all/issues/silver/0155.vpr [carbon-Silver] (504 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 500 msec (Verification). 
+[info] - all/issues/silver/0158.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0159.vpr [carbon-Silver] (499 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/silver/0160.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0162-1.vpr [carbon-Silver] (507 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 502 msec (Verification). 
+[info] - all/issues/silver/0162-2.vpr [carbon-Silver] (6 seconds, 511 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 6.50 sec (Verification). 
+[info] - all/issues/silver/0164.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0165.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0167-1.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0167-2.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0168.vpr [carbon-Silver] (475 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 472 msec (Verification). 
+[info] - all/issues/silver/0168_lib.vpr [carbon-Silver] (247 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 246 msec (Verification). 
+[info] - all/issues/silver/0170.vpr [carbon-Silver] (485 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 479 msec (Verification). 
+[info] - all/issues/silver/0172.vpr [carbon-Silver] (294 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 291 msec (Verification). 
+[info] - all/issues/silver/0173.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0174.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0175.vpr [carbon-Silver] (6 seconds, 117 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 6.11 sec (Verification). 
+[info] - all/issues/silver/0175b.vpr [carbon-Silver] (8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0176.vpr [carbon-Silver] (258 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 254 msec (Verification). 
+[info] - all/issues/silver/0177-1.vpr [carbon-Silver] (509 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 500 msec (Verification). 
+[info] - all/issues/silver/0177-2.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0177-3.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0178-1.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0178-2.vpr [carbon-Silver] (539 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silver/0178-3.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0179.vpr [carbon-Silver] (270 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 0 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 269 msec (Verification). 
+[info] - all/issues/silver/0180.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0182.vpr [carbon-Silver] (7 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0183-1.vpr [carbon-Silver] (14 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0183-2.vpr [carbon-Silver] (42 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 41 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0189.vpr [carbon-Silver] (620 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 604 msec (Verification). 
+[info] - all/issues/silver/0190.vpr [carbon-Silver] (506 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 503 msec (Verification). 
+[info] - all/issues/silver/0192.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0193.vpr [carbon-Silver] (262 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 257 msec (Verification). 
+[info] - all/issues/silver/0198.vpr [carbon-Silver] (12 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 4 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0200.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0201.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0202.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0204.vpr [carbon-Silver] (5 seconds, 98 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 5.06 sec (Verification). 
+[info] - all/issues/silver/0205.vpr [carbon-Silver] (543 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 538 msec (Verification). 
+[info] - all/issues/silver/0207.vpr [carbon-Silver] (583 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 33 msec (Parsing), 5 msec (Semantic Analysis), 4 msec (Translation), 6 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silver/0208.vpr [carbon-Silver] (581 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 1 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 561 msec (Verification). 
+[info] - all/issues/silver/0209.vpr [carbon-Silver] (479 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 473 msec (Verification). 
+[info] - all/issues/silver/0210.vpr [carbon-Silver] (504 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 499 msec (Verification). 
+[info] - all/issues/silver/0211.vpr [carbon-Silver] (1 second, 951 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 1.94 sec (Verification). 
+[info] - all/issues/silver/0212.vpr [carbon-Silver] (514 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 495 msec (Verification). 
+[info] - all/issues/silver/0213a.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0213b.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0213c.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0213d.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0214.vpr [carbon-Silver] (585 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 573 msec (Verification). 
+[info] - all/issues/silver/0215-1.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0215-2.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0217.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0218a.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0218b.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0219.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0222.vpr [carbon-Silver] (527 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 521 msec (Verification). 
+[info] - all/issues/silver/0226.vpr [carbon-Silver] (500 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 493 msec (Verification). 
+[info] - all/issues/silver/0227.vpr [carbon-Silver] (495 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 490 msec (Verification). 
+[info] - all/issues/silver/0230.vpr [carbon-Silver] (588 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 573 msec (Verification). 
+[info] - all/issues/silver/0233.vpr [carbon-Silver] (537 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 532 msec (Verification). 
+[info] - all/issues/silver/0235-1.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0235-2.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0235-3.vpr [carbon-Silver] (555 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 552 msec (Verification). 
+[info] - all/issues/silver/0238.vpr [carbon-Silver] (9 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0239-1.vpr [carbon-Silver] (581 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 575 msec (Verification). 
+[info] - all/issues/silver/0239-2.vpr [carbon-Silver] (517 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 513 msec (Verification). 
+[info] - all/issues/silver/0239-3.vpr [carbon-Silver] (582 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 567 msec (Verification). 
+[info] - all/issues/silver/0247.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0251.vpr [carbon-Silver] (560 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 553 msec (Verification). 
+[info] - all/issues/silver/0257.vpr [carbon-Silver] (551 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 543 msec (Verification). 
+[info] - all/issues/silver/0258.vpr [carbon-Silver] (493 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 491 msec (Verification). 
+[info] - all/issues/silver/0260.vpr [carbon-Silver] (488 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 484 msec (Verification). 
+[info] - all/issues/silver/0266-1.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0266-2.vpr [carbon-Silver] (1 millisecond)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0271-1.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0271-2.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0274.vpr [carbon-Silver] (513 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/silver/0282.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0445.vpr [carbon-Silver] (517 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 514 msec (Verification). 
+[info] - all/issues/silver/0455.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0456.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/issues/silver/0463.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 6 msec (Translation), 2 msec (Consistency Check), 534 msec (Verification). 
+[info] - all/issues/silver/0464.vpr [carbon-Silver] (567 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 555 msec (Verification). 
+[info] - all/issues/silver/0465.vpr [carbon-Silver] (588 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 3 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/issues/silver/0466.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 539 msec (Verification). 
+[info] - all/issues/silver/0467.vpr [carbon-Silver] (513 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 509 msec (Verification). 
+[info] - all/issues/silver/0468.vpr [carbon-Silver] (565 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 556 msec (Verification). 
+[info] - all/issues/silver/0469.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0470.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0472.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 542 msec (Verification). 
+[info] - all/issues/silver/0473.vpr [carbon-Silver] (2 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/issues/silver/0474.vpr [carbon-Silver] (300 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 296 msec (Verification). 
+[info] - all/issues/silver/79.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/macros/capture_avoiding_substitution-1.vpr [carbon-Silver] (8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/capture_avoiding_substitution-2.vpr [carbon-Silver] (510 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 504 msec (Verification). 
+[info] - all/macros/capture_avoiding_substitution-3.vpr [carbon-Silver] (537 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 533 msec (Verification). 
+[info] - all/macros/complex.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/complexExp.vpr [carbon-Silver] (7 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/define.vpr [carbon-Silver] (6 seconds, 608 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 46 msec (Parsing), 6 msec (Semantic Analysis), 3 msec (Translation), 4 msec (Consistency Check), 6.55 sec (Verification). 
+[info] - all/macros/define_consistency.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/define_consistency_typechecker.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/define_nested.vpr [carbon-Silver] (584 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/macros/simple.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/macros/simple2Broken.vpr [carbon-Silver] (479 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 473 msec (Verification). 
+[info] - all/maps/example1.vpr [carbon-Silver] (3 seconds, 654 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 35 msec (Parsing), 15 msec (Semantic Analysis), 16 msec (Translation), 15 msec (Consistency Check), 3.57 sec (Verification). 
+[info] - all/maps/example2.vpr [carbon-Silver] (6 seconds, 741 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 37 msec (Parsing), 13 msec (Semantic Analysis), 6 msec (Translation), 10 msec (Consistency Check), 6.67 sec (Verification). 
+[info] - all/maps/example3.vpr [carbon-Silver] (2 seconds, 17 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 3 msec (Translation), 3 msec (Consistency Check), 1.99 sec (Verification). 
+[info] - all/maps/regressions1.vpr [carbon-Silver] (1 second, 985 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 1.97 sec (Verification). 
+[info] - all/multisets/multisets.vpr [carbon-Silver] (6 seconds, 589 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 9 msec (Semantic Analysis), 5 msec (Translation), 12 msec (Consistency Check), 6.54 sec (Verification). 
+[info] - all/old/branching_labelled_old.vpr [carbon-Silver] !!! CANCELED !!! (558 milliseconds)
+[info]   6 ignored errors
+[info]   assert.failed:labelled.state.not.reached, issue 114
+[info]   assert.failed:assertion.false, issue 114
+[info]   assert.failed:insufficient.permission, issue 114
+[info]   assert.failed:labelled.state.not.reached, issue 114
+[info]   assert.failed:assertion.false, issue 114
+[info]   assert.failed:insufficient.permission, issue 114 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 547 msec (Verification). 
+[info] - all/old/duplicate_label.vpr [carbon-Silver] (4 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/old/labelled_old.vpr [carbon-Silver] (2 seconds, 6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 1.98 sec (Verification). 
+[info] - all/old/old.vpr [carbon-Silver] (3 seconds, 529 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 3.51 sec (Verification). 
+[info] - all/permission_introspection/forpermCheck.vpr [carbon-Silver] (8 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/permission_introspection/forpermFields.vpr [carbon-Silver] (6 seconds, 622 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 6.59 sec (Verification). 
+[info] - all/permission_introspection/forpermInhaleExhale.vpr [carbon-Silver] !!! CANCELED !!! (5 seconds, 131 milliseconds)
+[info]   1 ignored errors
+[info]   exhale.failed:insufficient.permission, issue 130 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 5.11 sec (Verification). 
+[info] - all/permission_introspection/forpermMisc.vpr [carbon-Silver] !!! CANCELED !!! (6 seconds, 545 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 131 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/permission_introspection/forpermPredicatesAdvanced.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/forpermPredicatesSimple.vpr [carbon-Silver] (2 seconds, 68 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 2.05 sec (Verification). 
+[info] - all/permission_introspection/forpermQP.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/forpermTypecheck.vpr [carbon-Silver] (19 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 13 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/permission_introspection/forpermWands.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/permWandAlias.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/permWandApply.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/permWandInhale.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permission_introspection/permWandQP.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/permissions/aliasing.vpr [carbon-Silver] (733 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 712 msec (Verification). 
+[info] - all/permissions/forperm.vpr [carbon-Silver] (2 seconds, 125 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 23 msec (Parsing), 5 msec (Semantic Analysis), 4 msec (Translation), 7 msec (Consistency Check), 2.08 sec (Verification). 
+[info] - all/permissions/framing_none_perms.vpr [carbon-Silver] (613 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 594 msec (Verification). 
+[info] - all/permissions/loops.vpr [carbon-Silver] !!! CANCELED !!! (2 seconds, 11 milliseconds)
+[info]   2 ignored errors
+[info]   not.wellformed:insufficient.permission, issue 70
+[info]   assignment.failed:insufficient.permission, issue 70 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 2.00 sec (Verification). 
+[info] - all/permissions/negative_amounts.vpr [carbon-Silver] (595 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 587 msec (Verification). 
+[info] - all/permissions/perm.vpr [carbon-Silver] (6 seconds, 585 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 6.56 sec (Verification). 
+[info] - all/permissions/possibly_none_perms.vpr [carbon-Silver] (621 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 605 msec (Verification). 
+[info] - all/permissions/various.vpr [carbon-Silver] (6 seconds, 500 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 6.48 sec (Verification). 
+[info] - all/predicates/arguments.vpr [carbon-Silver] (5 seconds, 89 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 23 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 5.06 sec (Verification). 
+[info] - all/predicates/different_field_types.vpr [carbon-Silver] (630 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 12 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 609 msec (Verification). 
+[info] - all/predicates/lseg.vpr [carbon-Silver] (5 seconds, 165 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 24 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 5.13 sec (Verification). 
+[info] - all/predicates/non-aliasing.vpr [carbon-Silver] (569 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 556 msec (Verification). 
+[info] - all/predicates/receiverless.vpr [carbon-Silver] (569 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 0 msec (Consistency Check), 563 msec (Verification). 
+[info] - all/predicates/unfolding.vpr [carbon-Silver] (6 seconds, 679 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 17 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 6.65 sec (Verification). 
+[info] - all/predicates/unfolding_exhale.vpr [carbon-Silver] (6 seconds, 554 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 19 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/sequences/binarySearchSeq.vpr [carbon-Silver] (545 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 525 msec (Verification). 
+[info] - all/sequences/nil.vpr [carbon-Silver] (501 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 497 msec (Verification). 
+[info] - all/sequences/sequence_incompletenesses.vpr [carbon-Silver] (7 seconds, 249 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 99 msec (Parsing), 40 msec (Semantic Analysis), 20 msec (Translation), 38 msec (Consistency Check), 7.05 sec (Verification). 
+[info] - all/sequences/sequences.vpr [carbon-Silver] !!! CANCELED !!! (6 seconds, 568 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:seq.index.negative, issue 232
+[info]   assignment.failed:seq.index.length, issue 232 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 29 msec (Parsing), 11 msec (Semantic Analysis), 4 msec (Translation), 5 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/sets/sets.vpr [carbon-Silver] (538 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 527 msec (Verification). 
+[info] - all/testsIncludingWildcards/0005b.vpr [carbon-Silver] (6 seconds, 685 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 39 msec (Parsing), 6 msec (Semantic Analysis), 5 msec (Translation), 16 msec (Consistency Check), 6.62 sec (Verification). 
+[info] - all/testsIncludingWildcards/0008.vpr [carbon-Silver] (2 seconds, 92 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 22 msec (Parsing), 7 msec (Semantic Analysis), 5 msec (Translation), 5 msec (Consistency Check), 2.05 sec (Verification). 
+[info] - all/testsIncludingWildcards/0030.vpr [carbon-Silver] (591 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 579 msec (Verification). 
+[info] - all/testsIncludingWildcards/0035.vpr [carbon-Silver] (5 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/testsIncludingWildcards/0042.vpr [carbon-Silver] (1 second, 976 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 1.97 sec (Verification). 
+[info] - all/testsIncludingWildcards/0049.vpr [carbon-Silver] (632 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 622 msec (Verification). 
+[info] - all/testsIncludingWildcards/0054.vpr [carbon-Silver] (6 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/testsIncludingWildcards/0055.vpr [carbon-Silver] (616 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 601 msec (Verification). 
+[info] - all/testsIncludingWildcards/0056.vpr [carbon-Silver] (674 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 646 msec (Verification). 
+[info] - all/testsIncludingWildcards/0064.vpr [carbon-Silver] (552 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 541 msec (Verification). 
+[info] - all/testsIncludingWildcards/0082.vpr [carbon-Silver] (526 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 522 msec (Verification). 
+[info] - all/testsIncludingWildcards/0085.vpr [carbon-Silver] (6 seconds, 550 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 4 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 6.52 sec (Verification). 
+[info] - all/testsIncludingWildcards/0092.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/0097.vpr [carbon-Silver] (596 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 14 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 570 msec (Verification). 
+[info] - all/testsIncludingWildcards/0110.vpr [carbon-Silver] (3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 1 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 0 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/testsIncludingWildcards/0113.vpr [carbon-Silver] (636 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 623 msec (Verification). 
+[info] - all/testsIncludingWildcards/0118.vpr [carbon-Silver] (637 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 622 msec (Verification). 
+[info] - all/testsIncludingWildcards/0120a.vpr [carbon-Silver] (3 seconds, 243 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 16 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 4 msec (Consistency Check), 3.22 sec (Verification). 
+[info] - all/testsIncludingWildcards/0134.vpr [carbon-Silver] (4 seconds, 972 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 4.96 sec (Verification). 
+[info] - all/testsIncludingWildcards/0135.vpr [carbon-Silver] !!! CANCELED !!! (579 milliseconds)
+[info]   2 ignored errors
+[info]   assert.failed:assertion.false, issue 42
+[info]   assert.failed:assertion.false, issue 42 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 570 msec (Verification). 
+[info] - all/testsIncludingWildcards/0154-1.vpr [carbon-Silver] (6 seconds, 738 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 30 msec (Parsing), 9 msec (Semantic Analysis), 3 msec (Translation), 8 msec (Consistency Check), 6.69 sec (Verification). 
+[info] - all/testsIncludingWildcards/0154.vpr [carbon-Silver] (541 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 533 msec (Verification). 
+[info] - all/testsIncludingWildcards/0155.vpr [carbon-Silver] (534 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 524 msec (Verification). 
+[info] - all/testsIncludingWildcards/0172.vpr [carbon-Silver] (267 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 2 msec (Parsing), 0 msec (Semantic Analysis), 0 msec (Translation), 1 msec (Consistency Check), 264 msec (Verification). 
+[info] - all/testsIncludingWildcards/0196.vpr [carbon-Silver] (6 seconds, 150 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 18 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 6.12 sec (Verification). 
+[info] - all/testsIncludingWildcards/0200.vpr [carbon-Silver] (582 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 3 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/testsIncludingWildcards/0210.vpr [carbon-Silver] (629 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 609 msec (Verification). 
+[info] - all/testsIncludingWildcards/0290.vpr [carbon-Silver] (596 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 585 msec (Verification). 
+[info] - all/testsIncludingWildcards/0292.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/0370.vpr [carbon-Silver] (614 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 6 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 591 msec (Verification). 
+[info] - all/testsIncludingWildcards/0378a.vpr [carbon-Silver] (590 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 576 msec (Verification). 
+[info] - all/testsIncludingWildcards/0393a.vpr [carbon-Silver] (613 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 2 msec (Semantic Analysis), 0 msec (Translation), 2 msec (Consistency Check), 600 msec (Verification). 
+[info] - all/testsIncludingWildcards/0409.vpr [carbon-Silver] (587 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 573 msec (Verification). 
+[info] - all/testsIncludingWildcards/0455.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/0508a.vpr [carbon-Silver] !!! CANCELED !!! (2 seconds, 53 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:receiver.not.injective, issue 361 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 7 msec (Semantic Analysis), 3 msec (Translation), 5 msec (Consistency Check), 2.02 sec (Verification). 
+[info] - all/testsIncludingWildcards/0508b.vpr [carbon-Silver] (553 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 539 msec (Verification). 
+[info] - all/testsIncludingWildcards/0512.vpr [carbon-Silver] (3 seconds, 631 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 26 msec (Parsing), 10 msec (Semantic Analysis), 4 msec (Translation), 10 msec (Consistency Check), 3.58 sec (Verification). 
+[info] - all/testsIncludingWildcards/RingBufferRd.vpr [carbon-Silver] (6 seconds, 713 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 29 msec (Parsing), 10 msec (Semantic Analysis), 4 msec (Translation), 9 msec (Consistency Check), 6.66 sec (Verification). 
+[info] - all/testsIncludingWildcards/array-sum.vpr [carbon-Silver] (584 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 569 msec (Verification). 
+[info] - all/testsIncludingWildcards/array.vpr [carbon-Silver] (617 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 4 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 598 msec (Verification). 
+[info] - all/testsIncludingWildcards/array_problem.vpr [carbon-Silver] (616 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 5 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 596 msec (Verification). 
+[info] - all/testsIncludingWildcards/constraining_permissions.vpr [carbon-Silver] (618 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 8 msec (Parsing), 3 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 602 msec (Verification). 
+[info] - all/testsIncludingWildcards/foralls.vpr [carbon-Silver] !!! CANCELED !!! (3 seconds, 513 milliseconds)
+[info]   2 ignored errors
+[info]   not.wellformed:seq.index.length, issue 194
+[info]   not.wellformed:seq.index.length, issue 194 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 5 msec (Semantic Analysis), 1 msec (Translation), 4 msec (Consistency Check), 3.49 sec (Verification). 
+[info] - all/testsIncludingWildcards/forward-dep.vpr [carbon-Silver] (547 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 10 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 2 msec (Consistency Check), 531 msec (Verification). 
+[info] - all/testsIncludingWildcards/func2.vpr [carbon-Silver] !!! CANCELED !!! (4 seconds, 967 milliseconds)
+[info]   1 ignored errors
+[info]   assert.failed:assertion.false, issue 173 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 4 msec (Parsing), 0 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 4.96 sec (Verification). 
+[info] - all/testsIncludingWildcards/func3.vpr [carbon-Silver] (3 seconds, 495 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 3.49 sec (Verification). 
+[info] - all/testsIncludingWildcards/funcpred.vpr [carbon-Silver] (611 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 599 msec (Verification). 
+[info] - all/testsIncludingWildcards/generalised_shape.vpr [carbon-Silver] (6 seconds, 757 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 28 msec (Parsing), 11 msec (Semantic Analysis), 6 msec (Translation), 10 msec (Consistency Check), 6.70 sec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0081.vpr [carbon-Silver] (566 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 6 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 550 msec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0081b.vpr [carbon-Silver] (590 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 5 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 579 msec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0096.vpr [carbon-Silver] (29 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 15 msec (Parsing), 8 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 0 msec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0102.vpr [carbon-Silver] (2 seconds, 73 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 19 msec (Parsing), 9 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 2.03 sec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0139.vpr [carbon-Silver] (6 seconds, 670 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 34 msec (Parsing), 9 msec (Semantic Analysis), 4 msec (Translation), 11 msec (Consistency Check), 6.61 sec (Verification). 
+[info] - all/testsIncludingWildcards/issue_0184.vpr [carbon-Silver] (569 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 9 msec (Parsing), 3 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 553 msec (Verification). 
+[info] - all/testsIncludingWildcards/let.vpr [carbon-Silver] (3 seconds, 482 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 6 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 2 msec (Consistency Check), 3.47 sec (Verification). 
+[info] - all/testsIncludingWildcards/many_conjuncts.vpr [carbon-Silver] (711 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 26 msec (Parsing), 11 msec (Semantic Analysis), 4 msec (Translation), 7 msec (Consistency Check), 662 msec (Verification). 
+[info] - all/testsIncludingWildcards/max-two-range.vpr [carbon-Silver] (1 second, 68 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 78 msec (Parsing), 29 msec (Semantic Analysis), 8 msec (Translation), 19 msec (Consistency Check), 934 msec (Verification). 
+[info] - all/testsIncludingWildcards/mergesort.vpr [carbon-Silver] (1 second, 259 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 37 msec (Parsing), 16 msec (Semantic Analysis), 5 msec (Translation), 14 msec (Consistency Check), 1.19 sec (Verification). 
+[info] - all/testsIncludingWildcards/methods.vpr [carbon-Silver] (6 seconds, 109 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 4 msec (Semantic Analysis), 2 msec (Translation), 5 msec (Consistency Check), 6.08 sec (Verification). 
+[info] - all/testsIncludingWildcards/nestedPredicates.vpr [carbon-Silver] (6 seconds, 746 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 35 msec (Parsing), 10 msec (Semantic Analysis), 3 msec (Translation), 8 msec (Consistency Check), 6.69 sec (Verification). 
+[info] - all/testsIncludingWildcards/new.vpr [carbon-Silver] (3 seconds, 3 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 11 msec (Parsing), 2 msec (Semantic Analysis), 2 msec (Translation), 3 msec (Consistency Check), 2.98 sec (Verification). 
+[info] - all/testsIncludingWildcards/non-aliasing.vpr [carbon-Silver] (614 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 1 msec (Semantic Analysis), 1 msec (Translation), 1 msec (Consistency Check), 604 msec (Verification). 
+[info] - all/testsIncludingWildcards/parallel_max.vpr [carbon-Silver] (1 second, 151 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 21 msec (Parsing), 12 msec (Semantic Analysis), 4 msec (Translation), 8 msec (Consistency Check), 1.11 sec (Verification). 
+[info] - all/testsIncludingWildcards/partial_permissions.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/possibly_none_perms.vpr [carbon-Silver] (806 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 7 msec (Parsing), 2 msec (Semantic Analysis), 1 msec (Translation), 3 msec (Consistency Check), 793 msec (Verification). 
+[info] - all/testsIncludingWildcards/summation.vpr [carbon-Silver] (6 seconds, 911 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 44 msec (Parsing), 20 msec (Semantic Analysis), 6 msec (Translation), 18 msec (Consistency Check), 6.82 sec (Verification). 
+[info] - all/testsIncludingWildcards/testDepParLoop.vpr [carbon-Silver] (6 seconds, 763 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 55 msec (Parsing), 18 msec (Semantic Analysis), 6 msec (Translation), 16 msec (Consistency Check), 6.67 sec (Verification). 
+[info] - all/testsIncludingWildcards/testDepParLoopBack.vpr [carbon-Silver] (6 seconds, 751 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 56 msec (Parsing), 17 msec (Semantic Analysis), 7 msec (Translation), 19 msec (Consistency Check), 6.65 sec (Verification). 
+[info] - all/testsIncludingWildcards/testDepParLoopBackE1.vpr [carbon-Silver] (6 seconds, 846 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 55 msec (Parsing), 20 msec (Semantic Analysis), 6 msec (Translation), 19 msec (Consistency Check), 6.75 sec (Verification). 
+[info] - all/testsIncludingWildcards/testDepParLoopE1.vpr [carbon-Silver] (6 seconds, 393 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 65 msec (Parsing), 20 msec (Semantic Analysis), 7 msec (Translation), 18 msec (Consistency Check), 6.28 sec (Verification). 
+[info] - all/testsIncludingWildcards/testHistogram-old.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/testHistogram.vpr [carbon-Silver] (6 seconds, 896 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 74 msec (Parsing), 20 msec (Semantic Analysis), 7 msec (Translation), 23 msec (Consistency Check), 6.77 sec (Verification). 
+[info] - all/testsIncludingWildcards/testHistogramFull-old.vpr [carbon-Silver] (6 seconds, 806 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 65 msec (Parsing), 22 msec (Semantic Analysis), 7 msec (Translation), 19 msec (Consistency Check), 6.69 sec (Verification). 
+[info] - all/testsIncludingWildcards/testHistogramFull.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/testHistoryApplication.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/testHistoryLoop.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/testHistoryThreadsApplication.vpr [carbon-Silver] !!! IGNORED !!!
+[info] - all/testsIncludingWildcards/testListAppend.vpr [carbon-Silver] (8 seconds, 25 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 89 msec (Parsing), 31 msec (Semantic Analysis), 17 msec (Translation), 28 msec (Consistency Check), 7.86 sec (Verification). 
+[info] - all/testsIncludingWildcards/testLockSetDemo.vpr [carbon-Silver] !!! CANCELED !!! (3 seconds, 633 milliseconds)
+[info]   1 ignored errors
+[info]   call.precondition:insufficient.permission, issue 77 (AnnotationBasedTestSuite.scala:81)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 27 msec (Parsing), 5 msec (Semantic Analysis), 3 msec (Translation), 7 msec (Consistency Check), 3.59 sec (Verification). 
+[info] - all/testsIncludingWildcards/testNestedDoubleIC.vpr [carbon-Silver] (6 seconds, 728 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 46 msec (Parsing), 15 msec (Semantic Analysis), 6 msec (Translation), 16 msec (Consistency Check), 6.64 sec (Verification). 
+[info] - all/testsIncludingWildcards/testNestedSingleIC.vpr [carbon-Silver] (6 seconds, 702 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 36 msec (Parsing), 12 msec (Semantic Analysis), 4 msec (Translation), 13 msec (Consistency Check), 6.64 sec (Verification). 
+[info] - all/testsIncludingWildcards/testPVLLocks.vpr [carbon-Silver] (6 seconds, 590 milliseconds)
+[info]   + Verifier used: carbon 1.0. 
+[info]   + Time required: 36 msec (Parsing), 6 msec (Semantic Analysis), 4 msec (Translation), 10 msec (Consistency Check), 6.53 sec (Verification). 

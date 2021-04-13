@@ -68,10 +68,10 @@ case class CarbonVerifier(private var _debugInfo: Seq[(String, Any)] = Nil) exte
   })
 
   /** The default location for Boogie (the environment variable ${BOOGIE_EXE}). */
-  lazy val boogieDefault: String = new File(Paths.resolveEnvVars("${BOOGIE_EXE}")).getAbsolutePath
+  lazy val boogieDefault: String = "/bin/boogie/Binaries/boogie" //new File(Paths.resolveEnvVars("${BOOGIE_EXE}")).getAbsolutePath
 
   /** The default location for Z3 (the environment variable ${Z3_EXE}). */
-  lazy val z3Default: String = new File(Paths.resolveEnvVars("${Z3_EXE}")).getAbsolutePath
+  lazy val z3Default: String = "/usr/bin/z3" // new File(Paths.resolveEnvVars("${Z3_EXE}")).getAbsolutePath
 
   /** The (resolved) path where Boogie is supposed to be located. */
 
@@ -122,7 +122,8 @@ case class CarbonVerifier(private var _debugInfo: Seq[(String, Any)] = Nil) exte
           }
         }
         catch {
-          case _: IOException => throw MissingDependencyException("Z3 couldn't be found.")
+          case _: IOException => println(z3Path); throw 
+      MissingDependencyException("Z3 couldn't be found.")
         }
 
       }
