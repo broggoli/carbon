@@ -114,7 +114,7 @@ def compile_boogie(conf):
             # generate print commands for compiler
             print_commands = map(lambda s: f"--print {entry.path}/{s}.bpl {match_input_output(s)}", to_compile)
 
-            sbt_run_command = f"run --z3Exe /usr/bin/z3 --boogieExe /bin/boogie/Binaries/boogie"
+            sbt_run_command = f"./carbon.sh --z3Exe /home/nick/.config/Viper/z3/bin/z3 --boogieExe /home/nick/.dotnet/tools/boogie"
 
             def match_version(s):
                 if "old" in s:
@@ -124,8 +124,8 @@ def compile_boogie(conf):
                 elif "map" in s:
                     return conf['carbon_home_map']
             
-            commands = map(lambda print_command: f"cd {match_version(print_command)} && sbt --java-home /usr/lib/jvm/java-11-adoptopenjdk/ '{sbt_run_command} {print_command}'", print_commands)
-            #print(list(commands))
+            commands = map(lambda print_command: f"cd {match_version(print_command)} && {sbt_run_command} {print_command}", print_commands)
+
             list(map(lambda command: os.system(command), commands))            
             
 def benchmark(conf):

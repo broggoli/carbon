@@ -1342,7 +1342,9 @@ class QuantifiedPermModule(val verifier: Verifier)
                  (currentPermission(obj.l,field.l) === currentPermission(qpMask,obj.l,field.l))
               ))
             }
-          val triggerForPermissionUpdateAxiom = Seq(/*Trigger(curPerm),*/Trigger(currentPermission(qpMask,obj.l,translatedLocation)), Trigger(currentPermission(qpBMask,obj.l,translatedLocation))/*,Trigger(invFunApp)*/)
+          val triggerForPermissionUpdateAxiom = 
+            if(isSWildcard) Seq(Trigger(currentPermission(qpMask,obj.l,translatedLocation)), Trigger(currentPermission(qpBMask,obj.l,translatedLocation)))
+            else Seq(/*Trigger(curPerm),*/Trigger(currentPermission(qpMask,obj.l,translatedLocation))/*,Trigger(invFunApp)*/)
 
           val v2s = translatedLocals.map(translatedLocal => LocalVarDecl(Identifier("v2"),translatedLocal.typ))
           val injectiveTrigger = tr1.map(trigger => Trigger(trigger.exps ++ trigger.exps.map(exp => replaceAll(exp, translatedLocals.map(translatedLocal => translatedLocal.l), v2s.map(v2 => v2.l)))))
