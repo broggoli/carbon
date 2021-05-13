@@ -208,7 +208,7 @@ class QuantifiedPermModule(val verifier: Verifier)
           Axiom(Forall(
             staticMask ++ staticBMask ++ Seq(obj, field),
             Trigger(funcApp),
-            funcApp <==> (permissionPositive(permission) || wildcard_permission === TrueLit())
+            funcApp <==> (wildcard_permission === TrueLit() || permissionPositive(permission) )
           ))
       } ++ {
       val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
@@ -377,12 +377,12 @@ class QuantifiedPermModule(val verifier: Verifier)
                   }
                 If(cond,
                   if (perm.isInstanceOf[sil.SWildcardPerm]) {
-                    Assert(curPerm > noPerm || curWPerm === TrueLit(), error.dueTo(reasons.InsufficientPermission(loc))) : Stmt
+                    Assert(curWPerm === TrueLit() || curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) : Stmt
                   } else {
                     stmts ++
                       (permVar := permAdd(permVar, permVal)) ++
                       (if (perm.isInstanceOf[sil.WildcardPerm]) {
-                        (Assert(curPerm > noPerm || curWPerm === TrueLit(), error.dueTo(reasons.InsufficientPermission(loc))) ++
+                        (Assert(curWPerm === TrueLit() || curPerm > noPerm, error.dueTo(reasons.InsufficientPermission(loc))) ++
                         Assume(wildcard < curPerm)): Stmt
                       } else Nil)
                   },
@@ -591,7 +591,7 @@ class QuantifiedPermModule(val verifier: Verifier)
             //define permission requirement
             val permNeeded =
               if (isWildcard) currentPermission(translatedRecv, translatedLocation) > noPerm
-              else if (isSWildcard) currentPermission(translatedRecv, translatedLocation) > noPerm || currentWPermission(translatedRecv, translatedLocation) === TrueLit()
+              else if (isSWildcard) currentWPermission(translatedRecv, translatedLocation) === TrueLit() || currentPermission(translatedRecv, translatedLocation) > noPerm
               else currentPermission(translatedRecv, translatedLocation) >= translatedPerms
 
             //assert that we possess enough permission to exhale the permission indicated
@@ -608,8 +608,8 @@ class QuantifiedPermModule(val verifier: Verifier)
               } else if(isSWildcard) {
                 Assert(Forall(vsFresh.map(v => translateLocalVarDecl(v)), Seq(), 
                 translatedCond ==> 
-                  (currentPermission(translatedRecv, translatedLocation) > noPerm 
-                  || currentWPermission(translatedRecv, translatedLocation) === TrueLit()))
+                  (currentWPermission(translatedRecv, translatedLocation) === TrueLit() ||
+                  currentPermission(translatedRecv, translatedLocation) > noPerm))
                 , error.dueTo(reasons.InsufficientPermission(fieldAccess)))
               } else {
                 Nil
@@ -825,7 +825,7 @@ class QuantifiedPermModule(val verifier: Verifier)
               if(isWildcard) {
                 currentPermission(translateNull, translatedLocation) > noPerm
               } else if (isSWildcard) {
-                (currentPermission(translateNull, translatedLocation) > noPerm || (currentWPermission(translateNull, translatedLocation) === TrueLit()))         
+                ((currentWPermission(translateNull, translatedLocation) === TrueLit()) || currentPermission(translateNull, translatedLocation) > noPerm)         
               } else {
                 (currentPermission(translateNull, translatedLocation) >= translatedPerms)
               }

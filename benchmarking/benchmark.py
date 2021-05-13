@@ -114,7 +114,7 @@ def compile_boogie(conf):
             # generate print commands for compiler
             print_commands = map(lambda s: f"--print {entry.path}/{s}.bpl {match_input_output(s)}", to_compile)
 
-            sbt_run_command = f"./carbon.sh --z3Exe /home/nick/.config/Viper/z3/bin/z3 --boogieExe /home/nick/.dotnet/tools/boogie"
+            sbt_run_command = f"./carbon.sh --z3Exe /home/nick/.config/Viper/z3/bin/z3 --boogieExe /usr/bin/boogie/Binaries/boogie"
 
             def match_version(s):
                 if "old" in s:

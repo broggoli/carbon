@@ -80,10 +80,10 @@ def get_data(slow_data=False):
             map_wildcard = group
     
     #print(old_wildcard["mean"] / float(map_sWildcard["mean"].sum()))
-    print(old_wildcard, map_sWildcard)
+    #print(old_wildcard, map_sWildcard)
     if slow_data:
         old_wildcard.sort_values(["n_blocks", "n_refs"])
-        print(old_wildcard, map_sWildcard)
+        #print(old_wildcard, map_sWildcard)
         compare_oldW_vs_mapSW = pd.merge(old_wildcard, map_sWildcard, on=["n_blocks", "n_refs"], suffixes=("_old_wildcard", "_map_sWildcard"))
         compare_oldW_vs_mapSW["mean_ratio"] = compare_oldW_vs_mapSW["mean_old_wildcard"] / compare_oldW_vs_mapSW["mean_map_sWildcard"]
 
@@ -101,7 +101,7 @@ def get_data(slow_data=False):
 
         compare_mapW_vs_mapSW = pd.merge(map_wildcard, map_sWildcard, on=["program_name"], suffixes=("_map_wildcard", "_map_sWildcard"))
         compare_mapW_vs_mapSW["mean_ratio"] = compare_mapW_vs_mapSW["mean_map_wildcard"] / compare_mapW_vs_mapSW["mean_map_sWildcard"]
-        print(compare_oldW_vs_mapSW)
+        #print(compare_oldW_vs_mapSW)
     
     return df, compare_oldW_vs_mapSW, compare_mapW_vs_oldW, compare_mapW_vs_mapSW
 
@@ -133,7 +133,7 @@ def plot_ratio(compare, name):
     Y = compare["n_blocks"]
     X = compare["n_refs"]
     Z = np.log(compare["mean_ratio"])
-    print(pd.DataFrame({"n_blocks": Y, "n_refs": X, "ratio": compare["mean_ratio"], "log_ratio": Z}).sort_values(["n_blocks", "n_refs"]))
+    #print(pd.DataFrame({"n_blocks": Y, "n_refs": X, "ratio": compare["mean_ratio"], "log_ratio": Z}).sort_values(["n_blocks", "n_refs"]))
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     # Plot the surface.
