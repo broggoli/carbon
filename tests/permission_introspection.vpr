@@ -1,0 +1,8 @@
+field f: Int
+
+method main(x: Ref)
+{   
+    inhale acc(x.f, wildcard)
+    assert perm(x.f) == none
+
+}
