@@ -271,6 +271,7 @@ class QuantifiedPermModule(val verifier: Verifier)
     inverseFuncs = new ListBuffer[Func]();
     rangeFuncs = new ListBuffer[Func]();
     triggerFuncs = new ListBuffer[Func]();
+    //println(program.permUsedWithSWildcard)
   }
 
   override def usingOldState = stateModuleIsUsingOldState
@@ -1034,7 +1035,9 @@ class QuantifiedPermModule(val verifier: Verifier)
   }
 
   private def inhaleAccessPredicate(loc: LocationAccess, prm: sil.Exp, assmsToStmt: Exp => Stmt): Stmt = {
-    val perm = PermissionSplitter.normalizePerm(prm)
+    var perm = PermissionSplitter.normalizePerm(prm)
+    perm = PermissionSplitter.rewriteSWildcard(perm, loc)
+    //println(loc, perm)
     val curPerm = currentPermission(loc)
     val curWPerm = currentWPermission(loc)
     val permVar = LocalVar(Identifier("perm"), permType)
@@ -1043,7 +1046,8 @@ class QuantifiedPermModule(val verifier: Verifier)
         val w = LocalVar(Identifier("wildcard"), Real)
         (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
       } else if (perm.isInstanceOf[SWildcardPerm]) {
-        val w = LocalVar(Identifier("sWildcard"), Bool)
+        //println(program.permUsedWithSWildcard, loc)
+        var w = LocalVar(Identifier("sWildcard"), Bool)
         (w, Nil)
       } else {
         (translatePerm(perm), Nil)
@@ -1763,7 +1767,6 @@ class QuantifiedPermModule(val verifier: Verifier)
   }
 
   private def permEq(a: Exp, b: Exp): Exp = {
-    println(a, b);
     a === b
   }
   private def permNe(a: Exp, b: Exp): Exp = {
@@ -2045,6 +2048,19 @@ class QuantifiedPermModule(val verifier: Verifier)
       r._2
     }
 
+    def rewriteSWildcard(perm: sil.Exp, loc: LocationAccess): sil.Exp = {
+
+      perm match {
+        case sil.SWildcardPerm() => {
+          for (notCompatible <- program.permUsedWithSWildcard if notCompatible.contains(loc)) {
+            return sil.WildcardPerm()(perm.pos, perm.info)
+          }
+        }
+        case _ => //println("Not converting", perm)
+      }
+      
+      perm
+    }
     // Applies the following rewrite rules (a,b,c are perms, m,n are ints):
     //1 (a - b) --> (a + (-1*b))
     //2 (a+b)*c --> ((a*c) + (b*c))
@@ -2149,7 +2165,6 @@ class QuantifiedPermModule(val verifier: Verifier)
           case sil.PermAdd(sil.CondExp(cond, thn, els),a) => done = false
             sil.CondExp(cond, sil.PermAdd(thn,a)(), sil.PermAdd(els,a)())()
         }, Traverse.BottomUp)
-
 
         (done, e7)
       }

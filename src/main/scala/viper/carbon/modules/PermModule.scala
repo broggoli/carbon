@@ -139,9 +139,10 @@ trait PermModule extends Module with CarbonStateComponent {
     * Checks if expression e contains instances of wildcards
     */
 
+  // True if contains sWildcard or wildcard
   def containsWildCard(e: sil.Exp): Boolean
-
-  // adds permission to w#ft (footprint of the magic wand) (See Heap module for w#ft description)
+ 
+   // adds permission to w#ft (footprint of the magic wand) (See Heap module for w#ft description)
   def inhaleWandFt(w: sil.MagicWand): Stmt
 
   // removes permission to w#ft (footprint of the magic wand) (See Heap module for w#ft description)
