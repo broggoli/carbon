@@ -368,7 +368,7 @@ class QuantifiedPermModule(val verifier: Verifier)
         val p = PermissionSplitter.normalizePerm(prm)
         val perms = PermissionSplitter.splitPerm(p) filter (x => x._1 - 1 == exhaleModule.currentPhaseId)
         (if (exhaleModule.currentPhaseId == 0)
-          (if (!p.isInstanceOf[sil.WildcardPerm])
+          (if (!p.isInstanceOf[sil.WildcardPerm] && !p.isInstanceOf[sil.SWildcardPerm])
             Assert(permissionPositiveInternal(translatePerm(p), Some(p), true), error.dueTo(reasons.NegativePermission(p))) else Nil: Stmt) ++ Nil // check amount is non-negative
         else Nil) ++
           (if (perms.size == 0) {
@@ -388,12 +388,13 @@ class QuantifiedPermModule(val verifier: Verifier)
                 // save information for later use outside loop
                 if(exhalingAbstractWildcard) exhaledAbstractWildcard = true
                 if(!(exhalingAbstractWildcard || exhalingConcreteWildcard)) onlyWildcard = false
-
+                
                 val (permVal, wildcard, stmts): (Exp, Exp, Stmt) =
                   if (exhalingConcreteWildcard) {
                     val w = LocalVar(Identifier("wildcard"), Real)
                     (w, w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
-                  } else (translatePerm(perm), null, Nil)
+                  } else if (exhalingAbstractWildcard) (LocalVar(Identifier("w"), Bool), null, Nil)
+                  else (translatePerm(perm), null, Nil)
                 
                 If(cond,
                   if (exhalingAbstractWildcard) {
@@ -1055,12 +1056,12 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
     val curPerm = currentPermission(loc)
     val curWPerm = currentWPermission(loc)
     val permVar = LocalVar(Identifier("perm"), permType)
-    
     val (permVal, stmts): (Exp, Stmt) =
       if (permIsConcreteWildcard) {
         val w = LocalVar(Identifier("wildcard"), Real)
         (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
       } else if (permIsAbstractWildcard) {
+        //println(program.permUsedWithSWildcard, loc)
         var w = LocalVar(Identifier("sWildcard"), Bool)
         (w, Nil)
       } else {
@@ -1072,11 +1073,43 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
     assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
     assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
     (if (!usingOldState) {
-      if (permIsAbstractWildcard)
-        curWPerm := TrueLit()
+      if (permIsAbstractWildcard) (curWPerm := TrueLit())
       else curPerm := permAdd(curPerm, permVar)
     } else Nil)
   }
+  // private def inhaleAccessPredicate(loc: LocationAccess, prm: sil.Exp, assmsToStmt: Exp => Stmt): Stmt = {
+  //   var perm = PermissionSplitter.normalizePerm(prm)
+  //   // For locations that are used with permission introspection and abstract wildcard
+  //   // they are dynamically rewritten to concrete wildcards for compatibility
+  //   perm = PermissionSplitter.rewriteSWildcard(perm, loc)
+  //   val permIsConcreteWildcard = perm.isInstanceOf[WildcardPerm]
+  //   val permIsAbstractWildcard = perm.isInstanceOf[SWildcardPerm]
+
+  //   val curPerm = currentPermission(loc)
+  //   val curWPerm = currentWPermission(loc)
+  //   val permVar = LocalVar(Identifier("perm"), permType)
+    
+  //   val (permVal, stmts): (Exp, Stmt) =
+  //     if (permIsConcreteWildcard) {
+  //       val w = LocalVar(Identifier("wildcard"), Real)
+  //       (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+  //     } else if (permIsAbstractWildcard) {
+  //       var w = LocalVar(Identifier("sWildcard"), Bool)
+  //       (w, Nil)
+  //     } else {
+  //       (translatePerm(perm), Nil)
+  //     }
+      
+  //   stmts ++
+  //   (if (!permIsAbstractWildcard) (permVar := permVal) else Nil) ++
+  //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
+  //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
+  //   (if (!usingOldState) {
+  //     if (permIsAbstractWildcard)
+  //       curWPerm := TrueLit()
+  //     else curPerm := permAdd(curPerm, permVar)
+  //   } else Nil)
+  // }
   /*
    * same as the original inhale except that it abstracts over the way assumptions are expressed in the
    * Boogie program
