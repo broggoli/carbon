@@ -101,9 +101,10 @@ class DefaultStateModule(val verifier: Verifier) extends StateModule {
   private var curOldState: StateComponentMapping = null
   private var curState: StateComponentMapping = null
 
+  // TODO: find less hacky way of doing this.
   def staticGoodState: Exp = {
     FuncApp(Identifier(isGoodState), staticStateContributions() map (v => LocalVar(v.name, v.typ)), Bool)
-  }
+  } // Seq(LocalVar(Identifier("BMask")(verifier.freshNamespace("perm.axiom")), NamedType("BMaskType"))) ++
 
   def currentGoodState: Exp = {
     FuncApp(Identifier(isGoodState), currentStateContributionValues, Bool)

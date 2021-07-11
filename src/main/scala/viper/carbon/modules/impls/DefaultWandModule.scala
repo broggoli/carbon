@@ -532,8 +532,10 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
   * Note: the boolean for the Result state is initialized to the conjunction of the booleans of the current state
    *  and the other state and used (since all facts of each state is transferred)
   */
+
+  // Does not work with symbolic wildcard permissions
     val curHeap = heapModule.currentHeap
-    val curMask = permModule.currentMask    
+    val curMask = permModule.currentMask
     val curBMask = permModule.currentBMask
 
     val StateSetup(resultState, initStmtResult) =
@@ -553,7 +555,6 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
     StateSetup(resultState, initStmt)
 
   }
-
 
 /**
  * @param e expression to be transferred

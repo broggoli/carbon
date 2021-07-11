@@ -1,0 +1,9 @@
+field f: Int
+
+method main(x: Ref)
+{    
+    inhale acc(x.f, sWildcard)
+    exhale acc(x.f, sWildcard)
+
+    var v: Int := x.f
+}

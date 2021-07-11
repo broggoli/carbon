@@ -21,6 +21,8 @@ lazy val carbon = (project in file("."))
         // classpath used by Scala's reflection.
         Test / fork := true,
         Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/test-reports", "-oD"),
+        // Added this line to be able to run commands
+        Compile / fork := true,
 
         // Assembly settings
         assembly / assemblyJarName := "carbon.jar",             // JAR filename

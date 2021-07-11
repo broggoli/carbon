@@ -151,6 +151,7 @@ class QuantifiedPermModule(val verifier: Verifier)
     val obj = LocalVarDecl(Identifier("o")(axiomNamespace), refType)
     val field = LocalVarDecl(Identifier("f")(axiomNamespace), fieldType)
     val permInZeroMask = MapSelect(zeroMask, Seq(obj.l, field.l))
+    val permInZeroBMask = MapSelect(zeroBMask, Seq(obj.l, field.l))
     val permInZeroPMask = MapSelect(zeroPMask, Seq(obj.l, field.l))
     val permInZeroBMask = MapSelect(zeroBMask, Seq(obj.l, field.l))
     // permission type
@@ -291,6 +292,7 @@ class QuantifiedPermModule(val verifier: Verifier)
     inverseFuncs = new ListBuffer[Func]();
     rangeFuncs = new ListBuffer[Func]();
     triggerFuncs = new ListBuffer[Func]();
+    //println(program.permUsedWithSWildcard)
   }
 
   override def usingOldState = stateModuleIsUsingOldState
@@ -338,15 +340,17 @@ class QuantifiedPermModule(val verifier: Verifier)
    * Expression that expresses that 'permission' is positive. 'silPerm' is used to
    * optimize the check if possible.
    */
-  override def permissionPositive(permission: Exp, zeroOK : Boolean = false): Exp = permissionPositiveInternal(permission, None, zeroOK)
+  override def permissionPositive(permission: Exp, /*wildcard_permission: Exp,*/ zeroOK : Boolean = false): Exp = permissionPositiveInternal(permission, /*wildcard_permission,*/ None, zeroOK)
 
-  private def permissionPositiveInternal(permission: Exp, silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
+  // TODO calculate for wildcard permissions 
+  private def permissionPositiveInternal(permission: Exp, /*wildcard_permission: Exp,*/ silPerm: Option[sil.Exp] = None, zeroOK : Boolean = false): Exp = {
     (permission, silPerm) match {
       case (x, _) if permission == fullPerm => TrueLit()
       case (_, Some(sil.FullPerm())) => TrueLit()
       case (_, Some(sil.WildcardPerm())) => TrueLit()
+      case (_, Some(sil.SWildcardPerm())) => TrueLit()
       case (_, Some(sil.NoPerm())) => if (zeroOK) TrueLit() else FalseLit()
-      case _ => if(zeroOK) permission >= noPerm else permission > noPerm
+      case _ => if(zeroOK) permission >= noPerm /*|| wildcard_permission*/ else permission > noPerm /*|| wildcard_permission*/
     }
   }
 
@@ -492,6 +496,14 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
     }
   }
 
+  private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
+    perm match {
+      case SWildcardPerm() | PermMul(SWildcardPerm(), SWildcardPerm()) => true
+      case PermMul(e, SWildcardPerm()) => conservativeIsPositivePerm(e)
+      case PermMul(SWildcardPerm(), e)  => conservativeIsPositivePerm(e)
+      case _ => false
+    }
+  }
   /**
     * Removed the following definition since it seems to never be used.
     * def translateFieldAccessComponents(v:sil.LocalVarDecl, cond:sil.Exp, fieldAccess:sil.FieldAccess, perms:sil.Exp): (QuantifiedFieldComponents, Boolean, LocalVar, Stmt)
@@ -540,6 +552,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             val obj = LocalVarDecl(Identifier("o"), refType) // ref-typed variable, representing arbitrary receiver
             val field = LocalVarDecl(Identifier("f"), fieldType)
             val curPerm:Exp = currentPermission(obj.l,translatedLocation)
+            val curWPerm:Exp = currentWPermission(obj.l,translatedLocation)
             val (invFuns,rangeFun,triggerFun) = addQPFunctions(translatedLocals)
             val curWPerm:Exp = currentWPermission(obj.l,translatedLocation)
             val invFunApps = invFuns.map(ifun => FuncApp(ifun.name, Seq(obj.l), ifun.typ) )
@@ -567,8 +580,6 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             val providedTriggers : Seq[Trigger] = validateTriggers(translatedLocals, translatedTriggers)
             // add default trigger if triggers were generated automatically
             val tr1: Seq[Trigger] = /*if (e.info.getUniqueInfo[sil.AutoTriggered.type].isDefined)*/ candidateTriggers ++ providedTriggers /*else providedTriggers*/
-
-
 
             //inverse assumptions
             var assm1Rhs : Exp = rangeFunRecvApp
@@ -740,7 +751,6 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
               if (isSWildcard) res_sWildcard
               else if (isWildcard) res_wildcard
               else res_nonWildcard
-
             res1
           //Predicate access
           case predAccPred@sil.PredicateAccessPredicate(PredicateAccess(args, predname), perms) =>
@@ -882,11 +892,11 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                   )
                 ))
               }
-
             //Assume no change for independent locations: different predicate or no predicate
             val obj = LocalVarDecl(Identifier("o"), refType)
             val field = LocalVarDecl(Identifier("f"), fieldType)
             val fieldVar = LocalVar(Identifier("f"), fieldType)
+            
             val independentLocations = 
               if (isSWildcard) { 
                 Assume(Forall(Seq(obj,field), //Trigger(currentPermission(obj.l,field.l))++
@@ -924,7 +934,6 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                   (currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location))
                 ))
               }
-
 
             //AS: TODO: it would be better to use the Boogie representation of a predicate instance as the canonical representation here (i.e. the function mapping to a field in the Boogie heap); this would avoid the disjunction of arguments used below. In addition, this could be used as a candidate trigger in tr1 code above. See issue 242
             //assert injectivity of inverse function:
@@ -965,7 +974,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
               independentPredicate) ++
               CommentBlock("assume permission updates for independent locations ", independentLocations) ++
               (mask := qpMask)
-
+            
             val res_wildcard = 
               Havoc(qpMask) ++
               MaybeComment("wildcard assumptions", stmts ++
@@ -1059,8 +1068,8 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
     val (permVal, stmts): (Exp, Stmt) =
       if (permIsConcreteWildcard) {
         val w = LocalVar(Identifier("wildcard"), Real)
-        (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
-      } else if (permIsAbstractWildcard) {
+        (w, permIsAbstractWildcard) :: Havoc(w) :: Nil)
+      } else if (perm.isInstanceOf[SWildcardPerm]) {
         //println(program.permUsedWithSWildcard, loc)
         var w = LocalVar(Identifier("sWildcard"), Bool)
         (w, Nil)
@@ -1077,39 +1086,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
       else curPerm := permAdd(curPerm, permVar)
     } else Nil)
   }
-  // private def inhaleAccessPredicate(loc: LocationAccess, prm: sil.Exp, assmsToStmt: Exp => Stmt): Stmt = {
-  //   var perm = PermissionSplitter.normalizePerm(prm)
-  //   // For locations that are used with permission introspection and abstract wildcard
-  //   // they are dynamically rewritten to concrete wildcards for compatibility
-  //   perm = PermissionSplitter.rewriteSWildcard(perm, loc)
-  //   val permIsConcreteWildcard = perm.isInstanceOf[WildcardPerm]
-  //   val permIsAbstractWildcard = perm.isInstanceOf[SWildcardPerm]
-
-  //   val curPerm = currentPermission(loc)
-  //   val curWPerm = currentWPermission(loc)
-  //   val permVar = LocalVar(Identifier("perm"), permType)
-    
-  //   val (permVal, stmts): (Exp, Stmt) =
-  //     if (permIsConcreteWildcard) {
-  //       val w = LocalVar(Identifier("wildcard"), Real)
-  //       (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
-  //     } else if (permIsAbstractWildcard) {
-  //       var w = LocalVar(Identifier("sWildcard"), Bool)
-  //       (w, Nil)
-  //     } else {
-  //       (translatePerm(perm), Nil)
-  //     }
-      
-  //   stmts ++
-  //   (if (!permIsAbstractWildcard) (permVar := permVal) else Nil) ++
-  //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
-  //   assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
-  //   (if (!usingOldState) {
-  //     if (permIsAbstractWildcard)
-  //       curWPerm := TrueLit()
-  //     else curPerm := permAdd(curPerm, permVar)
-  //   } else Nil)
-  // }
+ 
   /*
    * same as the original inhale except that it abstracts over the way assumptions are expressed in the
    * Boogie program
@@ -1367,7 +1344,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
           //Define Permissions to all independent locations: no change
           val independentLocations = 
             if (isSWildcard) { 
-              // Triggers not optimized
+              // TODO: optimize Triggers
               Assume(Forall(Seq(obj,field), //Trigger(currentPermission(obj.l,field.l))++
                 Seq(Trigger(currentPermission(obj.l, field.l)), Trigger(currentPermission(qpMask, obj.l, field.l)), 
                   Trigger(currentWPermission(obj.l, field.l)), Trigger(currentPermission(qpBMask, obj.l, field.l))),
@@ -1376,7 +1353,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                   && (currentWPermission(obj.l,field.l) === currentPermission(qpBMask,obj.l,field.l)))
               ))
             } else {
-              // Triggers not optimized
+              // TODO: optimize Triggers
               Assume(Forall(Seq(obj,field), //Trigger(currentPermission(obj.l,field.l))++
                 Seq(Trigger(currentPermission(obj.l, field.l)), Trigger(currentPermission(qpMask, obj.l, field.l))),
                  (field.l !== translatedLocation) ==>
@@ -1448,7 +1425,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
 
            var isWildcard = false
            var isSWildcard = false
-
+           
            def renamingQuantifiedVar[E <: sil.Exp] = (e:E) => Expressions.renameVariables(e, vs.map(v => v.localVar), vsFresh.map(vFresh => vFresh.localVar))
            val (renamedCond,renamedPerms) = (renamingQuantifiedVar(cond),renamingQuantifiedVar(perms))
            val renamedArgs = args.map(renamingQuantifiedVar)
@@ -1526,11 +1503,11 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
 
            // permissions non-negative
            val permPositive = Assume(Forall(translatedLocals, tr1, translatedCond ==> permissionPositiveInternal(translatedPerms,None,true)))
-
+           
            //assumptions for predicates that gain permission
            val permissionsMap = Assume(
              {
-               val exp = 
+                val exp = 
                   if (isSWildcard) { 
                     (condInv && rangeFunApp) ==> 
                       (conjoinedInverseAssumptions 
@@ -1546,6 +1523,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                 else
                   Forall(freshFormalBoogieDecls,triggerForPermissionUpdateAxioms, exp)
              })
+           
            //assumptions for predicates of the same type which do not gain permission
            val independentPredicate = Assume(
              {
@@ -1563,7 +1541,6 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                else
                  Forall(freshFormalBoogieDecls, triggerForPermissionUpdateAxioms, exp)
              })
-
            /*
                 assumption for locations that are definitely independent of the locations defined by the quantified predicate permission. Independent locations include:
                   - field is not a predicate
@@ -1572,6 +1549,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
            val obj = LocalVarDecl(Identifier("o"), refType)
            val field = LocalVarDecl(Identifier("f"), fieldType)
            val fieldVar = LocalVar(Identifier("f"), fieldType)
+           
            val independentLocations = 
             if (isSWildcard) { 
               Assume(Forall(Seq(obj,field), //Trigger(currentPermission(obj.l,field.l))++
@@ -1633,7 +1611,8 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             if (isSWildcard) res_sWildcard
             else if (isWildcard) res_wildcard
             else res_nonWildcard
-           res1
+          
+          res1
          case _ =>
            Nil
        }
@@ -2203,6 +2182,14 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
           case sil.PermMul(wp@sil.WildcardPerm(),a) if conservativeStaticIsStrictlyPositivePerm(a) => done = false
             sil.WildcardPerm()(wp.pos,wp.info)
         }, Traverse.BottomUp)
+        
+        // collapse a*sWildcard or sWildcard*a to just sWildcard, if a is known to be positive
+        val e5b = e5a.transform({
+          case sil.PermMul(a, swp@sil.SWildcardPerm()) if conservativeStaticIsStrictlyPositivePerm(a) => done = false
+            sil.SWildcardPerm()(swp.pos,swp.info)
+          case sil.PermMul(swp@sil.SWildcardPerm(),a) if conservativeStaticIsStrictlyPositivePerm(a) => done = false
+            sil.SWildcardPerm()(swp.pos,swp.info)
+        }, Traverse.BottomUp)
 
                 // collapse a*sWildcard or sWildcard*a to just sWildcard, if a is known to be positive
         val e5b = e5a.transform({
@@ -2233,7 +2220,6 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
           case sil.PermAdd(sil.CondExp(cond, thn, els),a) => done = false
             sil.CondExp(cond, sil.PermAdd(thn,a)(), sil.PermAdd(els,a)())()
         }, Traverse.BottomUp)
-
 
         (done, e7)
       }

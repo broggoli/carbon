@@ -113,7 +113,7 @@ trait WandModule extends Module with ComponentRegistry[TransferComponent] {
     * @param boolCur State boolean carrying the assumptions of the curretn state
     * @return Boogie statement for executing the union.
     */
-  def createAndSetSumState(stateOther: Any ,boolOther:Exp,boolCur:Exp):Any
+  def createAndSetSumState(stateOther: Any ,boolOther:Exp, boolCur:Exp):Any
 
   /**
     * Called before executing any statement inside a package statement. It performs the needed initializations for the execution of a ghost operation.

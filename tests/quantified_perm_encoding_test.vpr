@@ -1,0 +1,15 @@
+field f: Int
+
+method main(s: Set[Ref])
+{
+    inhale forall r:Ref :: { r in s } r in s ==> acc(r.f, sWildcard)
+
+    var x: Ref
+    var y: Ref
+
+    assume x in s 
+    assume y in s 
+    assume x != y
+
+    assert perm(x.f) == perm(y.f)
+}

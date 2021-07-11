@@ -8,6 +8,14 @@ carbon_classpath.txt
 lib/
 silver
 viper_tutorial_examples
+*.png
+*.bpl
+*.csv
+*.zip
+benchmarking/intermediate/
+benchmarking/input
+benchmarking/backup/
+benchmarking/slow_wildcards0
 tmp/
 .bsp/
 benchmarking

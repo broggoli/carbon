@@ -1,0 +1,11 @@
+{
+    "cwd":                  "",
+    "compile":              true,
+    "benchmark":            true,
+    "input_dir":            "input",
+    "output_dir":           "figures",
+    "benchmark_inputs":      ["old_wildcard", "map_wildcard", "map_sWildcard"],
+    "carbon_home_old":      "~/Desktop/bachelor_thesis/carbon_fork/unmodified/carbon",
+    "carbon_home_map":      "~/Desktop/bachelor_thesis/carbon_fork/clean/carbon",
+    "carbon_home_tuple":    "~/Desktop/bachelor_thesis/carbon_fork/tuple_implementation/carbon"
+}

@@ -14,8 +14,9 @@
 
 set -e
 
+BOOGIE_HOME="/usr/bin/boogie/Binaries"
 BOOGIE_EXE="${BOOGIE_EXE:-$BOOGIE_HOME/Boogie.exe}"
-Z3_EXE="${Z3_EXE:-$BOOGIE_HOME/z3.exe}"
+Z3_EXE="${Z3_EXE:-$BOOGIE_HOME/z3}"
 
 export Z3_EXE
 export BOOGIE_EXE
@@ -27,5 +28,4 @@ CP_FILE="$BASEDIR/carbon_classpath.txt"
 if [ ! -f $CP_FILE ]; then
     (cd $BASEDIR; sbt "export runtime:dependencyClasspath" | tail -n1 > $CP_FILE)
 fi
-
 java -Xss30M -cp "`cat $CP_FILE`" viper.carbon.Carbon $@
