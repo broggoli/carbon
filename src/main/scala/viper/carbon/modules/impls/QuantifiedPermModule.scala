@@ -425,7 +425,6 @@ class QuantifiedPermModule(val verifier: Verifier)
                   Assert(permLe(permVar, curPerm), 
                     error.dueTo(reasons.InsufficientPermission(loc))), Nil)
               }) ++
-              
               (if (!usingOldState) {
                 if (exhaledAbstractWildcard) {
                   // Abstractly repersent current permission as > 0
@@ -436,9 +435,9 @@ class QuantifiedPermModule(val verifier: Verifier)
                 }
               } else Nil)
 
-              val permVarDef = if (onlyWildcard) Nil else (permVar := noPerm)
+              val permVarDef: Stmt = if (onlyWildcard) Nil else (permVar := noPerm)
 
-              (permVarDef ++ encoding)
+              (permVarDef ++ encoding): Seq[Stmt]
 
           })
       case w@sil.MagicWand(_,_) =>
@@ -642,11 +641,9 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             
             //assumption for locations that don't gain permission
             val condFalseLocations = 
-              (condInv && (permGt(permInv, noPerm) && rangeFunApp)).not 
-                ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm)
+              (condInv && (permGt(permInv, noPerm) && rangeFunApp)).not ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm)
             val condFalseLocations_sWildcard = 
-              (condInv && rangeFunApp).not 
-                ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm && 
+              (condInv && rangeFunApp).not ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm && 
                   currentPermission(qpBMask,obj.l,translatedLocation) === curWPerm)
             
             //assumption for locations that are definitely independent of any of the locations part of the QP (i.e. different
@@ -1046,7 +1043,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
       val curPerm = currentPermission(translateNull, wandRep)
       (if (!usingOldState) curPerm := permSub(curPerm, fullPerm) else Nil)
   }
-  
+
   private def inhaleAccessPredicate(loc: LocationAccess, prm: sil.Exp, assmsToStmt: Exp => Stmt): Stmt = {
     var perm = PermissionSplitter.normalizePerm(prm)
     // For locations that are used with permission introspection and abstract wildcard
@@ -1054,21 +1051,24 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
     perm = PermissionSplitter.rewriteSWildcard(perm, loc)
     val permIsConcreteWildcard = perm.isInstanceOf[WildcardPerm]
     val permIsAbstractWildcard = perm.isInstanceOf[SWildcardPerm]
-    
+
     val curPerm = currentPermission(loc)
     val curWPerm = currentWPermission(loc)
     val permVar = LocalVar(Identifier("perm"), permType)
-
-    (if (!permIsAbstractWildcard) {
-      val permVal: Exp =
-        if (permIsConcreteWildcard) LocalVar(Identifier("wildcard"), Real) 
-        else (translatePerm(perm), Nil)
+    
+    val (permVal, stmts): (Exp, Stmt) =
+      if (permIsConcreteWildcard) {
+        val w = LocalVar(Identifier("wildcard"), Real)
+        (w, LocalVarWhereDecl(w.name, w > noPerm) :: Havoc(w) :: Nil)
+      } else if (permIsAbstractWildcard) {
+        var w = LocalVar(Identifier("sWildcard"), Bool)
+        (w, Nil)
+      } else {
+        (translatePerm(perm), Nil)
+      }
       
-      (LocalVarWhereDecl(w.name, w > noPerm) :: 
-      Havoc(w) :: 
-      permVar := permVal :: 
-      Nil) 
-    } else Nil) ++
+    stmts ++
+    (if (!permIsAbstractWildcard) (permVar := permVal) else Nil) ++
     assmsToStmt(permissionPositiveInternal(permVar, Some(perm), true)) ++
     assmsToStmt(permissionPositiveInternal(permVar, Some(perm), false) ==> checkNonNullReceiver(loc)) ++
     (if (!usingOldState) {
@@ -1222,9 +1222,8 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
                isSWildcard = true;
                val w = LocalVar(Identifier("sWildcard"), Bool);
                (w, Nil)
-             } else {
-               (translateExp(renamingPerms), Nil)
-             }
+             } else (translateExp(renamingPerms), Nil)
+          }
            val translatedTriggers = renamedTriggers.map(t => Trigger(t.exps.map(x => translateExp(x))))
            val translatedLocation = translateLocation(Expressions.instantiateVariables(fieldAccess, vs.map(v => v.localVar),  vsFresh.map(vFresh => vFresh.localVar)))
 
@@ -1264,7 +1263,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
           val invAssm1 = (Forall(translatedLocals, tr1, (translatedCond && permGt(translatedPerms, noPerm)) ==> assm1Rhs))
           val invAssm2 = Forall(Seq(obj), Trigger(invFuns.map(invFun => FuncApp(invFun.name, Seq(obj.l), invFun.typ))), ((condInv && permGt(permInv, noPerm))&&rangeFunApp) ==> (rcvInv === obj.l) )
           
-          // For wildcards, especially symbolic wildcards we do not need to check whether the permission amount is positive
+          // For concrete and abstract wildcards we do not need to check whether the permission amount is positive
           val invAssm1_wildcard = (Forall(translatedLocals, tr1, translatedCond ==> assm1Rhs))
           val invAssm2_wildcard = Forall(Seq(obj), Trigger(invFuns.map(invFun => FuncApp(invFun.name, Seq(obj.l), invFun.typ))), (condInv && rangeFunApp) ==> (rcvInv === obj.l) )
 
@@ -1287,7 +1286,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
           val condTrueLocations = (
             ((condInv && permGt(permInv, noPerm)) && rangeFunApp) 
               ==> ((permGt(permInv, noPerm) ==> (rcvInv === obj.l)) && (
-                  (if (!usingOldState) { (currentPermission(qpMask,obj.l,translatedLocation) === curPerm + permInv) 
+                  (if (!usingOldState) (currentPermission(qpMask,obj.l,translatedLocation) === curPerm + permInv) 
                   else currentPermission(qpMask,obj.l,translatedLocation) === curPerm)
             )) 
           )
@@ -1301,7 +1300,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             )) 
           )
 
-          // for symbolic wildcards 
+          // for abstract wildcards 
           val condTrueLocations_sWildcard = (
             (condInv && rangeFunApp) 
               ==> ((rcvInv === obj.l) && (
@@ -1325,7 +1324,7 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
             (condInv&&rangeFunApp).not 
               ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm)
           )
-          // For Symbolic Wildcards -> Define Permission to all locations of field f for locations where condition does not applies: no change
+          // For abstract Wildcards -> Define Permission to all locations of field f for locations where condition does not applies: no change
           val condFalseLocations_sWildcard = (
             (condInv&&rangeFunApp).not 
               ==> (currentPermission(qpMask,obj.l,translatedLocation) === curPerm && 
@@ -1518,17 +1517,14 @@ private def conservativeIsSWildcardPermission(perm: sil.Exp) : Boolean = {
            val independentPredicate = Assume(
              {
                val exp = 
-                if (isSWildcard) 
-                  ((condInv && rangeFunApp).not) 
-                    ==> ((currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location)) && 
+                if (isSWildcard) {
+                  ((condInv && rangeFunApp).not) ==> ((currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location)) && 
                       (currentPermission(qpBMask,translateNull, general_location) === currentWPermission(translateNull, general_location)))
-                else if (isWildcard) 
-                  ((condInv && rangeFunApp).not) 
-                    ==> (currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location)) 
-                else 
-                  (((condInv && permGt(permInv, noPerm)) && rangeFunApp).not) 
-                    ==> (currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location))
-               
+                } else if (isWildcard) {
+                  ((condInv && rangeFunApp).not) ==> (currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location))
+                } else {
+                  (((condInv && permGt(permInv, noPerm)) && rangeFunApp).not) ==> (currentPermission(qpMask,translateNull, general_location) === currentPermission(translateNull, general_location))
+               }
                if (freshFormalBoogieDecls.isEmpty)
                  exp
                else
