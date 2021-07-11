@@ -66,7 +66,17 @@ trait PermModule extends Module with CarbonStateComponent {
   /**
    * A static reference to the mask.
    */
-  def staticMask: Seq[LocalVarDecl]
+  def staticMask: Seq[LocalVarDecl]  
+  
+  /**
+   * The current abstract wildcard mask.
+   */
+  def currentBMask: Seq[Exp]
+
+  /**
+   * A static reference to the abstract wildcard mask.
+   */
+  def staticBMask: Seq[LocalVarDecl]
 
   /**
    * Is the permission for a given expression positive (using the static mask).

@@ -429,9 +429,9 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
       val equateStmt:Stmt = e match {
         case TransferableFieldAccessPred(rcv,loc,_,_) => (used.boolVar := used.boolVar&&(equateLHS.get === heapModule.translateLocationAccess(rcv,loc)))
         case TransferablePredAccessPred(rcv,loc,_,_) =>
-          val (tempMask, initTMaskStmt) = permModule.tempInitMask(rcv,loc)
+          val (tempMask, tempBMask, initTMaskStmt) = permModule.tempInitMask(rcv,loc)
           initTMaskStmt ++
-            (used.boolVar := used.boolVar&&heapModule.identicalOnKnownLocations(topHeap,tempMask))
+            (used.boolVar := used.boolVar&&heapModule.identicalOnKnownLocations(topHeap,tempMask, tempBMask))
         case _ => Nil
       }
 
@@ -506,9 +506,10 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
     stateModule.replaceState(stateOther)
     val heapOther = heapModule.currentHeap
     val maskOther = permModule.currentMask
+    val bmaskOther = permModule.currentBMask
     stateModule.replaceState(currentState)
 
-    createAndSetSumState(heapOther, maskOther, boolOther, boolCur)
+    createAndSetSumState(heapOther, maskOther, bmaskOther, boolOther, boolCur)
   }
 
   /**
@@ -519,7 +520,8 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
     * @param boolCur bool containing facts for current state
     * @return
     */
-  private def createAndSetSumState(heapOther: Seq[Exp], maskOther: Seq[Exp],boolOther:Exp,boolCur:Exp):StateSetup = {
+  
+  private def createAndSetSumState(heapOther: Seq[Exp], maskOther: Seq[Exp], bmaskOther: Seq[Exp], boolOther: Exp,boolCur: Exp): StateSetup = {
     /*create a state Result which is the "sum" of the current  and Other states, i.e.:
   *1) at each heap location o.f the permission of the Result state is the sum of the permissions
   * for o.f in the current and Other state
@@ -531,15 +533,19 @@ private def transferAcc(states: List[StateRep], used:StateRep, e: TransferableEn
    *  and the other state and used (since all facts of each state is transferred)
   */
     val curHeap = heapModule.currentHeap
-    val curMask = permModule.currentMask
+    val curMask = permModule.currentMask    
+    val curBMask = permModule.currentBMask
 
     val StateSetup(resultState, initStmtResult) =
       createAndSetState(Some(boolOther && boolCur), "Result", true, false)
 
     val boolRes = resultState.boolVar
     val sumStates = (boolRes := boolRes && permModule.sumMask(maskOther, curMask))
-    val equateKnownValues = (boolRes := boolRes && heapModule.identicalOnKnownLocations(heapOther, maskOther) &&
-      heapModule.identicalOnKnownLocations(curHeap, curMask))
+    val equateKnownValues = (
+      boolRes := boolRes && 
+      heapModule.identicalOnKnownLocations(heapOther, maskOther, bmaskOther) &&
+      heapModule.identicalOnKnownLocations(curHeap, curMask, curBMask)
+    )
     val goodState = exchangeAssumesWithBoolean(stateModule.assumeGoodState, boolRes)
     val initStmt =CommentBlock("Creating state which is the sum of the two previously built up states",
       initStmtResult ++ sumStates ++ equateKnownValues ++ goodState)

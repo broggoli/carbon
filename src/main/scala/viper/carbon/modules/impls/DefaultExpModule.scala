@@ -173,6 +173,8 @@ class DefaultExpModule(val verifier: Verifier) extends ExpModule with Definednes
       }
       case sil.WildcardPerm() =>
         translatePerm(e)
+      case sil.SWildcardPerm() => 
+        translatePerm(e)      
       case sil.FullPerm() =>
         translatePerm(e)
       case sil.NoPerm() =>

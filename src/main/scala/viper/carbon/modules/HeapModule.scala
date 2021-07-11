@@ -150,8 +150,8 @@ trait HeapModule extends Module with CarbonStateComponent {
   def predicateTrigger(extras: Seq[Exp], pred: sil.PredicateAccess, anyState: Boolean = false): Exp
 
   def currentHeap:Seq[Exp]
-
-  def identicalOnKnownLocations(heap:Seq[Exp],mask:Seq[Exp]):Exp
+  
+  def identicalOnKnownLocations(heap:Seq[Exp],mask:Seq[Exp], bmask:Seq[Exp]):Exp
 
   /**
     * Adds assumption that current heap equals heap represented by s

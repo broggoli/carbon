@@ -129,8 +129,7 @@ class DefaultHeapModule(val verifier: Verifier)
         Seq(LocalVarDecl(heap0Name, heapTyp), LocalVarDecl(heap1Name, heapTyp)),
         Bool) ++
       Func(identicalOnKnownLocsName,
-        Seq(LocalVarDecl(heapName, heapTyp), LocalVarDecl(exhaleHeapName, heapTyp)) ++ staticMask,
-        Bool) ++
+        Seq(LocalVarDecl(heapName, heapTyp), LocalVarDecl(exhaleHeapName, heapTyp)) ++ staticMask ++ staticBMask, Bool) ++
       Func(isPredicateFieldName,
         Seq(LocalVarDecl(Identifier("f"), fieldType)),
         Bool) ++
@@ -145,7 +144,7 @@ class DefaultHeapModule(val verifier: Verifier)
       val h0 = LocalVarDecl(heap0Name, heapTyp)
       val h1 = LocalVarDecl(heap1Name, heapTyp)
       val h2 = LocalVarDecl(heap2Name, heapTyp)
-      val vars = Seq(h, eh) ++ staticMask
+      val vars = Seq(h, eh) ++ staticMask ++ staticBMask
       val identicalFuncApp = FuncApp(identicalOnKnownLocsName, vars map (_.l), Bool)
       // frame all locations with direct permission
       MaybeCommentedDecl("Frame all locations with direct permissions", Axiom(Forall(
@@ -609,7 +608,7 @@ class DefaultHeapModule(val verifier: Verifier)
   }
 
   override def endExhale: Stmt = {
-    if (!usingOldState) Havoc(exhaleHeap) ++ Assume(FuncApp(identicalOnKnownLocsName, Seq(heapExp, exhaleHeap) ++ currentMask, Bool)) ++
+    if (!usingOldState) Havoc(exhaleHeap) ++ Assume(FuncApp(identicalOnKnownLocsName, Seq(heapExp, exhaleHeap) ++ currentMask ++ currentBMask, Bool)) ++
       (heapVar := exhaleHeap)
     else Nil
   }
@@ -634,6 +633,6 @@ class DefaultHeapModule(val verifier: Verifier)
 
   override def currentHeap = Seq(heap)
 
-  override def identicalOnKnownLocations(otherHeap:Seq[Exp],otherMask:Seq[Exp]):Exp =
-    FuncApp(identicalOnKnownLocsName,otherHeap ++ heap ++ otherMask, Bool)
+  override def identicalOnKnownLocations(otherHeap:Seq[Exp], otherMask:Seq[Exp], otherBMask:Seq[Exp]): Exp =
+    FuncApp(identicalOnKnownLocsName,otherHeap ++ heap ++ otherMask ++ otherBMask, Bool)
 }

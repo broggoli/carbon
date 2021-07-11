@@ -562,10 +562,11 @@ with DefinednessComponent with ExhaleComponent with InhaleComponent {
           val heap1 = heapModule.currentStateContributions
           val mask1 = permModule.currentStateContributions
 
-
-
-          val renamedCond = renaming(if (perm.isInstanceOf[sil.WildcardPerm]) condition else sil.And(condition,PermGtCmp(perm, NoPerm()(forall.pos,forall.info))(forall.pos))(forall.pos,forall.info))
-
+          val renamedCond = renaming( 
+            if (perm.isInstanceOf[sil.WildcardPerm]) condition 
+            else if (perm.isInstanceOf[sil.SWildcardPerm]) condition 
+            else sil.And(condition,PermGtCmp(perm, NoPerm()(forall.pos,forall.info))(forall.pos))(forall.pos,forall.info)
+          )
 
 
           val locationAccess1 = translateResourceAccess(locationAccess)
