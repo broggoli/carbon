@@ -2049,10 +2049,10 @@ class QuantifiedPermModule(val verifier: Verifier)
     }
 
     def rewriteSWildcard(perm: sil.Exp, loc: LocationAccess): sil.Exp = {
-
       perm match {
         case sil.SWildcardPerm() => {
           for (notCompatible <- program.permUsedWithSWildcard if notCompatible.contains(loc)) {
+            println("converted", perm, loc)
             return sil.WildcardPerm()(perm.pos, perm.info)
           }
         }

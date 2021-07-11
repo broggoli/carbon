@@ -1,8 +1,15 @@
 field f: Int
+field p: Ref
 
 method main(x: Ref)
 {   
     inhale acc(x.f, wildcard)
-    assert perm(x.f) == none
+    assert perm(x.f) > none
 
+}
+
+method test(x: Ref)
+{ 
+    inhale acc(x.p, sWildcard)
+    assert perm(x.p) > none
 }
